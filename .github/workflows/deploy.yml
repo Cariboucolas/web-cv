@@ -26,6 +26,6 @@ jobs:
         run: pnpm run build
 
       - name: Deploy to Firebase
-        uses: wzieba/Firebase-Action@v2
+        uses: firebase/actions/github-action@v1
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
