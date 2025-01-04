@@ -16,11 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Volta
-        uses: volta-sh/setup-volta@v1
-        with:
-          node-version: '18'
-
       - name: Install pnpm
         run: npm install -g pnpm
 
