@@ -9,12 +9,18 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -26,6 +32,8 @@ jobs:
         run: pnpm run build
 
       - name: Deploy to Firebase
-        uses: firebase/actions/github-action@v1
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
+          projectId: cv-portfolio-b023a
+          channelId: live
