@@ -1,8 +1,9 @@
-<script setup lang="ts">
-</script>
-
 <template>
-  <v-main class="flex items-center justify-center min-h-screen bg-background">
-    <slot/>
-  </v-main>
+  <div>
+    <slot />
+  </div>
 </template>
+
+<script setup lang="ts">
+// Le layout par défaut
+</script>

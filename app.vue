@@ -1,7 +1,13 @@
 <template>
-  <v-app>
-    <NuxtLayout name="default">
-      <NuxtPage/>
-    </NuxtLayout>
-  </v-app>
+  <NuxtLayout>
+    <v-app>
+      <v-main>
+        <NuxtPage />
+      </v-main>
+    </v-app>
+  </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+// Configuration globale de l'application
+</script>

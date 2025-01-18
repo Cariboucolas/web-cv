@@ -1,23 +1,24 @@
-import {createVuetify, type ThemeDefinition} from 'vuetify'
+import { defineNuxtPlugin } from 'nuxt/app'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
-const customDark: ThemeDefinition = {
-    dark: true,
-    colors: {
-        background: '#000000',
-        surface: '#FFFFFF',
-        primary: '#02811B',
-        'primary-darken-1': '#016415',
-        secondary: '#000E03',
-        'secondary-darken-1': '#01390c',
-        error: '#F14E5C',
-        info: '#2196F3',
-        success: '#02811B',
-        warning: '#FFA474',
-    },
-}
-
-export default createVuetify({
+export default defineNuxtPlugin((nuxtApp) => {
+  const vuetify = createVuetify({
+    components,
+    directives,
     theme: {
-        defaultTheme: 'customDark',
+      defaultTheme: 'dark',
+      themes: {
+        dark: {
+          colors: {
+            primary: '#42b883',
+            secondary: '#35495e',
+          },
+        },
+      },
     },
+  })
+
+  nuxtApp.vueApp.use(vuetify)
 })

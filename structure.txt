@@ -1,0 +1,21 @@
+├── assets/
+│   ├── css/
+│   │   └── main.css
+│   └── images/
+├── components/
+│   ├── TheHeader.vue
+│   ├── TheFooter.vue
+│   ├── AboutSection.vue
+│   ├── PortfolioSection.vue
+│   ├── SkillsSection.vue
+│   └── ContactSection.vue
+├── layouts/
+│   └── default.vue
+├── pages/
+│   └── index.vue
+├── plugins/
+│   └── i18n.js
+├── locales/
+│   ├── en.json
+│   └── fr.json
+└── nuxt.config.js 

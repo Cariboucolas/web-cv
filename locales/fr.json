@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "about": "À propos",
+    "portfolio": "Portfolio",
+    "skills": "Compétences",
+    "contact": "Contact"
+  },
+  "downloadCV": "Télécharger CV",
+  "about": {
+    "title": "À propos de moi",
+    "description": "Insérez votre description ici"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "viewProject": "Voir le projet"
+  },
+  "skills": {
+    "title": "Compétences",
+    "technologies": "Technologies",
+    "softSkills": "Soft Skills"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Nom",
+    "email": "Email",
+    "message": "Message",
+    "send": "Envoyer"
+  }
+}
