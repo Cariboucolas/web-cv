@@ -1,14 +1,14 @@
 <template>
-  <div class="home min-h-screen p-4">
-    <div class="max-w-7xl mx-auto h-full">
+  <div class="home h-screen overflow-hidden p-2">
+    <div class="max-w-6xl mx-auto h-full">
       <!-- Desktop Layout -->
-      <div class="hidden md:flex md:items-center md:justify-center md:min-h-screen">
-        <div class="grid grid-cols-2 gap-8 container mx-auto px-4">
+      <div class="hidden md:flex md:items-center md:justify-center h-full">
+        <div class="grid grid-cols-2 gap-4 container mx-auto px-2">
           <AboutSection class="col-span-1 cursor-pointer" @click="openSection('about')" />
           <PortfolioSection class="col-span-1 cursor-pointer" @click="openSection('portfolio')" />
-          <div class="col-span-2 flex justify-center items-center my-8">
-            <v-avatar size="300" class="elevation-4 bg-secondary">
-              <Icon name="material-symbols:person" size="150" class="text-primary" />
+          <div class="col-span-2 flex justify-center items-center my-4">
+            <v-avatar size="200" class="elevation-4 bg-secondary">
+              <Icon name="material-symbols:person" size="100" class="text-primary" />
             </v-avatar>
           </div>
           <SkillsSection class="col-span-1 cursor-pointer" @click="openSection('skills')" />
@@ -42,7 +42,7 @@
           <!-- Modal content -->
           <div class="relative z-30 max-w-2xl w-full m-4 transform 
                       bg-[var(--color-secondary)]
-                      p-8 rounded-lg shadow-2xl"
+                      p-6 rounded-lg shadow-2xl"
                @click.stop
           >
             <button 
