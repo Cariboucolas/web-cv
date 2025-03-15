@@ -6,17 +6,17 @@
     </v-avatar>
     <v-card-title class="text-h4 py-10 text-center font-weight-bold">WEB DEVELOPER FULLSTACK</v-card-title>
     <v-card-text>
-      <v-card-subtile class="text-h6 font-weight-bold">
+      <v-card-subtitle class="text-h6 font-weight-bold">
         A propos de moi
-      </v-card-subtile>
+      </v-card-subtitle>
       <AboutSection class="pb-8"/>
-      <v-card-subtile class="text-h6 font-weight-bold">
+      <v-card-subtitle class="text-h6 font-weight-bold">
         Compétences
-      </v-card-subtile>
+      </v-card-subtitle>
       <SkillsSection class="pt-4 pb-8"/>
-      <v-card-subtile class="text-h6 font-weight-bold">
+      <v-card-subtitle class="text-h6 font-weight-bold">
         Portfolio
-      </v-card-subtile>
+      </v-card-subtitle>
       <PortfolioSection class="mt-4"/>
 
     </v-card-text>
