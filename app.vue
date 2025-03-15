@@ -2,12 +2,8 @@
   <NuxtLayout>
     <v-app>
       <v-main>
-        <NuxtPage />
+        <NuxtPage/>
       </v-main>
     </v-app>
   </NuxtLayout>
 </template>
-
-<script setup lang="ts">
-// Configuration globale de l'application
-</script>

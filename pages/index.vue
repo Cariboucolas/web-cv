@@ -1,143 +1,125 @@
 <template>
-  <div class="home h-screen overflow-hidden p-2">
-    <div class="max-w-6xl mx-auto h-full">
-      <!-- Desktop Layout -->
-      <div class="hidden md:flex md:items-center md:justify-center h-full">
-        <div class="grid grid-cols-2 gap-4 container mx-auto px-2">
-          <AboutSection class="col-span-1 cursor-pointer" @click="openSection('about')" />
-          <PortfolioSection class="col-span-1 cursor-pointer" @click="openSection('portfolio')" />
-          <div class="col-span-2 flex justify-center items-center my-4">
-            <v-avatar size="200" class="elevation-4 bg-secondary">
-              <Icon name="material-symbols:person" size="100" class="text-primary" />
-            </v-avatar>
-          </div>
-          <SkillsSection class="col-span-1 cursor-pointer" @click="openSection('skills')" />
-          <ContactSection class="col-span-1 cursor-pointer" @click="openSection('contact')" />
-        </div>
-      </div>
+  <div class="top-light"/>
+  <v-card class="card pt-16" max-width="800">
+    <v-avatar size="300" class="ma-auto">
+      <v-img src="https://avatars0.githubusercontent.com/u/0000001"/>
+    </v-avatar>
+    <v-card-title class="text-h4 py-10 text-center font-weight-bold">WEB DEVELOPER FULLSTACK</v-card-title>
+    <v-card-text>
+      <v-card-subtile class="text-h6 font-weight-bold">
+        A propos de moi
+      </v-card-subtile>
+      <AboutSection class="pb-8"/>
+      <v-card-subtile class="text-h6 font-weight-bold">
+        Compétences
+      </v-card-subtile>
+      <SkillsSection class="pt-4 pb-8"/>
+      <v-card-subtile class="text-h6 font-weight-bold">
+        Portfolio
+      </v-card-subtile>
+      <PortfolioSection class="mt-4"/>
 
-      <!-- Mobile Layout -->
-      <div class="md:hidden flex flex-col gap-6">
-        <div class="flex justify-center py-8">
-          <v-avatar size="200" class="elevation-4 bg-secondary">
-            <Icon name="material-symbols:person" size="100" class="text-primary" />
-          </v-avatar>
-        </div>
-        <AboutSection />
-        <PortfolioSection />
-        <SkillsSection />
-        <ContactSection />
-      </div>
-
-      <!-- Modal Section -->
-      <Transition name="modal">
-        <div v-if="activeSection" 
-             class="fixed inset-0 flex items-center justify-center z-20"
-        >
-          <!-- Backdrop avec flou et transparence -->
-          <div class="absolute inset-0 backdrop-blur-lg bg-black/30"
-               @click="closeSection"
-          ></div>
-
-          <!-- Modal content -->
-          <div class="relative z-30 max-w-2xl w-full m-4 transform 
-                      bg-[var(--color-secondary)]
-                      p-6 rounded-lg shadow-2xl"
-               @click.stop
-          >
-            <button 
-              @click="closeSection" 
-              class="absolute top-4 right-4 text-white hover:text-primary"
-            >
-              <Icon name="material-symbols:close" size="24" />
-            </button>
-            <div class="section !transform-none">
-              <template v-if="activeSection === 'about'">
-                <AboutModal />
-              </template>
-              <template v-else-if="activeSection === 'portfolio'">
-                <PortfolioModal />
-              </template>
-              <template v-else-if="activeSection === 'skills'">
-                <SkillsModal />
-              </template>
-              <template v-else-if="activeSection === 'contact'">
-                <ContactModal />
-              </template>
-            </div>
-          </div>
-        </div>
-      </Transition>
-
-      <!-- Download Button -->
-      <div class="fixed top-4 right-4 z-10">
-        <button @click="downloadPDF" class="btn">
-          <span class="hidden md:inline">Télécharger CV</span>
-          <Icon 
-            name="material-symbols:download" 
-            class="md:hidden"
-            size="24"
-          />
-        </button>
-      </div>
-    </div>
-  </div>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn icon="mdiCloud" class="button"/>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import AboutSection from '~/components/AboutSection.vue'
-import ContactSection from '~/components/ContactSection.vue'
-import PortfolioSection from '~/components/PortfolioSection.vue'
-import SkillsSection from '~/components/SkillsSection.vue'
-import AboutModal from '~/components/modals/AboutModal.vue'
-import ContactModal from '~/components/modals/ContactModal.vue'
-import PortfolioModal from '~/components/modals/PortfolioModal.vue'
-import SkillsModal from '~/components/modals/SkillsModal.vue'
-
-const activeSection = ref<string | null>(null)
-
-const openSection = (section: string) => {
-  activeSection.value = section
-}
-
-const closeSection = () => {
-  activeSection.value = null
-}
-
-const downloadPDF = () => {
-  // Logique pour générer et télécharger le PDF
-}
 </script>
 
 <style scoped>
-.modal-enter-active,
-.modal-leave-active {
-  transition: all 0.3s ease;
+@import url("https://fonts.cdnfonts.com/css/mona-sans");
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
 }
 
-.modal-enter-from {
-  opacity: 0;
-  transform: scale(0.9);
+html, body {
+  overflow: hidden;
 }
 
-.modal-leave-to {
-  opacity: 0;
-  transform: scale(1.1);
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background: #343434;
+  background: linear-gradient(
+      180deg,
+      #343434 0%,
+      #252525 100%
+  );
+  font-family: "Mona-Sans", sans-serif;
+  font-family: "Mona Sans", sans-serif;
 }
 
-.section-modal {
-  animation: zoom-in 0.3s ease;
-}
+.card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5%;
+  margin: auto;
+  border-radius: 16px;
+  background: #191919aa;
+  background: linear-gradient(
+      180deg,
+      #292929aa 0%,
+      #191919cc 50%
+  );
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 2px 2px 0 #00ff0044,
+  inset 0 -2px 2px 0 #0003;
 
-@keyframes zoom-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+  color: #ccc;
+  text-shadow: 1px 1px 3px #333a;
+  padding: 24px;
+  padding-right: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
+  .button {
+    width: fit-content;
+    border-radius: 100px;
+    padding: 8px 36px;
+    margin-top: 12px;
+    background: #fff2;
+    box-shadow: 0 0 0 1px #fff3,
+    inset 120px 0 100px -100px #000c,
+    0 0 0 0 #fff1;
+
+    transition: box-shadow 0.4s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 0 1px #fff3,
+      inset 200px 0px 100px -100px #000a,
+      -4px 0 8px 2px #fff2;
+    }
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+}
+
+.top-light {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 580px;
+  height: 6px;
+  border-radius: 10px;
+  background: #00ff00;
+  box-shadow: 0 0px 1px 1px #00cc00,
+  0 1px 2px 1px #00cc00,
+  0 2px 6px 1px #00cc00,
+  0 4px 12px 0px #00cc00,
+  0 12px 20px 12px #00cc0022;
 }
 </style>
