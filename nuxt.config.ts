@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     ssr: true,
     devtools: {enabled: true},
     css: ['vuetify/styles', '~/assets/css/main.css'],
-    modules: ['@nuxt/icon', '@nuxtjs/tailwindcss'],
+    modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
 
     build: {
         transpile: ['vuetify'],
@@ -47,4 +47,26 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: '2025-01-18',
+
+    i18n: {
+        locales: [
+            { 
+                code: 'fr', 
+                iso: 'fr-FR', 
+                file: 'fr.json',
+                name: 'Français'
+            },
+            { 
+                code: 'en', 
+                iso: 'en-US', 
+                file: 'en.json',
+                name: 'English'
+            }
+        ],
+        defaultLocale: 'fr',
+        langDir: 'locales',
+        strategy: 'no_prefix',
+        detectBrowserLanguage: false,
+        lazy: false,
+    },
 })

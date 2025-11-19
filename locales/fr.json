@@ -1,9 +1,29 @@
 {
   "nav": {
-    "about": "À propos",
-    "portfolio": "Portfolio",
-    "skills": "Compétences",
+    "profile": "PROFIL",
+    "about": "DESCRIPTION",
+    "portfolio": "PORTFOLIO",
+    "skills": "SKILLS",
     "contact": "Contact"
+  },
+  "profile": {
+    "title": "WEB DEVELOPER",
+    "subtitle": "FULLSTACK",
+    "description": {
+      "line1": "Développeur passionné avec plus de 15 ans d'expérience dans l'IT.",
+      "line2": "Reconversion vers le développement il y a 4 ans, guidé par ma passion du digital et la découverte du code.",
+      "line3": "Mon parcours unique, débutant comme technicien helpdesk et évoluant vers l'administration système et réseaux, m'a doté d'une vision globale des systèmes d'information.",
+      "line4": "En tant que freelance, je m'attache particulièrement aux principes du Clean Code et aux pratiques artisanales du développement."
+    }
+  },
+  "bottomBar": {
+    "defaultTitle": "INFO",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "malt": "",
+      "download": "Télécharger CV"
+    }
   },
   "downloadCV": "Télécharger CV",
   "about": {

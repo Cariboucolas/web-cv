@@ -1,9 +1,29 @@
 {
   "nav": {
-    "about": "About",
-    "portfolio": "Portfolio",
-    "skills": "Skills",
+    "profile": "PROFILE",
+    "about": "DESCRIPTION",
+    "portfolio": "PORTFOLIO",
+    "skills": "SKILLS",
     "contact": "Contact"
+  },
+  "profile": {
+    "title": "WEB DEVELOPER",
+    "subtitle": "FULLSTACK",
+    "description": {
+      "line1": "Passionate developer with over 15 years of experience in IT.",
+      "line2": "Transitioned to development 4 years ago, driven by my passion for digital and discovering code.",
+      "line3": "My unique journey, starting as a helpdesk technician and evolving into system and network administration, has given me a global vision of information systems.",
+      "line4": "As a freelancer, I particularly focus on Clean Code principles and craft development practices."
+    }
+  },
+  "bottomBar": {
+    "defaultTitle": "INFO",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "malt": "",
+      "download": "Download CV"
+    }
   },
   "downloadCV": "Download CV",
   "about": {
