@@ -107,7 +107,7 @@ const socialLinks = computed(() => [
   },
   {
     key: 'download',
-    icon: 'material-symbols:download-outline',
+    icon: 'material-symbols:download',
     url: '/cv-colas-durcy.pdf',
     external: false,
     download: true,
