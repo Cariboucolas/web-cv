@@ -1,6 +1,19 @@
 <template>
-  <div >
-    <div class="grid grid-cols-2 gap-6">
+  <div>
+    <!-- Mobile : liste compacte -->
+    <div class="sm:hidden space-y-3">
+      <div v-for="category in categories" :key="category.label" class="flex gap-3 items-baseline">
+        <span class="text-xs text-gray-500 uppercase tracking-widest w-24 shrink-0">{{ category.label }}</span>
+        <span class="text-sm text-gray-300">
+          <template v-for="(skill, i) in category.skills" :key="skill.name">
+            {{ skill.name }}<span v-if="skill.level" class="text-xs text-gray-500"> ({{ skill.level }})</span><template v-if="i < category.skills.length - 1"> · </template>
+          </template>
+        </span>
+      </div>
+    </div>
+
+    <!-- Desktop : cards -->
+    <div class="hidden sm:grid grid-cols-2 gap-6">
       <div class="skill-category">
         <h3 class="text-primary text-lg mb-3 flex items-center gap-2">
           <Icon name="material-symbols:monitor-outline" size="24" />
@@ -48,12 +61,40 @@
         </div>
       </div>
     </div>
-
-    <div class="mt-6 pt-4 border-t border-white/10">
-      <p class="text-sm text-gray-400">
-        Toutes ces compétences sont mises en pratique quotidiennement dans mes projets, 
-        avec une attention particulière portée aux bonnes pratiques et à la qualité du code.
-      </p>
-    </div>
   </div>
 </template>
+
+<script setup lang="ts">
+interface Skill {
+  name: string
+  level?: string
+}
+
+const categories: { label: string; skills: Skill[] }[] = [
+  {
+    label: 'Frontend',
+    skills: [{ name: 'Nuxt.js' }, { name: 'React' }],
+  },
+  {
+    label: 'Backend & Data',
+    skills: [{ name: 'Firebase' }, { name: 'REST APIs' }],
+  },
+  {
+    label: 'Outils & Pratiques',
+    skills: [{ name: 'Git' }, { name: 'CI/CD' }, { name: 'TDD' }, { name: 'DDD' }, { name: 'Datadog' }, { name: 'Sentry' }],
+  },
+  {
+    label: 'Tests',
+    skills: [{ name: 'Jest' }, { name: 'Cypress (E2E)' }],
+  },
+  {
+    label: 'Langages',
+    skills: [
+      { name: 'TypeScript', level: 'avancé' },
+      { name: 'Java', level: 'débutant' },
+      { name: 'Kotlin', level: 'débutant' },
+      { name: 'Python', level: 'débutant' },
+    ],
+  },
+]
+</script>

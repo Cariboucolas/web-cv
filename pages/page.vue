@@ -13,7 +13,12 @@
           <OrganismsCharacterPanel />
         </div>
         <div class="profile-content">
-          <p v-for="(line, index) in profileDescription" :key="index" class="profile-line">
+          <p
+            v-for="(line, index) in profileDescription"
+            :key="index"
+            class="profile-line"
+            :class="{ 'profile-line--secondary': index >= 2 }"
+          >
             {{ line }}
           </p>
         </div>
@@ -254,6 +259,55 @@ const toggleLanguage = () => {
 
   .header-title {
     font-size: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-layout {
+    padding: 16px 0 40px;
+  }
+
+  .page-card {
+    padding: 8px 16px 40px;
+    gap: 32px;
+  }
+
+  .profile-section {
+    gap: 24px;
+  }
+
+  .profile-avatar {
+    flex: none;
+  }
+
+  .profile-content {
+    flex: none;
+    padding: 0;
+    min-height: unset;
+  }
+
+  .profile-line--secondary {
+    display: none;
+  }
+
+  .content-section {
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px 0;
+  }
+
+  .section-title {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  .social-footer {
+    gap: 16px;
+  }
+
+  .social-squares {
+    gap: 12px;
   }
 }
 </style>

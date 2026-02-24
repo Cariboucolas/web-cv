@@ -2,7 +2,7 @@
   <div class="character-panel">
     <div class="character-avatar">
       <v-avatar size="225" class="large-avatar">
-        <v-img src="https://avatars0.githubusercontent.com/u/0000001" />
+        <v-img src="https://avatars0.githubusercontent.com/u/0000001"/>
       </v-avatar>
     </div>
     <div class="character-info">
@@ -44,14 +44,14 @@
   font-family: "Orbitron", sans-serif;
 }
 
-.character-title {
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 3px;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
-  font-family: "Orbitron", sans-serif;
-}
+//.character-title {
+//  font-size: 16px;
+//  font-weight: 400;
+//  letter-spacing: 3px;
+//  color: rgba(255, 255, 255, 0.7);
+//  margin: 0;
+//  font-family: "Orbitron", sans-serif;
+//}
 
 @media (max-width: 1200px) {
   .large-avatar {
@@ -69,6 +69,18 @@
   .large-avatar {
     width: 113px !important;
     height: 113px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .large-avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .character-name {
+    font-size: 20px;
+    letter-spacing: 2px;
   }
 }
 </style>

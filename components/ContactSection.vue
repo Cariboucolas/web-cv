@@ -1,5 +1,5 @@
 <template>
-  <section class="section h-[250px] w-full flex flex-col">
+  <section class="h-[250px] w-full flex flex-col">
     <div class="flex items-center gap-3 mb-4">
       <Icon name="material-symbols:mail" size="32" class="text-primary" />
       <h2 class="text-2xl font-semibold">Contact</h2>
