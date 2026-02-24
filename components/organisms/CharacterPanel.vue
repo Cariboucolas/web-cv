@@ -44,15 +44,6 @@
   font-family: "Orbitron", sans-serif;
 }
 
-//.character-title {
-//  font-size: 16px;
-//  font-weight: 400;
-//  letter-spacing: 3px;
-//  color: rgba(255, 255, 255, 0.7);
-//  margin: 0;
-//  font-family: "Orbitron", sans-serif;
-//}
-
 @media (max-width: 1200px) {
   .large-avatar {
     width: 188px !important;
