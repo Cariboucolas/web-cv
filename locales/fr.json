@@ -28,11 +28,38 @@
   "downloadCV": "Télécharger CV",
   "about": {
     "title": "À propos de moi",
-    "description": "Insérez votre description ici"
+    "paragraphs": {
+      "p1": "Développeur passionné avec plus de 15 ans d'expérience dans l'IT, j'ai entrepris une reconversion vers le développement il y a 4 ans, guidé par ma passion du digital et la découverte du code et les bonnes pratiques du Software Craftsmanship.",
+      "p2": "Mon parcours unique, débutant comme technicien helpdesk et évoluant vers l'administration système et réseaux, m'a doté d'une vision globale des systèmes d'information. Cette expérience enrichit ma pratique du développement, me permettant d'appréhender les projets dans leur ensemble, de l'infrastructure au code.",
+      "p3": "En tant que freelance, je m'attache particulièrement aux principes du Clean Code et aux pratiques artisanales du développement. Je crois fermement que la qualité du code et la maintenance à long terme sont aussi importantes que la fonctionnalité immédiate.",
+      "p4": "Ma double expertise technique - infrastructure et développement - me permet d'apporter une valeur ajoutée unique aux projets, combinant robustesse technique et excellence du code."
+    }
   },
   "portfolio": {
     "title": "Portfolio",
-    "viewProject": "Voir le projet"
+    "viewProject": "Voir le projet →",
+    "projects": {
+      "mgm": {
+        "title": "MGM — Analyse de la performance",
+        "shortDescription": "Application mobile de pilotage commercial",
+        "description": "Application mobile permettant aux équipes en magasin de suivre leurs performances, visualiser les top produits et prendre des décisions pour de nouvelles opportunités produits. Elle est utilisé par "
+      },
+      "fcs": {
+        "title": "FCS",
+        "shortDescription": "Application mobile d'auto évaluation",
+        "description": "Application mobile permettant d'évaluer la satisfaction des clients dans une granularité métier 'famille'"
+      },
+      "stic": {
+        "title": "STIC",
+        "shortDescription": "Application mobile d'appairage de cycles à un client",
+        "description": "Application mobile permettant de scanner l'immatriculation des cycles pour l'associer au client"
+      },
+      "winky": {
+        "title": "Winkyverse",
+        "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
+        "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
+      }
+    }
   },
   "skills": {
     "title": "Compétences",
