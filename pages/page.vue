@@ -59,6 +59,7 @@
             :icon="link.icon"
             :url="link.url"
             :external="link.external"
+            :download="link.download"
             :action="link.action"
             @mouseenter="hoveredLink = link.key"
             @mouseleave="hoveredLink = null"
@@ -107,11 +108,9 @@ const socialLinks = computed(() => [
   {
     key: 'download',
     icon: 'material-symbols:download-outline',
-    url: '#',
+    url: '/cv-colas-durcy.pdf',
     external: false,
-    action: () => {
-      console.log('Download CV')
-    },
+    download: true,
   },
 ])
 
@@ -121,6 +120,9 @@ const hoveredLinkTitle = computed(() => {
   }
   if (hoveredLink.value === 'malt') {
     return ''
+  }
+  if (hoveredLink.value === 'download') {
+    return t('downloadCV')
   }
   return hoveredLink.value.charAt(0).toUpperCase() + hoveredLink.value.slice(1)
 })

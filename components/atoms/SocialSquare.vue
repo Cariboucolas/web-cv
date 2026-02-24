@@ -3,6 +3,7 @@
     :href="url"
     :target="external ? '_blank' : undefined"
     :rel="external ? 'noopener noreferrer' : undefined"
+    :download="download ? '' : undefined"
     class="social-square"
     @mouseenter="$emit('mouseenter')"
     @mouseleave="$emit('mouseleave')"
@@ -17,11 +18,13 @@ interface Props {
   icon: string
   url: string
   external?: boolean
+  download?: boolean
   action?: () => void
 }
 
 const props = withDefaults(defineProps<Props>(), {
   external: false,
+  download: false,
 })
 
 const emit = defineEmits<{
