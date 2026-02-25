@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // CV PDF: public read, no write from client
+    match /cv/{fileName} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

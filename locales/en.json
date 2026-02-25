@@ -1,18 +1,70 @@
 {
   "nav": {
-    "about": "About",
-    "portfolio": "Portfolio",
-    "skills": "Skills",
+    "profile": "PROFILE",
+    "about": "DESCRIPTION",
+    "portfolio": "PORTFOLIO",
+    "skills": "SKILLS",
     "contact": "Contact"
+  },
+  "profile": {
+    "title": "WEB DEVELOPER",
+    "subtitle": "FULLSTACK",
+    "description": {
+      "line1": "Passionate developer with over 15 years of experience in IT.",
+      "line2": "Transitioned to development 4 years ago, driven by my passion for digital and discovering code.",
+      "line3": "My unique journey, starting as a helpdesk technician and evolving into system and network administration, has given me a global vision of information systems.",
+      "line4": "As a freelancer, I particularly focus on Clean Code principles and craft development practices."
+    }
+  },
+  "bottomBar": {
+    "defaultTitle": "INFO",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "malt": "",
+      "download": "Download CV"
+    }
   },
   "downloadCV": "Download CV",
   "about": {
     "title": "About me",
-    "description": "Insert your description here"
+    "paragraphs": {
+      "p1": "Passionate developer with over 15 years of experience in IT, I transitioned to development 4 years ago, driven by my passion for digital and discovering code and Software Craftsmanship best practices.",
+      "p2": "My unique journey, starting as a helpdesk technician and evolving into system and network administration, has given me a holistic view of information systems. This experience enriches my development practice, allowing me to approach projects as a whole, from infrastructure to code.",
+      "p3": "As a freelancer, I particularly focus on Clean Code principles and craft development practices. I firmly believe that code quality and long-term maintainability are as important as immediate functionality.",
+      "p4": "My dual technical expertise — infrastructure and development — allows me to bring unique added value to projects, combining technical robustness and code excellence."
+    }
   },
   "portfolio": {
     "title": "Portfolio",
-    "viewProject": "View project"
+    "viewProject": "View project →",
+    "projects": {
+      "mgm": {
+        "title": "MGM — Performance Management",
+        "shortDescription": "Mobile sales performance app",
+        "description": "Mobile application allowing sales teams to track their performance in real time, visualise top products and analyse weekly trends."
+      },
+      "mobile2": {
+        "title": "Mobile App 2",
+        "shortDescription": "E-commerce application",
+        "description": "A full-featured e-commerce app with cart, payment and order tracking, optimised for mobile performance."
+      },
+      "fcs": {
+        "title": "FCS",
+        "shortDescription": "To be completed",
+        "description": "To be completed"
+      },
+      "stic": {
+        "title": "STIC",
+        "shortDescription": "To be completed",
+        "description": "To be completed"
+      },
+      "winky": {
+        "title": "Winky",
+        "shortDescription": "To be completed",
+        "description": "To be completed"
+      }
+    }
   },
   "skills": {
     "title": "Skills",
