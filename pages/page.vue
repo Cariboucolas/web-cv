@@ -108,9 +108,8 @@ const socialLinks = computed(() => [
   {
     key: 'download',
     icon: 'material-symbols:download',
-    url: '/cv-colas-durcy.pdf',
-    external: false,
-    download: true,
+    url: `https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/${encodeURIComponent('cv/cv-colas-durcy.pdf')}?alt=media`,
+    external: true,
   },
 ])
 
