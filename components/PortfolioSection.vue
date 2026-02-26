@@ -6,7 +6,7 @@
       <div class="carousel-wrapper">
         <div class="carousel-track">
           <div
-              v-for="(project, index) in projects"
+              v-for="(project, index) in projectsWithImages"
               :key="index"
               class="carousel-card"
               @click="openModal(project)"
@@ -88,45 +88,106 @@
       </v-dialog>
     </div>
 
-    <!-- Desktop: flip cards -->
-    <div class="hidden sm:block max-w-4xl mx-auto space-y-16">
-      <div class="space-y-16">
-        <div v-for="(project, index) in projects" :key="index" class="portfolio-card-container">
-          <div
-              class="portfolio-card"
-              :class="{ 'is-flipped': project.isFlipped }"
-              @click="toggleFlip(project)"
-          >
-            <div class="portfolio-card-front">
-              <img :src="project.images[0]" :alt="project.title" class="w-full h-full object-cover rounded-lg"/>
-            </div>
-            <div class="portfolio-card-back">
-              <h4 class="text-lg font-medium mb-2">{{ t(`portfolio.projects.${project.key}.title`) }}</h4>
-              <p class="text-sm text-gray-400">{{ t(`portfolio.projects.${project.key}.shortDescription`) }}</p>
-            </div>
+    <!-- Desktop: timeline + cards -->
+    <div class="hidden sm:block">
+      <div class="desktop-timeline">
+        <div v-for="project in projects" :key="project.key" class="desktop-row">
+          <!-- Timeline -->
+          <div class="timeline-col">
+            <span class="timeline-period">{{ formatPeriod(project) }}</span>
+            <span class="timeline-dot" :class="{ 'timeline-dot--active': project.periodEnd === null }"></span>
           </div>
-          <div class="portfolio-description" :class="{ 'is-visible': project.isFlipped }">
-            <h4 class="text-lg font-medium mb-2">{{ t(`portfolio.projects.${project.key}.title`) }}</h4>
-            <p class="text-sm text-gray-300 mb-4">{{ t(`portfolio.projects.${project.key}.description`) }}</p>
-            <div class="flex flex-wrap gap-2">
-              <span
-                  v-for="tech in project.technologies"
-                  :key="tech"
-                  class="px-2 py-1 bg-gray-800 rounded text-xs text-primary"
+
+          <!-- Card -->
+          <div class="desktop-card">
+            <!-- Info (left) -->
+            <div class="desktop-info">
+              <h4 class="desktop-title">{{ t(`portfolio.projects.${project.key}.title`) }}</h4>
+              <p class="desktop-desc">{{ t(`portfolio.projects.${project.key}.description`) }}</p>
+              <div class="desktop-tags">
+                <span v-for="tech in project.technologies" :key="tech" class="desktop-tag">
+                  {{ tech }}
+                </span>
+              </div>
+              <a
+                  v-if="project.link && project.link !== '#'"
+                  :href="project.link"
+                  target="_blank"
+                  class="desktop-link"
               >
-                {{ tech }}
-              </span>
+                {{ t('portfolio.viewProject') }}
+              </a>
             </div>
-            <a
-                v-if="project.link && project.link !== '#'"
-                :href="project.link"
-                target="_blank"
-                class="mt-4 inline-block px-4 py-2 bg-primary bg-opacity-20 text-primary rounded-lg text-sm"
+
+            <!-- Slider (right) -->
+            <div
+                class="desktop-slider"
+                :class="project.orientation === 'portrait' ? 'slider-frame-portrait' : 'slider-frame-landscape'"
             >
-              {{ t('portfolio.viewProject') }}
-            </a>
+              <template v-if="project.images.length > 0">
+                <div v-if="project.orientation === 'portrait'" class="phone-frame">
+                  <img
+                      :src="project.images[project.desktopSliderIndex]"
+                      :alt="t(`portfolio.projects.${project.key}.title`)"
+                      class="desktop-slider-img"
+                  />
+                </div>
+                <img
+                    v-else
+                    :src="project.images[project.desktopSliderIndex]"
+                    :alt="t(`portfolio.projects.${project.key}.title`)"
+                    class="desktop-slider-img landscape-clickable"
+                    @click="openZoom(project)"
+                />
+                <template v-if="project.images.length > 1">
+                  <button class="slider-btn slider-btn-prev" @click="prevSlide(project)">
+                    <Icon name="material-symbols:chevron-left" size="28"/>
+                  </button>
+                  <button class="slider-btn slider-btn-next" @click="nextSlide(project)">
+                    <Icon name="material-symbols:chevron-right" size="28"/>
+                  </button>
+                  <div class="slider-dots">
+                    <span
+                        v-for="(_, i) in project.images"
+                        :key="i"
+                        class="slider-dot"
+                        :class="{ active: i === project.desktopSliderIndex }"
+                        @click="project.desktopSliderIndex = i"
+                    />
+                  </div>
+                </template>
+              </template>
+              <div v-else class="desktop-placeholder">
+                <Icon name="material-symbols:deployed-code" size="40" />
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- Modal zoom landscape -->
+      <div v-if="zoomProject" class="zoom-overlay" @click="zoomProject = null">
+        <button class="zoom-close" @click.stop="zoomProject = null">
+          <Icon name="material-symbols:close" size="22"/>
+        </button>
+        <img :src="zoomProject.images[zoomIndex]" alt="" class="zoom-img" />
+        <template v-if="zoomProject.images.length > 1">
+          <button class="zoom-nav zoom-nav-prev" @click.stop="zoomPrev">
+            <Icon name="material-symbols:chevron-left" size="32"/>
+          </button>
+          <button class="zoom-nav zoom-nav-next" @click.stop="zoomNext">
+            <Icon name="material-symbols:chevron-right" size="32"/>
+          </button>
+          <div class="zoom-dots" @click.stop>
+            <span
+                v-for="(_, i) in zoomProject.images"
+                :key="i"
+                class="slider-dot"
+                :class="{ active: i === zoomIndex }"
+                @click="zoomIndex = i"
+            />
+          </div>
+        </template>
       </div>
     </div>
 
@@ -134,7 +195,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 
 // @ts-expect-error - auto-importé par @nuxtjs/i18n
 const {t} = useI18n()
@@ -145,10 +206,23 @@ interface Project {
   technologies: string[]
   link: string
   orientation: 'portrait' | 'landscape'
-  isFlipped: boolean
+  desktopSliderIndex: number
+  periodStart: number
+  periodEnd: number | null
 }
 
+// Triés par date de fin décroissante (en cours en premier, puis plus récent)
 const projects = ref<Project[]>([
+  {
+    key: 'mc',
+    images: [],
+    technologies: ['Python', 'Kotlin', 'React', 'Vertex AI'],
+    link: '#',
+    orientation: 'landscape',
+    desktopSliderIndex: 0,
+    periodStart: 2025,
+    periodEnd: null,
+  },
   {
     key: 'mgm',
     images: [
@@ -160,7 +234,9 @@ const projects = ref<Project[]>([
     technologies: ['Nuxt', 'TypeScript', 'GraphQL', 'Firebase'],
     link: '#',
     orientation: 'portrait',
-    isFlipped: false,
+    desktopSliderIndex: 0,
+    periodStart: 2022,
+    periodEnd: null,
   },
   {
     key: 'fcs',
@@ -168,18 +244,19 @@ const projects = ref<Project[]>([
     technologies: ['Nuxt', 'TypeScript', 'GraphQL', 'Firebase'],
     link: '#',
     orientation: 'portrait',
-    isFlipped: false,
+    desktopSliderIndex: 0,
+    periodStart: 2024,
+    periodEnd: 2024,
   },
   {
-    key: 'stic',
-    images: [
-      '/images/portfolio/stic_dashboard.png',
-      '/images/portfolio/stic_immat.png',
-    ],
-    technologies: ['Nuxt', 'TypeScript', 'Firebase', 'Scandit'],
+    key: 'rsb',
+    images: [],
+    technologies: ['Qualification de projet'],
     link: '#',
-    orientation: 'portrait',
-    isFlipped: false,
+    orientation: 'landscape',
+    desktopSliderIndex: 0,
+    periodStart: 2023,
+    periodEnd: 2023,
   },
   {
     key: 'winky',
@@ -191,9 +268,26 @@ const projects = ref<Project[]>([
     technologies: ['Nuxt', 'TypeScript', 'Firebase', 'Firestore'],
     link: '#',
     orientation: 'landscape',
-    isFlipped: false,
+    desktopSliderIndex: 0,
+    periodStart: 2022,
+    periodEnd: 2022,
+  },
+  {
+    key: 'stic',
+    images: [
+      '/images/portfolio/stic_dashboard.png',
+      '/images/portfolio/stic_immat.png',
+    ],
+    technologies: ['Nuxt', 'TypeScript', 'Firebase', 'Scandit'],
+    link: '#',
+    orientation: 'portrait',
+    desktopSliderIndex: 0,
+    periodStart: 2021,
+    periodEnd: 2021,
   },
 ])
+
+const projectsWithImages = computed(() => projects.value.filter(p => p.images.length > 0))
 
 const modalOpen = ref(false)
 const selectedProject = ref<Project | null>(null)
@@ -205,8 +299,40 @@ const openModal = (project: Project) => {
   modalOpen.value = true
 }
 
-const toggleFlip = (project: Project) => {
-  project.isFlipped = !project.isFlipped
+const zoomProject = ref<Project | null>(null)
+const zoomIndex = ref(0)
+
+const openZoom = (project: Project) => {
+  zoomProject.value = project
+  zoomIndex.value = project.desktopSliderIndex
+}
+
+const zoomNext = () => {
+  if (!zoomProject.value) return
+  zoomIndex.value = (zoomIndex.value + 1) % zoomProject.value.images.length
+}
+
+const zoomPrev = () => {
+  if (!zoomProject.value) return
+  zoomIndex.value = (zoomIndex.value - 1 + zoomProject.value.images.length) % zoomProject.value.images.length
+}
+
+const nextSlide = (project: Project) => {
+  project.desktopSliderIndex = (project.desktopSliderIndex + 1) % project.images.length
+}
+
+const prevSlide = (project: Project) => {
+  project.desktopSliderIndex = (project.desktopSliderIndex - 1 + project.images.length) % project.images.length
+}
+
+const formatPeriod = (project: Project): string => {
+  if (project.periodEnd === null) {
+    return `${project.periodStart} - ${t('portfolio.today')}`
+  }
+  if (project.periodStart === project.periodEnd) {
+    return `${project.periodStart}`
+  }
+  return `${project.periodStart} - ${project.periodEnd}`
 }
 </script>
 
@@ -470,77 +596,274 @@ const toggleFlip = (project: Project) => {
   align-self: flex-start;
 }
 
-/* ── Desktop flip cards ── */
-.portfolio-card-container {
+/* ── Desktop: timeline + cards ── */
+.desktop-timeline {
   position: relative;
-  height: 400px;
-  perspective: 1000px;
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.portfolio-card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), margin-left 0.5s ease;
-  transform-style: preserve-3d;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-}
-
-.portfolio-card.is-flipped {
-  transform: rotateY(180deg);
-  margin-left: -30%;
-}
-
-.portfolio-card-front,
-.portfolio-card-back {
+/* Ligne continue sur le conteneur */
+.desktop-timeline::before {
+  content: '';
   position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+  left: 50px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(66, 184, 131, 0.35);
+}
+
+.desktop-row {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Timeline column */
+.timeline-col {
+  width: 100px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+}
+
+.timeline-period {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  letter-spacing: 0.5px;
+  background: #0a0a0a;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #42b883;
+  position: relative;
+  z-index: 1;
+  border: 2px solid #0a0a0a;
+}
+
+.timeline-dot--active {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(66, 184, 131, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(66, 184, 131, 0); }
+}
+
+/* Card */
+.desktop-card {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 0 30px rgba(66, 184, 131, 0.06);
 }
 
-.portfolio-card-front {
-  background-color: #2a2a2a;
-}
-
-.portfolio-card-back {
-  background-color: #1a1a1a;
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 1.5rem;
-  text-align: center;
-}
-
-.portfolio-description {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 60%;
-  height: 100%;
-  background-color: rgba(30, 30, 30, 0.9);
-  border-radius: 12px;
+.desktop-info {
+  width: 50%;
   padding: 2rem;
-  opacity: 0;
-  transform: translateX(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  pointer-events: none;
-  z-index: -1;
+  gap: 12px;
 }
 
-.portfolio-description.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-  z-index: 1;
+.desktop-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+
+.desktop-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #aaa;
+}
+
+.desktop-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.desktop-tag {
+  font-size: 11px;
+  padding: 3px 8px;
+  background: #1e1e1e;
+  border-radius: 4px;
+  color: #42b883;
+}
+
+.desktop-link {
+  font-size: 13px;
+  color: #42b883;
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+/* Slider */
+.desktop-slider {
+  position: relative;
+  width: 50%;
+  min-height: 300px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.slider-frame-portrait {
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.slider-frame-landscape {
+  background: #0a0a0a;
+}
+
+.desktop-slider-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Phone frame for portrait screenshots */
+.phone-frame {
+  width: 55%;
+  background: #1a1a1a;
+  border-radius: 28px;
+  padding: 10px 6px;
+  border: 3px solid #2a2a2a;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.phone-frame .desktop-slider-img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+/* Landscape clickable */
+.landscape-clickable {
+  cursor: zoom-in;
+}
+
+/* Zoom modal */
+.zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.zoom-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 101;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.zoom-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.zoom-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.zoom-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.zoom-nav:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.zoom-nav-prev {
+  left: 24px;
+}
+
+.zoom-nav-next {
+  right: 24px;
+}
+
+.zoom-dots {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Placeholder */
+.desktop-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: rgba(66, 184, 131, 0.25);
+  background: #0a0a0a;
 }
 </style>
