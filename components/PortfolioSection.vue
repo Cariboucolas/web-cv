@@ -604,17 +604,6 @@ const formatPeriod = (project: Project): string => {
   gap: 24px;
 }
 
-/* Ligne continue sur le conteneur */
-.desktop-timeline::before {
-  content: '';
-  position: absolute;
-  left: 50px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: rgba(66, 184, 131, 0.35);
-}
-
 .desktop-row {
   display: flex;
   gap: 24px;
@@ -633,15 +622,36 @@ const formatPeriod = (project: Project): string => {
   position: relative;
 }
 
+/* Ligne par segment, étendue dans le gap sauf premier/dernier */
+.timeline-col::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: -24px;
+  width: 2px;
+  background: rgba(66, 184, 131, 0.35);
+  transform: translateX(-50%);
+}
+
+.desktop-row:first-child .timeline-col::before {
+  top: 50%;
+}
+
+.desktop-row:last-child .timeline-col::before {
+  bottom: calc(50% - 15px);
+}
+
 .timeline-period {
-  font-size: 11px;
+  font-size: 13px;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
   position: relative;
   z-index: 1;
   text-align: center;
   letter-spacing: 0.5px;
-  background: #0a0a0a;
+  background: #0f0f0f;
   padding: 2px 6px;
   border-radius: 4px;
 }
