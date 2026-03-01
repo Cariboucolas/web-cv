@@ -72,6 +72,51 @@
       }
     }
   },
+  "experiences": {
+    "title": "Expériences",
+    "today": "Auj.",
+    "items": [
+      {
+        "company": "Freelance",
+        "position": "Développeur Fullstack",
+        "periodStart": "2021",
+        "periodEnd": null,
+        "technologies": ["Nuxt", "TypeScript", "Firebase", "GraphQL", "Vertex AI", "Kotlin"],
+        "highlights": [
+          "Conception et développement d'applications mobiles pour Decathlon (MGM, FCS, STIC, Managers Companion)",
+          "Qualification de projets et analyse des besoins métier (RSB)",
+          "Intégration d'une couche IA sous architecture agentique",
+          "Développement d'une plateforme d'achat de tokens pour l'ICO Winkyverse"
+        ]
+      },
+      {
+        "company": "Entreprise B",
+        "position": "Administrateur Système & Réseaux",
+        "periodStart": "2015",
+        "periodEnd": "2021",
+        "technologies": ["Linux", "Windows Server", "VMware", "Cisco", "Active Directory", "Nagios"],
+        "highlights": [
+          "Administration d'un parc de 500+ postes et serveurs",
+          "Mise en place de la supervision et du monitoring",
+          "Migration d'infrastructure vers des solutions virtualisées",
+          "Gestion des incidents et support N2/N3"
+        ]
+      },
+      {
+        "company": "Entreprise A",
+        "position": "Technicien Helpdesk",
+        "periodStart": "2010",
+        "periodEnd": "2015",
+        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
+        "highlights": [
+          "Support utilisateurs N1/N2",
+          "Déploiement et configuration de postes de travail",
+          "Rédaction de procédures et documentation technique",
+          "Gestion du parc matériel et inventaire"
+        ]
+      }
+    ]
+  },
   "skills": {
     "title": "Compétences",
     "technologies": "Technologies",

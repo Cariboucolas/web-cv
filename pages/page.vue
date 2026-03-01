@@ -33,6 +33,13 @@
 
       <section class="content-section">
         <div class="section-header">
+          <div class="section-title">{{ $t('experiences.title') }}</div>
+        </div>
+        <ExperiencesSection/>
+      </section>
+
+      <section class="content-section">
+        <div class="section-header">
           <div class="section-title">{{ $t('skills.title') }}</div>
         </div>
         <SkillsSection/>
