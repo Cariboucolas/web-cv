@@ -4,20 +4,20 @@
       <header class="page-header">
         <div class="header-content">
           <div class="header-title">{{ $t('profile.title') }} • {{ $t('profile.subtitle') }}</div>
-          <AtomsLanguageIndicator :lang="currentLang" @click="toggleLanguage" />
+          <AtomsLanguageIndicator :lang="currentLang" @click="toggleLanguage"/>
         </div>
       </header>
 
       <section class="profile-section">
         <div class="profile-avatar">
-          <OrganismsCharacterPanel />
+          <OrganismsCharacterPanel/>
         </div>
         <div class="profile-content">
           <p
-            v-for="(line, index) in profileDescription"
-            :key="index"
-            class="profile-line"
-            :class="{ 'profile-line--secondary': index >= 2 }"
+              v-for="(line, index) in profileDescription"
+              :key="index"
+              class="profile-line"
+              :class="{ 'profile-line--secondary': index >= 2 }"
           >
             {{ line }}
           </p>
@@ -28,21 +28,21 @@
         <div class="section-header">
           <div class="section-title">{{ $t('about.title') }}</div>
         </div>
-        <AboutSection />
+        <AboutSection/>
       </section>
 
       <section class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('skills.title') }}</div>
         </div>
-        <SkillsSection />
+        <SkillsSection/>
       </section>
 
       <section class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('portfolio.title') }}</div>
         </div>
-        <PortfolioSection />
+        <PortfolioSection/>
       </section>
 
       <footer class="social-footer">
@@ -54,15 +54,15 @@
         </div>
         <div class="social-squares">
           <AtomsSocialSquare
-            v-for="(link, index) in socialLinks"
-            :key="index"
-            :icon="link.icon"
-            :url="link.url"
-            :external="link.external"
-            :download="link.download"
-            :action="link.action"
-            @mouseenter="hoveredLink = link.key"
-            @mouseleave="hoveredLink = null"
+              v-for="(link, index) in socialLinks"
+              :key="index"
+              :icon="link.icon"
+              :url="link.url"
+              :external="link.external"
+              :download="link.download"
+              :action="link.action"
+              @mouseenter="hoveredLink = link.key"
+              @mouseleave="hoveredLink = null"
           />
         </div>
       </footer>
@@ -71,10 +71,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import {computed, ref} from 'vue'
 
 // @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
-const { locale, t } = useI18n()
+const {locale, t} = useI18n()
 const hoveredLink = ref<string | null>(null)
 
 const currentLang = computed(() => locale.value as 'fr' | 'en')
@@ -90,19 +90,19 @@ const socialLinks = computed(() => [
   {
     key: 'github',
     icon: 'simple-icons:github',
-    url: 'https://github.com',
+    url: 'https://github.com/Cariboucolas',
     external: true,
   },
   {
     key: 'linkedin',
     icon: 'simple-icons:linkedin',
-    url: 'https://linkedin.com',
+    url: 'https://www.linkedin.com/in/colas-durcy-5b5bbba5/',
     external: true,
   },
   {
     key: 'malt',
     icon: 'simple-icons:malt',
-    url: 'https://malt.fr',
+    url: 'https://www.malt.fr/profile/colasdurcy',
     external: true,
   },
   {
