@@ -11,17 +11,17 @@
 
       <!-- Description -->
       <div v-if="activeSection === 'about'" class="text-block">
-        <AboutSection />
+        <AboutSection/>
       </div>
 
       <!-- Skills -->
       <div v-if="activeSection === 'skills'" class="text-block">
-        <SkillsSection />
+        <SkillsSection/>
       </div>
 
       <!-- Portfolio -->
       <div v-if="activeSection === 'portfolio'" class="text-block">
-        <PortfolioSection />
+        <ProjectsSection/>
       </div>
     </div>
   </div>

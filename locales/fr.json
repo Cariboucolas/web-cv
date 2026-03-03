@@ -2,7 +2,7 @@
   "nav": {
     "profile": "PROFIL",
     "about": "DESCRIPTION",
-    "portfolio": "PORTFOLIO",
+    "projects": "PROJETS",
     "skills": "SKILLS",
     "contact": "Contact"
   },
@@ -21,11 +21,10 @@
     "social": {
       "github": "GitHub",
       "linkedin": "LinkedIn",
-      "malt": "",
-      "download": "Télécharger CV"
+      "malt": "Malt",
+      "download": "Télécharger le CV"
     }
   },
-  "downloadCV": "Télécharger CV",
   "about": {
     "title": "À propos de moi",
     "paragraphs": {
@@ -35,8 +34,8 @@
       "p4": "Ma double expertise technique - infrastructure et développement - me permet d'apporter une valeur ajoutée unique aux projets, combinant robustesse technique et excellence du code."
     }
   },
-  "portfolio": {
-    "title": "Portfolio",
+  "projects": {
+    "title": "Projets",
     "viewProject": "Voir le projet →",
     "today": "Auj.",
     "projects": {
@@ -46,17 +45,22 @@
         "description": "Application mobile permettant aux équipes en magasin de suivre leurs performances, visualiser les top produits et prendre des décisions pour de nouvelles opportunités produits."
       },
       "fcs": {
-        "title": "FCS",
+        "title": "FCS - Famille CLient Satisfait",
         "shortDescription": "Application mobile d'auto évaluation",
         "description": "Application mobile permettant d'évaluer la satisfaction des clients dans une granularité métier 'famille'"
       },
       "stic": {
-        "title": "STIC",
+        "title": "STIC - Suivi de la Traçabilité des Immatriculations de Cycles",
         "shortDescription": "Application mobile d'appairage de cycles à un client",
         "description": "Application mobile permettant de scanner l'immatriculation des cycles pour l'associer au client"
       },
       "winky": {
         "title": "Winkyverse",
+        "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
+        "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
+      },
+      "Mechachain": {
+        "title": "Mechachain",
         "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
         "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
       },
@@ -77,24 +81,95 @@
     "today": "Auj.",
     "items": [
       {
-        "company": "Freelance",
-        "position": "Développeur Fullstack",
-        "periodStart": "2021",
+        "company": "Decathlon InStore",
+        "position": "Développeur Fullstack Freelance",
+        "periodStart": "2025",
         "periodEnd": null,
-        "technologies": ["Nuxt", "TypeScript", "Firebase", "GraphQL", "Vertex AI", "Kotlin"],
+        "technologies": [
+          "React",
+          "TypeScript",
+          "Python",
+          "Vertex AI",
+          "Kotlin",
+          "Datadog",
+          "SonarQube"
+        ],
         "highlights": [
-          "Conception et développement d'applications mobiles pour Decathlon (MGM, FCS, STIC, Managers Companion)",
-          "Qualification de projets et analyse des besoins métier (RSB)",
+          "Conception et développement d'une application mobile et Desktop pour Decathlon (Managers Companion)",
           "Intégration d'une couche IA sous architecture agentique",
           "Développement d'une plateforme d'achat de tokens pour l'ICO Winkyverse"
         ]
       },
       {
-        "company": "Entreprise B",
+        "company": "Decathlon MayDay",
+        "position": "Développeur Fullstack Freelance",
+        "periodStart": "2023",
+        "periodEnd": "2025",
+        "technologies": [
+          "Nuxt",
+          "TypeScript",
+          "Firebase",
+          "Firestore",
+          "GraphQL",
+          "Storybook",
+          "Sentry",
+          "DataDog",
+          "SonarQube"
+        ],
+        "highlights": [
+          "Conception et développement d'application mobiles pour Decathlon (FCS)",
+          "Ownership projet, posture de lead technique et fonctionnelle (MGM)"
+        ]
+      },
+      {
+        "company": "Brocorp",
+        "position": "Développeur Front-End Freelance",
+        "periodStart": "2022",
+        "periodEnd": "2022",
+        "technologies": [
+          "Nuxt",
+          "TypeScript",
+          "Firebase",
+          "KYC"
+        ],
+        "highlights": [
+          "Développement de 2 plateformes d'achat de tokens pour les ICO Winkyverse et Mechachain",
+          "Mise en place d'une techno KYC",
+          "Pic d'utilisateur de 15000+ utilisateurs simultanés lors de l'ICO Winkyverse",
+          "levée de fond à 10M+ d'euros pour le projet Winkyverse"
+        ]
+      },
+      {
+        "company": "Decathlon WeParis",
+        "position": "Développeur Fullstack Freelance",
+        "periodStart": "2021",
+        "periodEnd": "2023",
+        "technologies": [
+          "Nuxt",
+          "TypeScript",
+          "Firebase",
+          "GraphQL",
+          "Storybook",
+          "Sentry"
+        ],
+        "highlights": [
+          "Conception et développement d'une applications mobile pour Decathlon (STIC, MGM)",
+          "Qualification de projets et analyse des besoins métier (RSB - Recéption d'articles à la mise sur broche en rayon)"
+        ]
+      },
+      {
+        "company": "Biscuiterie Poult",
         "position": "Administrateur Système & Réseaux",
-        "periodStart": "2015",
-        "periodEnd": "2021",
-        "technologies": ["Linux", "Windows Server", "VMware", "Cisco", "Active Directory", "Nagios"],
+        "periodStart": "2016",
+        "periodEnd": "2020",
+        "technologies": [
+          "Linux",
+          "Windows Server",
+          "VMware",
+          "Cisco",
+          "Active Directory",
+          "Nagios"
+        ],
         "highlights": [
           "Administration d'un parc de 500+ postes et serveurs",
           "Mise en place de la supervision et du monitoring",
@@ -103,11 +178,16 @@
         ]
       },
       {
-        "company": "Entreprise A",
+        "company": "Intersport",
         "position": "Technicien Helpdesk",
-        "periodStart": "2010",
-        "periodEnd": "2015",
-        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
+        "periodStart": "2008",
+        "periodEnd": "2016",
+        "technologies": [
+          "Active Directory",
+          "GLPI",
+          "ITIL",
+          "Windows"
+        ],
         "highlights": [
           "Support utilisateurs N1/N2",
           "Déploiement et configuration de postes de travail",

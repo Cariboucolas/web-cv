@@ -6,9 +6,15 @@
       <div class="xp-mobile-list">
         <div v-for="(xp, index) in experiences" :key="index" class="xp-mobile-card">
           <div class="xp-mobile-header">
-            <div class="xp-mobile-period">{{ formatPeriod(xp) }}</div>
-            <h4 class="xp-mobile-company">{{ xp.company }}</h4>
-            <p class="xp-mobile-position">{{ xp.position }}</p>
+            <div class="xp-mobile-header-icon" :class="{ 'xp-logo--oversized': isOversized(xp.company) }" :style="getCompanyBg(xp.company) ? { background: getCompanyBg(xp.company) } : {}">
+              <img v-if="getCompanyLogo(xp.company)" :src="getCompanyLogo(xp.company)!" :alt="xp.company" class="xp-logo" />
+              <Icon v-else name="material-symbols:work-outline" size="28" />
+            </div>
+            <div class="xp-mobile-header-text">
+              <div class="xp-mobile-period">{{ formatPeriod(xp) }}</div>
+              <h4 class="xp-mobile-company">{{ xp.position }}</h4>
+              <p class="xp-mobile-position">{{ xp.company }}</p>
+            </div>
           </div>
           <div class="xp-mobile-tags">
             <span v-for="tech in xp.technologies" :key="tech" class="xp-mobile-tag">
@@ -34,8 +40,9 @@
           <!-- Card -->
           <div class="xp-card">
             <div class="xp-header">
-              <div class="xp-header-icon">
-                <Icon name="material-symbols:work-outline" size="32" />
+              <div class="xp-header-icon" :class="{ 'xp-logo--oversized': isOversized(xp.company) }" :style="getCompanyBg(xp.company) ? { background: getCompanyBg(xp.company) } : {}">
+                <img v-if="getCompanyLogo(xp.company)" :src="getCompanyLogo(xp.company)!" :alt="xp.company" class="xp-logo" />
+                <Icon v-else name="material-symbols:work-outline" size="32" />
               </div>
               <div class="xp-header-text">
                 <div class="xp-header-top">
@@ -93,6 +100,33 @@ const experiences = computed<Experience[]>(() => {
   }))
 })
 
+const companyLogos: Record<string, string> = {
+  'Decathlon MayDay': '/logos/logo_mayday.png',
+  'Decathlon WeParis': '/logos/logo_weparis.png',
+  'Decathlon InStore': '/logos/logo_decathlon.jpg',
+  'Biscuiterie Poult': '/logos/logo_poult.jpg',
+  'Intersport': '/logos/logo_intersport.jpg',
+}
+
+const getCompanyLogo = (company: string): string | null => {
+  return companyLogos[company] ?? null
+}
+
+const companyBgColors: Record<string, string> = {
+  'Decathlon InStore': '#0363d0',
+  'Decathlon MayDay': '#ffffff',
+  'Biscuiterie Poult': '#ffffff',
+  'Intersport': '#ffffff',
+}
+
+const getCompanyBg = (company: string): string | null => {
+  return companyBgColors[company] ?? null
+}
+
+const isOversized = (company: string): boolean => {
+  return company === 'Decathlon InStore'
+}
+
 const formatPeriod = (xp: Experience): string => {
   if (xp.periodEnd === null) {
     return `${xp.periodStart} - ${t('experiences.today')}`
@@ -124,8 +158,30 @@ const formatPeriod = (xp: Experience): string => {
 
 .xp-mobile-header {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.xp-mobile-header-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #42b883;
+  background: rgba(66, 184, 131, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.xp-mobile-header-text {
+  flex: 1;
+  display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  min-width: 0;
 }
 
 .xp-mobile-period {
@@ -285,6 +341,19 @@ const formatPeriod = (xp: Experience): string => {
   color: #42b883;
   background: rgba(66, 184, 131, 0.1);
   border-radius: 10px;
+  overflow: hidden;
+}
+
+.xp-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.xp-logo--oversized .xp-logo {
+  width: 150%;
+  height: 150%;
+  object-fit: cover;
 }
 
 .xp-header-text {

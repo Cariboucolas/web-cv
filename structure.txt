@@ -6,7 +6,7 @@
 │   ├── TheHeader.vue
 │   ├── TheFooter.vue
 │   ├── AboutSection.vue
-│   ├── PortfolioSection.vue
+│   ├── ProjectsSection.vue
 │   ├── SkillsSection.vue
 │   └── ContactSection.vue
 ├── layouts/
@@ -18,4 +18,4 @@
 ├── locales/
 │   ├── en.json
 │   └── fr.json
-└── nuxt.config.js 
+└── nuxt.config.js

@@ -1,3 +1,0 @@
-I'd like you to use this project to co-create my curriculum vitae site. 
-It's a site that will be minimalist, rather dark fashion, with reminders of emerald green colors (you can refer a bit to the colors of vues/nuxtjs this kind of theme). 
-I obviously need a section telling who I am, a portfolio section, a skills section, and a contact section. We'll add the possibility of translating the site into either English or French, and of uploading this cv site in a pdf template, which on the other hand will have to be more ecological and based on a rather light theme, but which will include the other sections, apart from the portfolio section.

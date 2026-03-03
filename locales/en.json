@@ -2,7 +2,7 @@
   "nav": {
     "profile": "PROFILE",
     "about": "DESCRIPTION",
-    "portfolio": "PORTFOLIO",
+    "projects": "PROJECTS",
     "skills": "SKILLS",
     "contact": "Contact"
   },
@@ -21,11 +21,10 @@
     "social": {
       "github": "GitHub",
       "linkedin": "LinkedIn",
-      "malt": "",
+      "malt": "Malt",
       "download": "Download CV"
     }
   },
-  "downloadCV": "Download CV",
   "about": {
     "title": "About me",
     "paragraphs": {
@@ -35,8 +34,8 @@
       "p4": "My dual technical expertise — infrastructure and development — allows me to bring unique added value to projects, combining technical robustness and code excellence."
     }
   },
-  "portfolio": {
-    "title": "Portfolio",
+  "projects": {
+    "title": "Projects",
     "viewProject": "View project →",
     "today": "Now",
     "projects": {
@@ -46,12 +45,12 @@
         "description": "Mobile application allowing sales teams to track their performance in real time, visualise top products and analyse weekly trends."
       },
       "fcs": {
-        "title": "FCS",
+        "title": "FCS - Customer Satisfaction Family",
         "shortDescription": "Mobile self-assessment app",
         "description": "Mobile application for evaluating customer satisfaction at a granular business 'family' level."
       },
       "stic": {
-        "title": "STIC",
+        "title": "STIC - Cycle Registration Traceability Tracking",
         "shortDescription": "Cycle-to-customer pairing mobile app",
         "description": "Mobile application for scanning cycle registrations to associate them with customers."
       },
@@ -59,6 +58,11 @@
         "title": "Winkyverse",
         "shortDescription": "Token purchase app for ICO",
         "description": "Website for managing and purchasing tokens during the Winky project ICO."
+      },
+      "Mechachain": {
+        "title": "Mechachain",
+        "shortDescription": "Token purchase app for ICO",
+        "description": "Website for managing and purchasing tokens during the Mechachain project ICO."
       },
       "rsb": {
         "title": "RSB — Return to Shelf",
@@ -77,24 +81,95 @@
     "today": "Now",
     "items": [
       {
-        "company": "Freelance",
-        "position": "Fullstack Developer",
-        "periodStart": "2021",
+        "company": "Decathlon InStore",
+        "position": "Freelance Fullstack Developer",
+        "periodStart": "2025",
         "periodEnd": null,
-        "technologies": ["Nuxt", "TypeScript", "Firebase", "GraphQL", "Vertex AI", "Kotlin"],
+        "technologies": [
+          "React",
+          "TypeScript",
+          "Python",
+          "Vertex AI",
+          "Kotlin",
+          "Datadog",
+          "SonarQube"
+        ],
         "highlights": [
-          "Design and development of mobile applications for Decathlon (MGM, FCS, STIC, Managers Companion)",
-          "Project qualification and business requirements analysis (RSB)",
+          "Design and development of a mobile and desktop application for Decathlon (Managers Companion)",
           "Integration of an AI layer with agentic architecture",
           "Development of a token purchase platform for the Winkyverse ICO"
         ]
       },
       {
-        "company": "Company B",
+        "company": "Decathlon MayDay",
+        "position": "Freelance Fullstack Developer",
+        "periodStart": "2023",
+        "periodEnd": "2025",
+        "technologies": [
+          "Nuxt",
+          "TypeScript",
+          "Firebase",
+          "Firestore",
+          "GraphQL",
+          "Storybook",
+          "Sentry",
+          "DataDog",
+          "SonarQube"
+        ],
+        "highlights": [
+          "Design and development of mobile applications for Decathlon (FCS)",
+          "Project ownership, technical and functional lead position (MGM)"
+        ]
+      },
+      {
+        "company": "Brocorp",
+        "position": "Freelance Front-End Developer",
+        "periodStart": "2022",
+        "periodEnd": "2022",
+        "technologies": [
+          "Nuxt",
+          "TypeScript",
+          "Firebase",
+          "KYC"
+        ],
+        "highlights": [
+          "Development of 2 token purchase platforms for Winkyverse and Mechachain ICOs",
+          "Implementation of KYC technology",
+          "Peak of 15,000+ simultaneous users during the Winkyverse ICO",
+          "Fundraising of 10M+ euros for the Winkyverse project"
+        ]
+      },
+      {
+        "company": "Decathlon WeParis",
+        "position": "Freelance Fullstack Developer",
+        "periodStart": "2021",
+        "periodEnd": "2023",
+        "technologies": [
+          "Nuxt",
+          "TypeScript",
+          "Firebase",
+          "GraphQL",
+          "Storybook",
+          "Sentry"
+        ],
+        "highlights": [
+          "Design and development of a mobile application for Decathlon (STIC, MGM)",
+          "Project qualification and business requirements analysis (RSB - Article reception to shelf stocking)"
+        ]
+      },
+      {
+        "company": "Biscuiterie Poult",
         "position": "System & Network Administrator",
-        "periodStart": "2015",
-        "periodEnd": "2021",
-        "technologies": ["Linux", "Windows Server", "VMware", "Cisco", "Active Directory", "Nagios"],
+        "periodStart": "2016",
+        "periodEnd": "2020",
+        "technologies": [
+          "Linux",
+          "Windows Server",
+          "VMware",
+          "Cisco",
+          "Active Directory",
+          "Nagios"
+        ],
         "highlights": [
           "Administration of 500+ workstations and servers",
           "Implementation of supervision and monitoring",
@@ -103,11 +178,16 @@
         ]
       },
       {
-        "company": "Company A",
+        "company": "Intersport",
         "position": "Helpdesk Technician",
-        "periodStart": "2010",
-        "periodEnd": "2015",
-        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
+        "periodStart": "2008",
+        "periodEnd": "2016",
+        "technologies": [
+          "Active Directory",
+          "GLPI",
+          "ITIL",
+          "Windows"
+        ],
         "highlights": [
           "N1/N2 user support",
           "Workstation deployment and configuration",
