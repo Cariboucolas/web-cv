@@ -1,125 +1,321 @@
 <template>
-  <div class="top-light"/>
-  <v-card class="card pt-16" max-width="800">
-    <v-avatar size="300" class="ma-auto">
-      <v-img src="https://avatars0.githubusercontent.com/u/0000001"/>
-    </v-avatar>
-    <v-card-title class="text-h4 py-10 text-center font-weight-bold">WEB DEVELOPER FULLSTACK</v-card-title>
-    <v-card-text>
-      <v-card-subtitle class="text-h6 font-weight-bold pl-0">
-        A propos de moi
-      </v-card-subtitle>
-      <AboutSection class="pb-8"/>
-      <v-card-subtitle class="text-h6 font-weight-bold pl-0">
-        Compétences
-      </v-card-subtitle>
-      <SkillsSection class="pl-4 pt-4 pb-8"/>
-      <v-card-subtitle class="text-h6 font-weight-bold pl-0">
-        Portfolio
-      </v-card-subtitle>
-      <PortfolioSection />
+  <div class="page-layout">
+    <div class="page-card">
+      <header class="page-header">
+        <div class="header-content">
+          <div class="header-title">{{ $t('profile.title') }} • {{ $t('profile.subtitle') }}</div>
+          <AtomsLanguageIndicator :lang="currentLang" @click="toggleLanguage"/>
+        </div>
+      </header>
 
-    </v-card-text>
-    <v-card-actions>
-      <v-btn icon="mdiCloud" class="button"/>
-    </v-card-actions>
-  </v-card>
+      <section class="profile-section">
+        <div class="profile-avatar">
+          <OrganismsCharacterPanel/>
+        </div>
+        <div class="profile-content">
+          <p
+              v-for="(line, index) in profileDescription"
+              :key="index"
+              class="profile-line"
+              :class="{ 'profile-line--secondary': index >= 2 }"
+          >
+            {{ line }}
+          </p>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="section-header">
+          <div class="section-title">{{ $t('about.title') }}</div>
+        </div>
+        <AboutSection/>
+      </section>
+
+      <section class="content-section">
+        <div class="section-header">
+          <div class="section-title">{{ $t('experiences.title') }}</div>
+        </div>
+        <ExperiencesSection/>
+      </section>
+
+      <section class="content-section">
+        <div class="section-header">
+          <div class="section-title">{{ $t('skills.title') }}</div>
+        </div>
+        <SkillsSection/>
+      </section>
+
+      <section class="content-section">
+        <div class="section-header">
+          <div class="section-title">{{ $t('projects.title') }}</div>
+        </div>
+        <ProjectsSection/>
+      </section>
+
+      <footer class="social-footer">
+        <div class="social-title-block">
+          <div class="title-left">
+            <span class="title-text">{{ hoveredLinkTitle }}</span>
+          </div>
+          <div class="title-right"></div>
+        </div>
+        <div class="social-squares">
+          <AtomsSocialSquare
+              v-for="(link, index) in socialLinks"
+              :key="index"
+              :icon="link.icon"
+              :url="link.url"
+              :external="link.external"
+              :download="link.download"
+              :action="link.action"
+              @mouseenter="hoveredLink = link.key"
+              @mouseleave="hoveredLink = null"
+          />
+        </div>
+      </footer>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
+import {computed, ref} from 'vue'
+
+// @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
+const {locale, t} = useI18n()
+const hoveredLink = ref<string | null>(null)
+
+const currentLang = computed(() => locale.value as 'fr' | 'en')
+
+const profileDescription = computed(() => [
+  t('profile.description.line1'),
+  t('profile.description.line2'),
+  t('profile.description.line3'),
+  t('profile.description.line4'),
+])
+
+const socialLinks = computed(() => [
+  {
+    key: 'github',
+    icon: 'simple-icons:github',
+    url: 'https://github.com/Cariboucolas',
+    external: true,
+  },
+  {
+    key: 'linkedin',
+    icon: 'simple-icons:linkedin',
+    url: 'https://www.linkedin.com/in/colas-durcy-5b5bbba5/',
+    external: true,
+  },
+  {
+    key: 'malt',
+    icon: 'simple-icons:malt',
+    url: 'https://www.malt.fr/profile/colasdurcy',
+    external: true,
+  },
+  {
+    key: 'download',
+    icon: 'material-symbols:download',
+    url: `https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/${encodeURIComponent('cv/cv-colas-durcy.pdf')}?alt=media`,
+    external: true,
+  },
+])
+
+const hoveredLinkTitle = computed(() => {
+  if (!hoveredLink.value) {
+    return ''
+  }
+  if (hoveredLink.value === 'malt') {
+    return t('bottomBar.social.malt')
+  }
+  if (hoveredLink.value === 'download') {
+    return t('bottomBar.social.download')
+  }
+  return hoveredLink.value.charAt(0).toUpperCase() + hoveredLink.value.slice(1)
+})
+
+const toggleLanguage = () => {
+  locale.value = locale.value === 'fr' ? 'en' : 'fr'
+}
 </script>
 
 <style scoped>
 @import url("https://fonts.cdnfonts.com/css/mona-sans");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&display=swap");
 
 * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  scroll-behavior: smooth;
 }
 
-html, body {
-  overflow: hidden;
-}
-
-body {
+.page-layout {
   min-height: 100vh;
+  background: #0a0a0a;
+  padding: 60px 20px;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  margin: 0;
-  background: #343434;
-  background: linear-gradient(
-      180deg,
-      #343434 0%,
-      #252525 100%
-  );
-  font-family: "Mona-Sans", sans-serif;
   font-family: "Mona Sans", sans-serif;
+  color: #e0e0e0;
 }
 
-.card {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 5%;
-  margin: auto;
-  border-radius: 16px;
-  background: #191919aa;
-  background: linear-gradient(
-      180deg,
-      #292929aa 0%,
-      #191919cc 50%
-  );
-  backdrop-filter: blur(4px);
-  box-shadow: inset 0 2px 2px 0 #00ff0044,
-  inset 0 -2px 2px 0 #0003;
-
-  color: #ccc;
-  text-shadow: 1px 1px 3px #333a;
-  padding: 24px;
-  padding-right: 42px;
+.page-card {
+  width: min(100%, 1100px);
+  background: rgba(10, 10, 10, 0.9);
+  padding: 40px 50px 60px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  gap: 50px;
+}
 
-  .button {
-    width: fit-content;
-    border-radius: 100px;
-    padding: 8px 36px;
-    margin-top: 12px;
-    background: #fff2;
-    box-shadow: 0 0 0 1px #fff3,
-    inset 120px 0 100px -100px #000c,
-    0 0 0 0 #fff1;
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 50px;
+  margin-bottom: 20px;
+}
 
-    transition: box-shadow 0.4s ease-in-out;
-    cursor: pointer;
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
-    &:hover {
-      box-shadow: 0 0 0 1px #fff3,
-      inset 200px 0px 100px -100px #000a,
-      -4px 0 8px 2px #fff2;
-    }
+.header-title {
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  font-family: "Orbitron", sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-section {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.profile-avatar {
+  flex: 1 1 320px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-content {
+  flex: 1 1 360px;
+  background: transparent;
+  padding: 30px;
+  min-height: 400px;
+}
+
+.profile-line {
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 16px 0;
+}
+
+.content-section {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title {
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-family: "Orbitron", sans-serif;
+}
+
+.social-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.social-title-block {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.social-squares {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .page-card {
+    padding: 30px 24px 50px;
+  }
+
+  .profile-section {
+    flex-direction: column;
+  }
+
+  .header-title {
+    font-size: 10px;
   }
 }
 
-.top-light {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 580px;
-  height: 6px;
-  border-radius: 10px;
-  background: #00ff00;
-  box-shadow: 0 0px 1px 1px #00cc00,
-  0 1px 2px 1px #00cc00,
-  0 2px 6px 1px #00cc00,
-  0 4px 12px 0px #00cc00,
-  0 12px 20px 12px #00cc0022;
+@media (max-width: 640px) {
+  .page-layout {
+    padding: 16px 0 40px;
+  }
+
+  .page-card {
+    padding: 8px 16px 40px;
+    gap: 32px;
+  }
+
+  .profile-section {
+    gap: 24px;
+  }
+
+  .profile-avatar {
+    flex: none;
+  }
+
+  .profile-content {
+    flex: none;
+    padding: 0;
+    min-height: unset;
+  }
+
+  .profile-line--secondary {
+    display: none;
+  }
+
+  .content-section {
+    background: transparent;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px 0;
+  }
+
+  .section-title {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+  }
+
+  .social-footer {
+    gap: 16px;
+  }
+
+  .social-squares {
+    gap: 12px;
+  }
 }
 </style>

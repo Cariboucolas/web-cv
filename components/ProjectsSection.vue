@@ -18,7 +18,7 @@
                 :class="project.orientation === 'portrait' ? 'is-portrait' : 'is-landscape'"
             />
             <div class="carousel-card-overlay">
-              <span class="carousel-card-title">{{ t(`portfolio.projects.${project.key}.title`) }}</span>
+              <span class="carousel-card-title">{{ t(`projects.projects.${project.key}.title`) }}</span>
               <div class="carousel-card-tags">
                 <span v-for="tech in project.technologies.slice(0, 3)" :key="tech" class="carousel-tag">
                   {{ tech }}
@@ -68,20 +68,20 @@
           </div>
 
           <div class="modal-content">
-            <h3 class="modal-title">{{ t(`portfolio.projects.${selectedProject.key}.title`) }}</h3>
+            <h3 class="modal-title">{{ t(`projects.projects.${selectedProject.key}.title`) }}</h3>
             <div class="modal-tags">
               <span v-for="tech in selectedProject.technologies" :key="tech" class="modal-tag">
                 {{ tech }}
               </span>
             </div>
-            <p class="modal-desc">{{ t(`portfolio.projects.${selectedProject.key}.description`) }}</p>
+            <p class="modal-desc">{{ t(`projects.projects.${selectedProject.key}.description`) }}</p>
             <a
                 v-if="selectedProject.link && selectedProject.link !== '#'"
                 :href="selectedProject.link"
                 target="_blank"
                 class="modal-link"
             >
-              {{ t('portfolio.viewProject') }}
+              {{ t('projects.viewProject') }}
             </a>
           </div>
         </v-card>
@@ -102,8 +102,8 @@
           <div class="desktop-card">
             <!-- Info (left) -->
             <div class="desktop-info">
-              <h4 class="desktop-title">{{ t(`portfolio.projects.${project.key}.title`) }}</h4>
-              <p class="desktop-desc">{{ t(`portfolio.projects.${project.key}.description`) }}</p>
+              <h4 class="desktop-title">{{ t(`projects.projects.${project.key}.title`) }}</h4>
+              <p class="desktop-desc">{{ t(`projects.projects.${project.key}.description`) }}</p>
               <div class="desktop-tags">
                 <span v-for="tech in project.technologies" :key="tech" class="desktop-tag">
                   {{ tech }}
@@ -115,7 +115,7 @@
                   target="_blank"
                   class="desktop-link"
               >
-                {{ t('portfolio.viewProject') }}
+                {{ t('projects.viewProject') }}
               </a>
             </div>
 
@@ -128,14 +128,14 @@
                 <div v-if="project.orientation === 'portrait'" class="phone-frame">
                   <img
                       :src="project.images[project.desktopSliderIndex]"
-                      :alt="t(`portfolio.projects.${project.key}.title`)"
+                      :alt="t(`projects.projects.${project.key}.title`)"
                       class="desktop-slider-img"
                   />
                 </div>
                 <img
                     v-else
                     :src="project.images[project.desktopSliderIndex]"
-                    :alt="t(`portfolio.projects.${project.key}.title`)"
+                    :alt="t(`projects.projects.${project.key}.title`)"
                     class="desktop-slider-img landscape-clickable"
                     @click="openZoom(project)"
                 />
@@ -158,7 +158,7 @@
                 </template>
               </template>
               <div v-else class="desktop-placeholder">
-                <Icon name="material-symbols:deployed-code" size="40" />
+                <Icon name="material-symbols:deployed-code" size="40"/>
               </div>
             </div>
           </div>
@@ -170,7 +170,7 @@
         <button class="zoom-close" @click.stop="zoomProject = null">
           <Icon name="material-symbols:close" size="22"/>
         </button>
-        <img :src="zoomProject.images[zoomIndex]" alt="" class="zoom-img" />
+        <img :src="zoomProject.images[zoomIndex]" alt="" class="zoom-img"/>
         <template v-if="zoomProject.images.length > 1">
           <button class="zoom-nav zoom-nav-prev" @click.stop="zoomPrev">
             <Icon name="material-symbols:chevron-left" size="32"/>
@@ -195,7 +195,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed} from 'vue'
+import {computed, ref} from 'vue'
 
 // @ts-expect-error - auto-importé par @nuxtjs/i18n
 const {t} = useI18n()
@@ -226,10 +226,10 @@ const projects = ref<Project[]>([
   {
     key: 'mgm',
     images: [
-      '/images/portfolio/mgm_dashboard.png',
-      '/images/portfolio/mgm_debrief.png',
-      '/images/portfolio/mgm_debrieflastweek.png',
-      '/images/portfolio/mgm_topmodel.png',
+      '/images/projects/mgm_dashboard.png',
+      '/images/projects/mgm_debrief.png',
+      '/images/projects/mgm_debrieflastweek.png',
+      '/images/projects/mgm_topmodel.png',
     ],
     technologies: ['Nuxt', 'TypeScript', 'GraphQL', 'Firebase'],
     link: '#',
@@ -240,7 +240,7 @@ const projects = ref<Project[]>([
   },
   {
     key: 'fcs',
-    images: ['/images/portfolio/fcs_dashboard.png'],
+    images: ['/images/projects/fcs_dashboard.png'],
     technologies: ['Nuxt', 'TypeScript', 'GraphQL', 'Firebase'],
     link: '#',
     orientation: 'portrait',
@@ -261,9 +261,9 @@ const projects = ref<Project[]>([
   {
     key: 'winky',
     images: [
-      '/images/portfolio/winky_dashboard.png',
-      '/images/portfolio/winky-dashboard_2.png',
-      '/images/portfolio/winky_paiment.png',
+      '/images/projects/winky_dashboard.png',
+      '/images/projects/winky-dashboard_2.png',
+      '/images/projects/winky_paiment.png',
     ],
     technologies: ['Nuxt', 'TypeScript', 'Firebase', 'Firestore'],
     link: '#',
@@ -275,8 +275,8 @@ const projects = ref<Project[]>([
   {
     key: 'stic',
     images: [
-      '/images/portfolio/stic_dashboard.png',
-      '/images/portfolio/stic_immat.png',
+      '/images/projects/stic_dashboard.png',
+      '/images/projects/stic_immat.png',
     ],
     technologies: ['Nuxt', 'TypeScript', 'Firebase', 'Scandit'],
     link: '#',
@@ -287,7 +287,9 @@ const projects = ref<Project[]>([
   },
 ])
 
-const projectsWithImages = computed(() => projects.value.filter(p => p.images.length > 0))
+const projectsWithImages = computed(() =>
+    projects.value.filter((p) => p.images.length > 0),
+)
 
 const modalOpen = ref(false)
 const selectedProject = ref<Project | null>(null)
@@ -314,20 +316,25 @@ const zoomNext = () => {
 
 const zoomPrev = () => {
   if (!zoomProject.value) return
-  zoomIndex.value = (zoomIndex.value - 1 + zoomProject.value.images.length) % zoomProject.value.images.length
+  zoomIndex.value =
+      (zoomIndex.value - 1 + zoomProject.value.images.length) %
+      zoomProject.value.images.length
 }
 
 const nextSlide = (project: Project) => {
-  project.desktopSliderIndex = (project.desktopSliderIndex + 1) % project.images.length
+  project.desktopSliderIndex =
+      (project.desktopSliderIndex + 1) % project.images.length
 }
 
 const prevSlide = (project: Project) => {
-  project.desktopSliderIndex = (project.desktopSliderIndex - 1 + project.images.length) % project.images.length
+  project.desktopSliderIndex =
+      (project.desktopSliderIndex - 1 + project.images.length) %
+      project.images.length
 }
 
 const formatPeriod = (project: Project): string => {
   if (project.periodEnd === null) {
-    return `${project.periodStart} - ${t('portfolio.today')}`
+    return `${project.periodStart} - ${t('projects.today')}`
   }
   if (project.periodStart === project.periodEnd) {
     return `${project.periodStart}`
@@ -671,8 +678,12 @@ const formatPeriod = (project: Project): string => {
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(66, 184, 131, 0.5); }
-  50% { box-shadow: 0 0 0 6px rgba(66, 184, 131, 0); }
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(66, 184, 131, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(66, 184, 131, 0);
+  }
 }
 
 /* Card */
@@ -764,9 +775,8 @@ const formatPeriod = (project: Project): string => {
   border-radius: 28px;
   padding: 10px 6px;
   border: 3px solid #2a2a2a;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 8px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05),
+  0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 .phone-frame .desktop-slider-img {
