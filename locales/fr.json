@@ -45,7 +45,7 @@
         "description": "Application mobile permettant aux équipes en magasin de suivre leurs performances, visualiser les top produits et prendre des décisions pour de nouvelles opportunités produits."
       },
       "fcs": {
-        "title": "FCS - Famille CLient Satisfait",
+        "title": "FCS - Famille Client Satisfait",
         "shortDescription": "Application mobile d'auto évaluation",
         "description": "Application mobile permettant d'évaluer la satisfaction des clients dans une granularité métier 'famille'"
       },

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#42b883" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#111" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="240" fill="#111"/>
+  <rect width="400" height="240" fill="url(#glow)"/>
+  <!-- thumbs up icon -->
+  <g transform="translate(200,120)" fill="#42b883">
+    <path d="M-8 0C-8-12 0-20 6-28c2-3 4-2 4 1v14h16c3 0 5 2 4 5l-6 24c-1 3-3 4-6 4H-4c-2 0-4-2-4-4V4c0-2 1-4 3-4z"/>
+    <rect x="-24" y="-2" width="12" height="22" rx="3"/>
+  </g>
+</svg>
