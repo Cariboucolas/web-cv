@@ -44,7 +44,7 @@
                 class="carousel-card-img"
             />
             <div class="carousel-card-overlay">
-              <span class="carousel-card-title">{{ t(`projects.projects.${project.key}.title`) }}</span>
+              <span class="carousel-card-title">{{ t(`projects.projects.${project.key}.shortTitle`) }}</span>
               <div class="carousel-card-tags">
                 <span v-for="tech in project.technologies.slice(0, 3)" :key="tech" class="carousel-tag">
                   {{ tech }}

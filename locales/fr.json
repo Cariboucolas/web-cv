@@ -41,36 +41,43 @@
     "projects": {
       "mgm": {
         "title": "MGM — Analyse de la performance",
+        "shortTitle": "MGM",
         "shortDescription": "Application mobile de pilotage commercial",
         "description": "Application mobile permettant aux équipes en magasin de suivre leurs performances, visualiser les top produits et prendre des décisions pour de nouvelles opportunités produits."
       },
       "fcs": {
         "title": "FCS - Famille Client Satisfait",
+        "shortTitle": "FCS",
         "shortDescription": "Application mobile d'auto évaluation",
         "description": "Application mobile permettant d'évaluer la satisfaction des clients dans une granularité métier 'famille'"
       },
       "stic": {
         "title": "STIC - Suivi de la Traçabilité des Immatriculations de Cycles",
+        "shortTitle": "STIC",
         "shortDescription": "Application mobile d'appairage de cycles à un client",
         "description": "Application mobile permettant de scanner l'immatriculation des cycles pour l'associer au client"
       },
       "winky": {
         "title": "Winkyverse",
+        "shortTitle": "Winkyverse",
         "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
         "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
       },
       "Mechachain": {
         "title": "Mechachain",
+        "shortTitle": "Mechachain",
         "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
         "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
       },
       "rsb": {
         "title": "RSB — Retour Sur Broche",
+        "shortTitle": "RSB",
         "shortDescription": "Qualification de projet",
         "description": "Qualification de projet répondant à une problématique de ressource pour le processus de mise sur broche des Magasins Decathlon. Chaque étape de ce processus requiert du temps et de la ressource humaine, de la réception de la marchandise, déballage, tri et mise en rayon. La finalité du projet permet de planifier au mieux ces ressources humaines aux étapes clés dans un timing idéal."
       },
       "mc": {
         "title": "Managers Companion",
+        "shortTitle": "MC",
         "shortDescription": "Application pour les encadrants en magasin",
         "description": "Application répondant aux besoins des encadrants en magasin, allant du directeur de magasin au responsable de rayon. Son objectif est triple : l'analyse des performances, l'auto-évaluation sur les politiques commerciales, le RSB, l'efficience du linéaire et le pilotage du volume d'affaire, et enfin des actions à prendre basées sur des opportunités produits à mettre en avant. Intégration d'une couche IA sous architecture agentique sur toutes les strates de l'application."
       }
