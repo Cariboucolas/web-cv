@@ -41,36 +41,43 @@
     "projects": {
       "mgm": {
         "title": "MGM — Performance Management",
+        "shortTitle": "MGM",
         "shortDescription": "Mobile sales performance app",
         "description": "Mobile application allowing sales teams to track their performance in real time, visualise top products and analyse weekly trends."
       },
       "fcs": {
         "title": "FCS - Customer Satisfaction Family",
+        "shortTitle": "FCS",
         "shortDescription": "Mobile self-assessment app",
         "description": "Mobile application for evaluating customer satisfaction at a granular business 'family' level."
       },
       "stic": {
         "title": "STIC - Cycle Registration Traceability Tracking",
+        "shortTitle": "STIC",
         "shortDescription": "Cycle-to-customer pairing mobile app",
         "description": "Mobile application for scanning cycle registrations to associate them with customers."
       },
       "winky": {
         "title": "Winkyverse",
+        "shortTitle": "Winkyverse",
         "shortDescription": "Token purchase app for ICO",
         "description": "Website for managing and purchasing tokens during the Winky project ICO."
       },
       "Mechachain": {
         "title": "Mechachain",
+        "shortTitle": "Mechachain",
         "shortDescription": "Token purchase app for ICO",
         "description": "Website for managing and purchasing tokens during the Mechachain project ICO."
       },
       "rsb": {
         "title": "RSB — Return to Shelf",
+        "shortTitle": "RSB",
         "shortDescription": "Project qualification",
         "description": "Project qualification addressing resource challenges in the shelf-stocking process at Decathlon stores. Each step requires time and human resources, from receiving goods, unpacking, sorting to shelving. The project aims to optimally plan human resources at key stages within an ideal timeline."
       },
       "mc": {
         "title": "Managers Companion",
+        "shortTitle": "MC",
         "shortDescription": "App for store managers",
         "description": "Application meeting the needs of store managers, from store directors to department heads. Its objective is threefold: performance analysis, self-assessment on commercial policies, RSB, shelf efficiency and business volume management, and actions based on product opportunities to highlight. Integration of an AI layer with agentic architecture across all application layers."
       }
