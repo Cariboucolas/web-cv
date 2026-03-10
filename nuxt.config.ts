@@ -1,5 +1,5 @@
-import path from 'node:path'
 import {defineNuxtConfig} from 'nuxt/config'
+import vuetify from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
     ssr: true,
@@ -9,6 +9,12 @@ export default defineNuxtConfig({
 
     build: {
         transpile: ['vuetify'],
+    },
+
+    hooks: {
+        'vite:extendConfig': (config) => {
+            config.plugins?.push(vuetify({autoImport: true}))
+        },
     },
 
     plugins: ['~/plugins/vuetify'],
@@ -38,30 +44,23 @@ export default defineNuxtConfig({
         },
     },
 
-    vite: {
-        resolve: {
-            alias: {
-                '#app-manifest': path.resolve(__dirname, 'src/app-manifest'),
-            },
-        },
-    },
-
     compatibilityDate: '2025-01-18',
 
+    // @ts-expect-error - i18n types are augmented by @nuxtjs/i18n module at runtime
     i18n: {
         locales: [
-            { 
-                code: 'fr', 
-                iso: 'fr-FR', 
+            {
+                code: 'fr',
+                iso: 'fr-FR',
                 file: 'fr.json',
-                name: 'Français'
+                name: 'Français',
             },
-            { 
-                code: 'en', 
-                iso: 'en-US', 
+            {
+                code: 'en',
+                iso: 'en-US',
                 file: 'en.json',
-                name: 'English'
-            }
+                name: 'English',
+            },
         ],
         defaultLocale: 'fr',
         langDir: 'locales',

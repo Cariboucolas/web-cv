@@ -1,10 +1,9 @@
 {
   "nav": {
-    "profile": "PROFIL",
-    "about": "DESCRIPTION",
+    "about": "A PROPOS DE MOI",
+    "experiences": "EXPÉRIENCES",
     "projects": "PROJETS",
-    "skills": "SKILLS",
-    "contact": "Contact"
+    "skills": "COMPÉTENCES"
   },
   "profile": {
     "title": "WEB DEVELOPER",
@@ -205,15 +204,6 @@
     ]
   },
   "skills": {
-    "title": "Compétences",
-    "technologies": "Technologies",
-    "softSkills": "Soft Skills"
-  },
-  "contact": {
-    "title": "Contact",
-    "name": "Nom",
-    "email": "Email",
-    "message": "Message",
-    "send": "Envoyer"
+    "title": "Compétences"
   }
 }
