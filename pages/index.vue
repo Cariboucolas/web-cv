@@ -8,21 +8,7 @@
         </div>
       </header>
 
-      <section class="profile-section">
-        <div class="profile-avatar">
-          <OrganismsCharacterPanel/>
-        </div>
-        <div class="profile-content">
-          <p
-              v-for="(line, index) in profileDescription"
-              :key="index"
-              class="profile-line"
-              :class="{ 'profile-line--secondary': index >= 2 }"
-          >
-            {{ line }}
-          </p>
-        </div>
-      </section>
+      <OrganismsProfileSection/>
 
       <section class="content-section">
         <div class="section-header">
@@ -63,13 +49,6 @@ import {computed} from 'vue'
 // @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
 const {locale, t} = useI18n()
 const currentLang = computed(() => locale.value as 'fr' | 'en')
-
-const profileDescription = computed(() => [
-  t('profile.description.line1'),
-  t('profile.description.line2'),
-  t('profile.description.line3'),
-  t('profile.description.line4'),
-])
 
 const toggleLanguage = () => {
   locale.value = locale.value === 'fr' ? 'en' : 'fr'
@@ -127,34 +106,6 @@ const toggleLanguage = () => {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.profile-section {
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.profile-avatar {
-  flex: 1 1 320px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.profile-content {
-  flex: 1 1 360px;
-  background: transparent;
-  padding: 30px;
-  min-height: 400px;
-}
-
-.profile-line {
-  font-size: 16px;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.85);
-  margin: 0 0 16px 0;
-}
-
 .content-section {
   background: rgba(15, 15, 15, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -181,10 +132,6 @@ const toggleLanguage = () => {
     padding: 30px 24px 50px;
   }
 
-  .profile-section {
-    flex-direction: column;
-  }
-
   .header-title {
     font-size: 10px;
   }
@@ -198,24 +145,6 @@ const toggleLanguage = () => {
   .page-card {
     padding: 8px 16px 40px;
     gap: 32px;
-  }
-
-  .profile-section {
-    gap: 24px;
-  }
-
-  .profile-avatar {
-    flex: none;
-  }
-
-  .profile-content {
-    flex: none;
-    padding: 0;
-    min-height: unset;
-  }
-
-  .profile-line--secondary {
-    display: none;
   }
 
   .content-section {
