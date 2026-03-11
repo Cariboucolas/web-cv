@@ -1,12 +1,7 @@
 <template>
   <div class="page-layout">
     <div class="page-card">
-      <header class="page-header">
-        <div class="header-content">
-          <div class="header-title">{{ $t('profile.title') }} • {{ $t('profile.subtitle') }}</div>
-          <AtomsLanguageIndicator :lang="currentLang" @click="toggleLanguage"/>
-        </div>
-      </header>
+      <MoleculesHeaderBar/>
 
       <OrganismsProfileSection/>
 
@@ -43,18 +38,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import {computed} from 'vue'
-
-// @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
-const {locale, t} = useI18n()
-const currentLang = computed(() => locale.value as 'fr' | 'en')
-
-const toggleLanguage = () => {
-  locale.value = locale.value === 'fr' ? 'en' : 'fr'
-}
-</script>
-
 <style scoped>
 @import url("https://fonts.cdnfonts.com/css/mona-sans");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&display=swap");
@@ -84,28 +67,6 @@ const toggleLanguage = () => {
   gap: 50px;
 }
 
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  height: 50px;
-  margin-bottom: 20px;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.header-title {
-  font-size: 12px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  font-family: "Orbitron", sans-serif;
-  color: rgba(255, 255, 255, 0.9);
-}
-
 .content-section {
   background: rgba(15, 15, 15, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -130,10 +91,6 @@ const toggleLanguage = () => {
 @media (max-width: 900px) {
   .page-card {
     padding: 30px 24px 50px;
-  }
-
-  .header-title {
-    font-size: 10px;
   }
 }
 
