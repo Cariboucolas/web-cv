@@ -28,28 +28,28 @@
         <div class="section-header">
           <div class="section-title">{{ $t('about.title') }}</div>
         </div>
-        <AboutSection/>
+        <MoleculesAboutSection/>
       </section>
 
       <section class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('experiences.title') }}</div>
         </div>
-        <ExperiencesSection/>
+        <OrganismsExperiencesSection/>
       </section>
 
       <section class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('skills.title') }}</div>
         </div>
-        <SkillsSection/>
+        <OrganismsSkillsSection/>
       </section>
 
       <section class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('projects.title') }}</div>
         </div>
-        <ProjectsSection/>
+        <OrganismsProjectsSection/>
       </section>
 
       <footer class="social-footer">
