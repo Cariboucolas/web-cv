@@ -2,76 +2,83 @@
   <div>
     <!-- Mobile : liste compacte -->
     <div class="sm:hidden space-y-3">
-      <div v-for="category in categories" :key="category.label" class="flex gap-3 items-baseline">
+      <div v-for="category in mobileCategories" :key="category.label" class="flex gap-3 items-baseline">
         <span class="text-xs text-gray-500 uppercase tracking-widest w-24 shrink-0">{{ category.label }}</span>
         <span class="text-sm text-gray-300">
           <template v-for="(skill, i) in category.skills" :key="skill.name">
-            {{ skill.name }}<span v-if="skill.level" class="text-xs text-gray-500"> ({{ skill.level }})</span><template
-              v-if="i < category.skills.length - 1"> · </template>
+            {{ skill.name }}
+          <template
+              v-if="i < category.skills.length - 1"> ·
+          </template>
           </template>
         </span>
       </div>
     </div>
-    
+
     <!-- Desktop : cards -->
     <div class="hidden sm:grid grid-cols-2 gap-6">
-      <div class="skill-category">
-        <h3 class="text-primary text-lg mb-3 flex items-center gap-2">
-          <Icon name="material-symbols:monitor-outline" size="24"/>
-          Front-end
-        </h3>
-        <div class="flex flex-wrap gap-2">
-          <AtomsSkillBadge icon="ri:vuejs-line" label="Vue.js" :level="95"/>
-          <AtomsSkillBadge icon="simple-icons:nuxtdotjs" label="Nuxt" :level="90"/>
-          <AtomsSkillBadge icon="simple-icons:typescript" label="TypeScript" :level="85"/>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <h3 class="text-primary text-lg mb-3 flex items-center gap-2">
-          <Icon name="material-symbols:dns-outline" size="24"/>
-          Back-end
-        </h3>
-        <div class="flex flex-wrap gap-2">
-          <AtomsSkillBadge icon="ri:firebase-line" label="Firebase" :level="90"/>
-          <AtomsSkillBadge icon="ri:nodejs-line" label="Node.js" :level="80"/>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <h3 class="text-primary text-lg mb-3 flex items-center gap-2">
-          <Icon name="material-symbols:build-circle-outline" size="24"/>
-          DevOps
-        </h3>
-        <div class="flex flex-wrap gap-2">
-          <AtomsSkillBadge icon="ri:github-line" label="GitHub" :level="85"/>
-          <AtomsSkillBadge icon="ri:gitlab-line" label="GitLab" :level="85"/>
-          <AtomsSkillBadge icon="ri:git-branch-line" label="Git" :level="90"/>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <h3 class="text-primary text-lg mb-3 flex items-center gap-2">
-          <Icon name="material-symbols:architecture" size="24"/>
-          Architecture
-        </h3>
-        <div class="flex flex-wrap gap-2">
-          <AtomsSkillBadge icon="material-symbols:hexagon" label="Hexagonal" :level="70"/>
-          <AtomsSkillBadge icon="material-symbols:domain" label="DDD" :level="75"/>
-          <AtomsSkillBadge icon="material-symbols:cycle" label="TDD" :level="80"/>
-        </div>
-      </div>
+      <MoleculesSkillCategory
+          v-for="category in desktopCategories"
+          :key="category.label"
+          :icon="category.icon"
+          :label="category.label"
+          :skills="category.skills"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-interface Skill {
+interface DesktopCategory {
+  icon: string
+  label: string
+  skills: { icon: string; label: string; level?: number }[]
+}
+
+const desktopCategories: DesktopCategory[] = [
+  {
+    icon: 'material-symbols:monitor-outline',
+    label: 'Front-end',
+    skills: [
+      {icon: 'ri:vuejs-line', label: 'Vue.js'},
+      {icon: 'simple-icons:nuxtdotjs', label: 'Nuxt'},
+      {icon: 'simple-icons:typescript', label: 'TypeScript'},
+    ],
+  },
+  {
+    icon: 'material-symbols:dns-outline',
+    label: 'Back-end',
+    skills: [
+      {icon: 'ri:firebase-line', label: 'Firebase'},
+      {icon: 'ri:nodejs-line', label: 'Node.js'},
+    ],
+  },
+  {
+    icon: 'material-symbols:build-circle-outline',
+    label: 'DevOps',
+    skills: [
+      {icon: 'ri:github-line', label: 'GitHub'},
+      {icon: 'ri:gitlab-line', label: 'GitLab'},
+      {icon: 'ri:git-branch-line', label: 'Git'},
+    ],
+  },
+  {
+    icon: 'material-symbols:architecture',
+    label: 'Architecture',
+    skills: [
+      {icon: 'material-symbols:hexagon', label: 'Hexagonal'},
+      {icon: 'material-symbols:domain', label: 'DDD'},
+      {icon: 'material-symbols:cycle', label: 'TDD'},
+    ],
+  },
+]
+
+interface MobileSkill {
   name: string
   level?: string
 }
 
-const categories: { label: string; skills: Skill[] }[] = [
+const mobileCategories: { label: string; skills: MobileSkill[] }[] = [
   {
     label: 'Frontend',
     skills: [{name: 'Nuxt.js'}, {name: 'React'}],
