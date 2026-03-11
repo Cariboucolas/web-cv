@@ -9,10 +9,10 @@
     "title": "WEB DEVELOPER",
     "subtitle": "FULLSTACK",
     "description": {
-      "line1": "Développeur passionné avec plus de 15 ans d'expérience dans l'IT.",
-      "line2": "Reconversion vers le développement il y a 4 ans, guidé par ma passion du digital et la découverte du code.",
-      "line3": "Mon parcours unique, débutant comme technicien helpdesk et évoluant vers l'administration système et réseaux, m'a doté d'une vision globale des systèmes d'information.",
-      "line4": "En tant que freelance, je m'attache particulièrement aux principes du Clean Code et aux pratiques artisanales du développement."
+      "line1": "Développeur fullstack freelance spécialisé TypeScript / Nuxt.js / Firebase. Augmenté par l'IA.",
+      "line2": "5 ans d'expérience en équipes agiles sur des produits à forte audience.",
+      "line3": "Adepte du Software Craftsmanship : TDD, DDD, pair programming.",
+      "line4": "Basé sur Toulouse."
     }
   },
   "bottomBar": {
@@ -39,46 +39,40 @@
     "today": "Auj.",
     "projects": {
       "mgm": {
-        "title": "MGM — Analyse de la performance",
+        "title": "MGM — MyGameMobile",
         "shortTitle": "MGM",
-        "shortDescription": "Application mobile de pilotage commercial",
-        "description": "Application mobile permettant aux équipes en magasin de suivre leurs performances, visualiser les top produits et prendre des décisions pour de nouvelles opportunités produits."
+        "shortDescription": "Application mobile d'analyse des performances",
+        "description": "Conception et développement de l'application mobile d'analyse des performances et d'aide à la prise de décision. Ownership du projet, posture de lead fonctionnelle. 10k utilisateurs / mois, monde."
       },
       "fcs": {
-        "title": "FCS - Famille Client Satisfait",
+        "title": "FCS — Famille Client Satisfait",
         "shortTitle": "FCS",
-        "shortDescription": "Application mobile d'auto évaluation",
-        "description": "Application mobile permettant d'évaluer la satisfaction des clients dans une granularité métier 'famille'"
+        "shortDescription": "Application mobile d'auto-évaluation",
+        "description": "Conception et développement d'une application mobile d'auto-évaluation. 5K utilisateurs / mois, monde."
       },
       "stic": {
-        "title": "STIC - Suivi de la Traçabilité des Immatriculations de Cycles",
+        "title": "STIC — Solution Transversale d'Identification des Cycles",
         "shortTitle": "STIC",
-        "shortDescription": "Application mobile d'appairage de cycles à un client",
-        "description": "Application mobile permettant de scanner l'immatriculation des cycles pour l'associer au client"
+        "shortDescription": "Application mobile d'appairage et d'immatriculation des cycles",
+        "description": "Conception et développement d'une application mobile d'appairage et d'immatriculation des cycles. Implémentation d'un scanner de QR Code. 2K utilisateurs / jours, France."
       },
       "winky": {
         "title": "Winkyverse",
         "shortTitle": "Winkyverse",
-        "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
-        "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
+        "shortDescription": "Plateforme ICO (Crypto)",
+        "description": "Conception et développement d'une plateforme ICO. 15K utilisateurs, monde. Levée de fonds 10M+ euros."
       },
-      "Mechachain": {
+      "mechachain": {
         "title": "Mechachain",
         "shortTitle": "Mechachain",
-        "shortDescription": "Application permettant l'achat de tokens lors de l'ICO",
-        "description": "Ce site a pour objectif la gestion et l'achat de tokens lors de l'ICO du projet dans l'univers Winky"
-      },
-      "rsb": {
-        "title": "RSB — Retour Sur Broche",
-        "shortTitle": "RSB",
-        "shortDescription": "Qualification de projet",
-        "description": "Qualification de projet répondant à une problématique de ressource pour le processus de mise sur broche des Magasins Decathlon. Chaque étape de ce processus requiert du temps et de la ressource humaine, de la réception de la marchandise, déballage, tri et mise en rayon. La finalité du projet permet de planifier au mieux ces ressources humaines aux étapes clés dans un timing idéal."
+        "shortDescription": "Plateforme ICO (Crypto)",
+        "description": "Conception et développement d'une plateforme ICO. Implémentation KYC. 10K utilisateurs, monde."
       },
       "mc": {
         "title": "Managers Companion",
         "shortTitle": "MC",
-        "shortDescription": "Application pour les encadrants en magasin",
-        "description": "Application répondant aux besoins des encadrants en magasin, allant du directeur de magasin au responsable de rayon. Son objectif est triple : l'analyse des performances, l'auto-évaluation sur les politiques commerciales, le RSB, l'efficience du linéaire et le pilotage du volume d'affaire, et enfin des actions à prendre basées sur des opportunités produits à mettre en avant. Intégration d'une couche IA sous architecture agentique sur toutes les strates de l'application."
+        "shortDescription": "Application mobile et desktop pour les collaborateurs en magasin",
+        "description": "Conception et développement d'une application mobile et desktop pour les collaborateurs en Magasin, pour l'analyse des performances, l'auto-évaluation. Intégration d'une couche IA sous architecture agentique."
       }
     }
   },
@@ -88,79 +82,129 @@
     "items": [
       {
         "company": "Decathlon InStore",
-        "position": "Développeur Fullstack Freelance",
+        "position": "Développeur & Fonctionnel — Freelance",
         "periodStart": "2025",
         "periodEnd": null,
         "technologies": [
           "React",
           "TypeScript",
           "Python",
+          "Java",
           "Vertex AI",
-          "Kotlin",
+          "SQL",
           "Datadog",
-          "SonarQube"
+          "SonarQube",
+          "Playwright",
+          "Docker",
+          "Tailwind"
         ],
-        "highlights": [
-          "Conception et développement d'une application mobile et Desktop pour Decathlon (Managers Companion)",
-          "Intégration d'une couche IA sous architecture agentique",
-          "Développement d'une plateforme d'achat de tokens pour l'ICO Winkyverse"
+        "highlights": [],
+        "subProjects": [
+          {
+            "name": "MC",
+            "highlights": [
+              "Conception et développement d'une application mobile et desktop pour les collaborateurs en Magasin, pour l'analyse des performances, l'auto-évaluation (Managers Companion)",
+              "Intégration d'une couche IA sous architecture agentique"
+            ]
+          }
         ]
       },
       {
         "company": "Decathlon MayDay",
-        "position": "Développeur Fullstack Freelance",
+        "position": "Ownership & Développeur — Freelance",
         "periodStart": "2023",
         "periodEnd": "2025",
         "technologies": [
           "Nuxt",
           "TypeScript",
+          "NodeJs",
           "Firebase",
-          "Firestore",
+          "NoSQL",
+          "Datadog",
+          "Sentry",
+          "SonarQube",
           "GraphQL",
           "Storybook",
-          "Sentry",
-          "DataDog",
-          "SonarQube"
+          "Cypress"
         ],
-        "highlights": [
-          "Conception et développement d'application mobiles pour Decathlon (FCS)",
-          "Ownership projet, posture de lead technique et fonctionnelle (MGM)"
+        "highlights": [],
+        "subProjects": [
+          {
+            "name": "MGM",
+            "highlights": [
+              "Conception et développement de l'application mobile d'analyse des performances et d'aide à la prise de décision (MyGameMobile)",
+              "Ownership du projet, posture de lead fonctionnelle",
+              "10K utilisateurs / mois, monde"
+            ]
+          },
+          {
+            "name": "FCS",
+            "highlights": [
+              "Conception et développement d'une application mobile d'auto-évaluation (Famille Client Satisfait)",
+              "5K utilisateurs / mois, monde"
+            ]
+          }
         ]
       },
       {
         "company": "Brocorp",
-        "position": "Développeur Front-End Freelance",
+        "position": "Développeur — Freelance",
         "periodStart": "2022",
         "periodEnd": "2022",
         "technologies": [
           "Nuxt",
           "TypeScript",
+          "NodeJs",
           "Firebase",
+          "NoSQL",
           "KYC"
         ],
-        "highlights": [
-          "Développement de 2 plateformes d'achat de tokens pour les ICO Winkyverse et Mechachain",
-          "Mise en place d'une techno KYC",
-          "Pic d'utilisateur de 15000+ utilisateurs simultanés lors de l'ICO Winkyverse",
-          "levée de fond à 10M+ d'euros pour le projet Winkyverse"
+        "highlights": [],
+        "subProjects": [
+          {
+            "name": "Winkyverse",
+            "highlights": [
+              "Conception et développement d'une plateforme ICO (Crypto)",
+              "Implémentation KYC",
+              "15K utilisateurs, monde"
+            ]
+          },
+          {
+            "name": "Mechachain",
+            "highlights": [
+              "Conception et développement d'une plateforme ICO (Crypto)",
+              "Implémentation KYC",
+              "10K utilisateurs, monde"
+            ]
+          }
         ]
       },
       {
         "company": "Decathlon WeParis",
-        "position": "Développeur Fullstack Freelance",
+        "position": "Développeur Stagiaire — Freelance",
         "periodStart": "2021",
         "periodEnd": "2023",
         "technologies": [
           "Nuxt",
           "TypeScript",
+          "NodeJs",
           "Firebase",
-          "GraphQL",
-          "Storybook",
-          "Sentry"
+          "NoSQL",
+          "Sentry",
+          "SonarQube",
+          "Scandit",
+          "Cypress"
         ],
-        "highlights": [
-          "Conception et développement d'une applications mobile pour Decathlon (STIC, MGM)",
-          "Qualification de projets et analyse des besoins métier (RSB - Recéption d'articles à la mise sur broche en rayon)"
+        "highlights": [],
+        "subProjects": [
+          {
+            "name": "STIC",
+            "highlights": [
+              "Conception et développement d'une application mobile d'appairage et d'immatriculation des cycles (Solution Transversale d'Identification des Cycles)",
+              "Implémentation d'un scanner de QR Code",
+              "2K utilisateurs / jours, France"
+            ]
+          }
         ]
       },
       {
