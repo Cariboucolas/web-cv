@@ -1,48 +1,30 @@
 :root {
-  --color-background: #1a1a1a;
-  --color-primary: #42b883;
-  --color-secondary: #35495e;
-  --color-text: #ffffff;
-  --color-text-muted: #888888;
+    --color-background: #1a1a1a;
+    --color-primary: #42b883;
+    --color-secondary: #35495e;
+    --color-text: #ffffff;
+    --color-text-muted: #888888;
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-text);
-  font-family: "Inter", sans-serif;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: var(--color-primary);
-  color: var(--color-text);
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.375rem;
-  transition: all 0.3s ease;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: "Inter", sans-serif;
 }
 
 @media (max-width: 767px) {
-  .btn {
-    padding: 0.75rem;
-    border-radius: 9999px;
-  }
+    .btn {
+        padding: 0.75rem;
+        border-radius: 9999px;
+    }
 
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
 
 .btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
