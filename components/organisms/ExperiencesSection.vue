@@ -37,6 +37,11 @@ import {computed} from 'vue'
 // @ts-expect-error - auto-importé par @nuxtjs/i18n
 const {tm, rt} = useI18n()
 
+interface SubProject {
+  name: string
+  highlights: string[]
+}
+
 interface Experience {
   company: string
   position: string
@@ -44,6 +49,7 @@ interface Experience {
   periodEnd: string | null
   technologies: string[]
   highlights: string[]
+  subProjects?: SubProject[]
 }
 
 const experiences = computed<Experience[]>(() => {
@@ -60,6 +66,14 @@ const experiences = computed<Experience[]>(() => {
     highlights: Array.isArray(item.highlights)
         ? item.highlights.map((h: any) => rt(h))
         : [],
+    subProjects: Array.isArray(item.subProjects)
+        ? item.subProjects.map((sub: any) => ({
+          name: rt(sub.name),
+          highlights: Array.isArray(sub.highlights)
+              ? sub.highlights.map((h: any) => rt(h))
+              : [],
+        }))
+        : undefined,
   }))
 })
 </script>

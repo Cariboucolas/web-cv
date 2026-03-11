@@ -8,8 +8,8 @@
       </div>
       <div class="xp-mobile-header-text">
         <div class="xp-mobile-period">{{ period }}</div>
-        <h4 class="xp-mobile-company">{{ experience.position }}</h4>
-        <p class="xp-mobile-position">{{ experience.company }}</p>
+        <h4 class="xp-mobile-company">{{ experience.company }}</h4>
+        <p class="xp-mobile-position">{{ experience.position }}</p>
       </div>
     </div>
     <div class="xp-mobile-tags">
@@ -17,7 +17,17 @@
         {{ tech }}
       </span>
     </div>
-    <ul class="xp-mobile-highlights">
+    <!-- Sub-projects in columns -->
+    <div v-if="experience.subProjects?.length" class="xp-mobile-subprojects">
+      <div v-for="sub in experience.subProjects" :key="sub.name" class="xp-mobile-subproject">
+        <h5 class="xp-subproject-title">{{ sub.name }}</h5>
+        <ul class="xp-mobile-highlights">
+          <li v-for="(highlight, hi) in sub.highlights" :key="hi">{{ highlight }}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Regular highlights -->
+    <ul v-else class="xp-mobile-highlights">
       <li v-for="(highlight, hi) in experience.highlights" :key="hi">{{ highlight }}</li>
     </ul>
   </div>
@@ -31,10 +41,10 @@
       </div>
       <div class="xp-header-text">
         <div class="xp-header-top">
-          <h4 class="xp-company">{{ experience.position }}</h4>
+          <h4 class="xp-company">{{ experience.company }}</h4>
           <span class="xp-period">{{ period }}</span>
         </div>
-        <p class="xp-position">{{ experience.company }}</p>
+        <p class="xp-position">{{ experience.position }}</p>
       </div>
     </div>
     <div class="xp-tags">
@@ -42,7 +52,17 @@
         {{ tech }}
       </span>
     </div>
-    <ul class="xp-highlights">
+    <!-- Sub-projects in 2 columns -->
+    <div v-if="experience.subProjects?.length" class="xp-subprojects">
+      <div v-for="sub in experience.subProjects" :key="sub.name" class="xp-subproject">
+        <h5 class="xp-subproject-title">{{ sub.name }}</h5>
+        <ul class="xp-highlights">
+          <li v-for="(highlight, hi) in sub.highlights" :key="hi">{{ highlight }}</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Regular highlights -->
+    <ul v-else class="xp-highlights">
       <li v-for="(highlight, hi) in experience.highlights" :key="hi">{{ highlight }}</li>
     </ul>
   </div>
@@ -54,6 +74,11 @@ import {computed} from 'vue'
 // @ts-expect-error - auto-importé par @nuxtjs/i18n
 const {t} = useI18n()
 
+interface SubProject {
+  name: string
+  highlights: string[]
+}
+
 interface Experience {
   company: string
   position: string
@@ -61,6 +86,7 @@ interface Experience {
   periodEnd: string | null
   technologies: string[]
   highlights: string[]
+  subProjects?: SubProject[]
 }
 
 const props = defineProps<{
@@ -72,6 +98,7 @@ const companyLogos: Record<string, string> = {
   'Decathlon MayDay': '/logos/logo_mayday.png',
   'Decathlon WeParis': '/logos/logo_weparis.png',
   'Decathlon InStore': '/logos/logo_decathlon.jpg',
+  'Brocorp': '/logos/logo_brocorp.png',
   'Biscuiterie Poult': '/logos/logo_poult.jpg',
   'Intersport': '/logos/logo_intersport.jpg',
 }
@@ -79,6 +106,7 @@ const companyLogos: Record<string, string> = {
 const companyBgColors: Record<string, string> = {
   'Decathlon InStore': '#0363d0',
   'Decathlon MayDay': '#ffffff',
+  'Brocorp': '#ffffff',
   'Biscuiterie Poult': '#ffffff',
   'Intersport': '#ffffff',
 }
@@ -171,6 +199,19 @@ const period = computed(() => {
   background: #1e1e1e;
   border-radius: 4px;
   color: #42b883;
+}
+
+/* ── Mobile sub-projects ── */
+.xp-mobile-subprojects {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.xp-mobile-subproject {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .xp-mobile-highlights {
@@ -296,6 +337,27 @@ const period = computed(() => {
   background: #1e1e1e;
   border-radius: 4px;
   color: #42b883;
+}
+
+/* ── Desktop sub-projects (2 columns) ── */
+.xp-subprojects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.xp-subproject {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.xp-subproject-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #42b883;
+  margin: 0;
+  letter-spacing: 0.5px;
 }
 
 .xp-highlights {
