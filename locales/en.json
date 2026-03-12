@@ -15,15 +15,6 @@
       "line4": "Based in Toulouse."
     }
   },
-  "bottomBar": {
-    "defaultTitle": "INFO",
-    "social": {
-      "github": "GitHub",
-      "linkedin": "LinkedIn",
-      "malt": "Malt",
-      "download": "Download CV"
-    }
-  },
   "about": {
     "title": "About me",
     "paragraphs": {

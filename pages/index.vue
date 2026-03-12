@@ -5,35 +5,34 @@
 
       <OrganismsProfileSection/>
 
-      <section class="content-section">
+      <section id="about" class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('about.title') }}</div>
         </div>
         <MoleculesAboutSection/>
       </section>
 
-      <section class="content-section">
+      <section id="experiences" class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('experiences.title') }}</div>
         </div>
         <OrganismsExperiencesSection/>
       </section>
 
-      <section class="content-section">
+      <section id="skills" class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('skills.title') }}</div>
         </div>
         <OrganismsSkillsSection/>
       </section>
 
-      <section class="content-section">
+      <section id="projects" class="content-section">
         <div class="section-header">
           <div class="section-title">{{ $t('projects.title') }}</div>
         </div>
         <OrganismsProjectsSection/>
       </section>
 
-      <OrganismsSocialFooter/>
     </div>
   </div>
 </template>
@@ -51,7 +50,6 @@
 .page-layout {
   min-height: 100vh;
   background: #0a0a0a;
-  padding: 60px 20px;
   display: flex;
   justify-content: center;
   font-family: "Mona Sans", sans-serif;
@@ -61,7 +59,7 @@
 .page-card {
   width: min(100%, 1100px);
   background: rgba(10, 10, 10, 0.9);
-  padding: 40px 50px 60px;
+  padding: 0px 50px 60px;
   display: flex;
   flex-direction: column;
   gap: 50px;
@@ -88,20 +86,10 @@
   font-family: "Orbitron", sans-serif;
 }
 
-@media (max-width: 900px) {
-  .page-card {
-    padding: 30px 24px 50px;
-  }
-}
-
 @media (max-width: 640px) {
-  .page-layout {
-    padding: 16px 0 40px;
-  }
-
   .page-card {
     padding: 8px 16px 40px;
-    gap: 32px;
+    gap: 25px;
   }
 
   .content-section {

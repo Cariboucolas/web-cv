@@ -1,9 +1,7 @@
 <template>
   <div>
-    <slot />
+    <slot/>
   </div>
 </template>
 
-<script setup lang="ts">
-// Le layout par défaut
-</script>
+<script setup lang="ts"/>

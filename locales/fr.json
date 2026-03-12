@@ -6,22 +6,13 @@
     "skills": "COMPÉTENCES"
   },
   "profile": {
-    "title": "WEB DEVELOPER",
+    "title": "DÉVELOPPEUR WEB",
     "subtitle": "FULLSTACK",
     "description": {
       "line1": "Développeur fullstack freelance spécialisé TypeScript / Nuxt.js / Firebase. Augmenté par l'IA.",
       "line2": "5 ans d'expérience en équipes agiles sur des produits à forte audience.",
       "line3": "Adepte du Software Craftsmanship : TDD, DDD, pair programming.",
       "line4": "Basé sur Toulouse."
-    }
-  },
-  "bottomBar": {
-    "defaultTitle": "INFO",
-    "social": {
-      "github": "GitHub",
-      "linkedin": "LinkedIn",
-      "malt": "Malt",
-      "download": "Télécharger le CV"
     }
   },
   "about": {
