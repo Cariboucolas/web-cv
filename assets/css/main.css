@@ -6,6 +6,10 @@
     --color-text-muted: #888888;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--color-background);
     color: var(--color-text);
