@@ -2,7 +2,7 @@
   <div class="character-panel">
     <div class="character-avatar">
       <v-avatar size="225" class="large-avatar">
-        <v-img src="/images/avatar.png" cover/>
+        <v-img src="/images/avatar.jpg" cover/>
       </v-avatar>
     </div>
     <div class="character-info">
