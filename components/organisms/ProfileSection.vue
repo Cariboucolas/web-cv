@@ -71,6 +71,7 @@ const profileDescription = computed(() => [
 
   .profile-avatar {
     flex: none;
+    width: 100%;
   }
 
   .profile-content {
