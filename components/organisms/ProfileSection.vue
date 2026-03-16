@@ -49,7 +49,6 @@ const profileDescription = computed(() => [
   flex: 1 1 360px;
   background: transparent;
   padding: 30px;
-  min-height: 400px;
 }
 
 .profile-line {
@@ -72,6 +71,7 @@ const profileDescription = computed(() => [
 
   .profile-avatar {
     flex: none;
+    width: 100%;
   }
 
   .profile-content {
