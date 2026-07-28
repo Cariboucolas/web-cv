@@ -1,17 +1,33 @@
-/.DS_Store/
-/.firebase/
-/.idea/
-/.npm/
-/.nuxt/
-/.wireit/
-/.vscode/
-/dist/
-/node_modules/
-/tmp/
-/.output/
-/.claude
-/.envrc
-/.env.local
+# Dépendances
+node_modules/
+.npm/
 
+# Build Nuxt / Nitro
+.nuxt/
+.output/
+.nitro/
+.data/
+.cache/
+dist/
+
+# Firebase
+.firebase/
+
+# Environnement — ATTENTION : ne jamais committer
+.env
+.env.*
+!.env.example
+
+# Éditeurs & OS
+.idea/
+.vscode/
+.claude/
+.DS_Store
+Thumbs.db
+
+# Divers
 *.log
 tsconfig.tsbuildinfo
+.envrc
+tmp/
+.wireit/
