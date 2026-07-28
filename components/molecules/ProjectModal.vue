@@ -39,12 +39,14 @@
         </div>
       </template>
 
-      <!-- Placeholder si pas de screenshots -->
+      <!-- Placeholder si pas de screenshots : même badge que la carte du projet -->
       <div v-else class="modal-placeholder">
-        <img
-            :src="project.cover"
+        <AtomsProjectBadge
+            size="lg"
+            :logo="project.logo"
+            :logo-bg="project.logoBg"
+            :icon="project.icon"
             :alt="t(`projects.projects.${project.key}.title`)"
-            class="modal-placeholder-img"
         />
       </div>
 
@@ -77,7 +79,12 @@ const {t} = useI18n()
 
 interface Project {
   key: string
-  cover: string
+  /** Logo de marque, prioritaire sur `icon`. */
+  logo?: string
+  /** Fond du carré, quand le logo ne tient pas sur le fond sombre par défaut. */
+  logoBg?: string
+  /** Icône material-symbols, affichée à défaut de logo. */
+  icon?: string
   images: string[]
   technologies: string[]
   link: string
@@ -205,13 +212,11 @@ watch(() => props.project, () => {
 /* ── Placeholder ── */
 .modal-placeholder {
   width: 100%;
+  aspect-ratio: 5 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #0a0a0a;
-}
-
-.modal-placeholder-img {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 /* ── Content ── */

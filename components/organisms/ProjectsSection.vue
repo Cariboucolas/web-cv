@@ -10,11 +10,15 @@
             class="project-card"
             @click="openModal(project)"
         >
-          <img
-              :src="project.cover"
-              :alt="t(`projects.projects.${project.key}.title`)"
-              class="project-card-cover"
-          />
+          <div class="project-card-visual">
+            <AtomsProjectBadge
+                size="md"
+                :logo="project.logo"
+                :logo-bg="project.logoBg"
+                :icon="project.icon"
+                :alt="t(`projects.projects.${project.key}.title`)"
+            />
+          </div>
           <div class="project-card-body">
             <h4 class="project-card-title">{{ t(`projects.projects.${project.key}.title`) }}</h4>
             <p class="project-card-desc">{{ t(`projects.projects.${project.key}.shortDescription`) }}</p>
@@ -38,11 +42,15 @@
               class="carousel-card"
               @click="openModal(project)"
           >
-            <img
-                :src="project.cover"
-                :alt="t(`projects.projects.${project.key}.title`)"
-                class="carousel-card-img"
-            />
+            <div class="carousel-card-visual">
+              <AtomsProjectBadge
+                  size="sm"
+                  :logo="project.logo"
+                  :logo-bg="project.logoBg"
+                  :icon="project.icon"
+                  :alt="t(`projects.projects.${project.key}.title`)"
+              />
+            </div>
             <div class="carousel-card-overlay">
               <span class="carousel-card-title">{{ t(`projects.projects.${project.key}.shortTitle`) }}</span>
               <div class="carousel-card-tags">
@@ -69,7 +77,12 @@ const { t } = useI18n()
 
 interface Project {
   key: string
-  cover: string
+  /** Logo de marque, prioritaire sur `icon`. */
+  logo?: string
+  /** Fond du carré, quand le logo ne tient pas sur le fond sombre par défaut. */
+  logoBg?: string
+  /** Icône material-symbols, affichée à défaut de logo. */
+  icon?: string
   images: string[]
   technologies: string[]
   link: string
@@ -79,7 +92,7 @@ interface Project {
 const projects = ref<Project[]>([
   {
     key: 'mc',
-    cover: '/images/projects/cover_mc.svg',
+    icon: 'material-symbols:supervisor-account',
     images: [],
     technologies: ['React', 'TypeScript', 'Python', 'Java', 'Vertex AI', 'SQL', 'Datadog', 'SonarQube', 'Playwright', 'Docker', 'Tailwind'],
     link: '#',
@@ -87,7 +100,7 @@ const projects = ref<Project[]>([
   },
   {
     key: 'mgm',
-    cover: '/images/projects/cover_mgm.svg',
+    icon: 'material-symbols:monitoring',
     images: [
       '/images/projects/mgm_dashboard.png',
       '/images/projects/mgm_debrief.png',
@@ -100,7 +113,7 @@ const projects = ref<Project[]>([
   },
   {
     key: 'fcs',
-    cover: '/images/projects/cover_fcs.svg',
+    icon: 'material-symbols:sentiment-satisfied',
     images: ['/images/projects/fcs_dashboard.png'],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Datadog', 'Sentry', 'SonarQube', 'GraphQL', 'Storybook', 'Cypress'],
     link: '#',
@@ -108,7 +121,8 @@ const projects = ref<Project[]>([
   },
   {
     key: 'winky',
-    cover: '/images/projects/cover_winky.svg',
+    logo: '/logos/logo_winkyverse.png',
+    logoBg: '#ffffff',
     images: [
       '/images/projects/winky_dashboard.png',
       '/images/projects/winky-dashboard_2.png',
@@ -120,7 +134,8 @@ const projects = ref<Project[]>([
   },
   {
     key: 'mechachain',
-    cover: '/images/projects/cover_mechachain.svg',
+    logo: '/logos/logo_mechachain.png',
+    logoBg: '#ffffff',
     images: [],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
     link: '#',
@@ -128,7 +143,7 @@ const projects = ref<Project[]>([
   },
   {
     key: 'stic',
-    cover: '/images/projects/cover_stic.svg',
+    icon: 'material-symbols:pedal-bike',
     images: [
       '/images/projects/stic_dashboard.png',
       '/images/projects/stic_immat.png',
@@ -171,13 +186,17 @@ const openModal = (project: Project) => {
   box-shadow: 0 4px 24px rgba(66, 184, 131, 0.15);
 }
 
-.project-card-cover {
+/* ── Bandeau uni portant le badge du projet ── */
+.project-card-visual {
   width: 100%;
   aspect-ratio: 5 / 3;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
   border-radius: 12px 12px 0 0;
-  display: block;
 }
+
 
 .project-card-body {
   padding: 0 14px 14px;
@@ -275,11 +294,17 @@ const openModal = (project: Project) => {
   transform: scale(0.97);
 }
 
-.carousel-card-img {
+.carousel-card-visual {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  /* L'overlay de titre occupe le bas de la carte : on remonte le badge. */
+  padding-bottom: 18%;
 }
+
 
 .carousel-card-overlay {
   position: absolute;
