@@ -36,4 +36,6 @@ jobs:
         with:
           firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
           projectId: cv-portfolio-b023a
-          channelId: live
+          # Seul un push sur main va en production. Une pull request part sur
+          # un canal de preview jetable, nommé d'après son numéro.
+          channelId: ${{ github.event_name == 'push' && 'live' || format('pr-{0}', github.event.number) }}
