@@ -28,14 +28,26 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            title: 'Mon CV - Portfolio',
+            title: 'Colas Durcy - Full-Stack Developer',
             meta: [
                 {charset: 'utf-8'},
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
                 {name: 'description', content: 'Portfolio professionnel et CV'},
             ],
             link: [
+                // Le PNG 32px est préféré par les navigateurs modernes, l'ICO reste le repli.
+                {
+                    rel: 'icon',
+                    type: 'image/png',
+                    sizes: '32x32',
+                    href: '/favicon-32.png',
+                },
                 {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+                {
+                    rel: 'apple-touch-icon',
+                    sizes: '180x180',
+                    href: '/apple-touch-icon.png',
+                },
                 {
                     rel: 'stylesheet',
                     href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
