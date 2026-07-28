@@ -14,14 +14,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
+          # Version de Node qui construit le site, sans rapport avec le
+          # runtime des actions ci-dessus. Alignée sur volta.
           node-version: 20
           cache: 'pnpm'
 
