@@ -1,6 +1,6 @@
 <template>
   <div class="about-content">
-    <p class="about-paragraph">{{ $t('about.paragraphs.p1') }}</p>
+    <p class="about-paragraph">{{ $t('about.paragraphs.p1', { years: devExperienceYears() }) }}</p>
     <p class="about-paragraph">{{ $t('about.paragraphs.p2') }}</p>
     <p class="about-paragraph">{{ $t('about.paragraphs.p3') }}</p>
     <p class="about-paragraph">{{ $t('about.paragraphs.p4') }}</p>

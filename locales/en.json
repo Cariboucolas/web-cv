@@ -10,15 +10,22 @@
     "subtitle": "FULLSTACK",
     "description": {
       "line1": "Freelance fullstack developer specialised in TypeScript / Nuxt.js / Firebase. AI-augmented.",
-      "line2": "5 years of experience in agile teams on high-audience products.",
-      "line3": "Software Craftsmanship advocate: TDD, DDD, pair programming.",
-      "line4": "Based in Toulouse. 06 68 51 07 78"
+      "line2": "{years} years of experience in agile teams on high-audience products.",
+      "line3": "Software Craftsmanship advocate: TDD, DDD, pair programming."
+    },
+    "contact": {
+      "location": "Toulouse",
+      "hireMe": "Hire me"
+    },
+    "availability": {
+      "available": "Available",
+      "unavailable": "Unavailable"
     }
   },
   "about": {
     "title": "About me",
     "paragraphs": {
-      "p1": "Passionate developer with over 15 years of experience in IT, I transitioned to development 4 years ago, driven by my passion for digital and discovering code and Software Craftsmanship best practices.",
+      "p1": "Passionate developer with over 15 years of experience in IT, I transitioned to development {years} years ago, driven by my passion for digital and discovering code and Software Craftsmanship best practices.",
       "p2": "My unique journey, starting as a helpdesk technician and evolving into system and network administration, has given me a holistic view of information systems. This experience enriches my development practice, allowing me to approach projects as a whole, from infrastructure to code.",
       "p3": "As a freelancer, I particularly focus on Clean Code principles and craft development practices. I firmly believe that code quality and long-term maintainability are as important as immediate functionality.",
       "p4": "My dual technical expertise — infrastructure and development — allows me to bring unique added value to projects, combining technical robustness and code excellence."
@@ -69,7 +76,6 @@
   },
   "experiences": {
     "title": "Experience",
-    "today": "Now",
     "items": [
       {
         "company": "Decathlon InStore",
@@ -234,6 +240,23 @@
           "Workstation deployment and configuration",
           "Procedures and technical documentation writing",
           "Hardware fleet management and inventory"
+        ]
+      },
+      {
+        "company": "Infodis",
+        "position": "Desktop Support Technician — Apprenticeship",
+        "periodStart": "2005",
+        "periodEnd": "2007",
+        "technologies": [
+          "Windows",
+          "Helpdesk",
+          "Imaging",
+          "Hardware Maintenance"
+        ],
+        "highlights": [
+          "Workstation repair and maintenance",
+          "Helpdesk user support",
+          "Mass workstation preparation and rollout"
         ]
       }
     ]

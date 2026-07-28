@@ -71,9 +71,6 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 
-// @ts-expect-error - auto-importé par @nuxtjs/i18n
-const {t} = useI18n()
-
 interface SubProject {
   name: string
   highlights: string[]
@@ -101,6 +98,7 @@ const companyLogos: Record<string, string> = {
   'Brocorp': '/logos/logo_brocorp.png',
   'Biscuiterie Poult': '/logos/logo_poult.jpg',
   'Intersport': '/logos/logo_intersport.jpg',
+  'Infodis': '/logos/logo_infodis.jpeg',
 }
 
 const companyBgColors: Record<string, string> = {
@@ -118,7 +116,8 @@ const isOversized = computed(() => props.experience.company === 'Decathlon InSto
 const period = computed(() => {
   const xp = props.experience
   if (xp.periodEnd === null) {
-    return `${xp.periodStart} - ${t('experiences.today')}`
+    // Poste en cours : on affiche l'année courante plutôt qu'un « Auj. » figé.
+    return `${xp.periodStart} - ${currentYear()}`
   }
   if (xp.periodStart === xp.periodEnd) {
     return xp.periodStart
