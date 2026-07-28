@@ -10,15 +10,22 @@
     "subtitle": "FULLSTACK",
     "description": {
       "line1": "Développeur fullstack freelance spécialisé TypeScript / Nuxt.js / Firebase. Augmenté par l'IA.",
-      "line2": "5 ans d'expérience en équipes agiles sur des produits à forte audience.",
-      "line3": "Adepte du Software Craftsmanship : TDD, DDD, pair programming.",
-      "line4": "Basé sur Toulouse. 06 68 51 07 78"
+      "line2": "{years} ans d'expérience en équipes agiles sur des produits à forte audience.",
+      "line3": "Adepte du Software Craftsmanship : TDD, DDD, pair programming."
+    },
+    "contact": {
+      "location": "Toulouse",
+      "hireMe": "Embauchez-moi"
+    },
+    "availability": {
+      "available": "Disponible",
+      "unavailable": "Indisponible"
     }
   },
   "about": {
     "title": "À propos de moi",
     "paragraphs": {
-      "p1": "Développeur passionné avec plus de 15 ans d'expérience dans l'IT, j'ai entrepris une reconversion vers le développement il y a 4 ans, guidé par ma passion du digital et la découverte du code et les bonnes pratiques du Software Craftsmanship.",
+      "p1": "Développeur passionné avec plus de 15 ans d'expérience dans l'IT, j'ai entrepris une reconversion vers le développement il y a {years} ans, guidé par ma passion du digital et la découverte du code et les bonnes pratiques du Software Craftsmanship.",
       "p2": "Mon parcours unique, débutant comme technicien helpdesk et évoluant vers l'administration système et réseaux, m'a doté d'une vision globale des systèmes d'information. Cette expérience enrichit ma pratique du développement, me permettant d'appréhender les projets dans leur ensemble, de l'infrastructure au code.",
       "p3": "En tant que freelance, je m'attache particulièrement aux principes du Clean Code et aux pratiques artisanales du développement. Je crois fermement que la qualité du code et la maintenance à long terme sont aussi importantes que la fonctionnalité immédiate.",
       "p4": "Ma double expertise technique - infrastructure et développement - me permet d'apporter une valeur ajoutée unique aux projets, combinant robustesse technique et excellence du code."
@@ -69,7 +76,6 @@
   },
   "experiences": {
     "title": "Expériences",
-    "today": "Auj.",
     "items": [
       {
         "company": "Decathlon InStore",
@@ -234,6 +240,23 @@
           "Déploiement et configuration de postes de travail",
           "Rédaction de procédures et documentation technique",
           "Gestion du parc matériel et inventaire"
+        ]
+      },
+      {
+        "company": "Infodis",
+        "position": "Technicien Micro-Informatique — Alternance",
+        "periodStart": "2005",
+        "periodEnd": "2007",
+        "technologies": [
+          "Windows",
+          "Helpdesk",
+          "Masterisation",
+          "Maintenance matérielle"
+        ],
+        "highlights": [
+          "Réparation et maintenance de postes de travail",
+          "Support utilisateurs en helpdesk",
+          "Préparation et déploiement de postes en masse"
         ]
       }
     ]
