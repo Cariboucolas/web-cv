@@ -8,6 +8,14 @@ on:
     branches:
       - main
 
+# Un seul déploiement à la fois par référence. Sur une pull request, un
+# nouveau push annule la preview en cours : seul le dernier commit compte.
+# Sur main, les runs sont mis en file d'attente et jamais interrompus, pour
+# ne pas laisser la production dans un état à moitié publié.
+concurrency:
+  group: deploy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,9 +28,13 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # La version vit dans .nvmrc, seule source de vérité partagée par le
+          # CI et les postes de développement. « 20 » laissait setup-node
+          # résoudre la dernière 20.x du runner : le build pouvait changer de
+          # patch sans qu'aucun commit ne bouge.
+          node-version-file: '.nvmrc'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -36,4 +48,6 @@ jobs:
         with:
           firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
           projectId: cv-portfolio-b023a
-          channelId: live
+          # Seul un push sur main va en production. Une pull request part sur
+          # un canal de preview jetable, nommé d'après son numéro.
+          channelId: ${{ github.event_name == 'push' && 'live' || format('pr-{0}', github.event.number) }}
