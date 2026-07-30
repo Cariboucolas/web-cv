@@ -240,6 +240,7 @@ watch(() => props.project, () => {
 }
 
 .modal-tag {
+  font-family: var(--font-mono);
   font-size: 11px;
   padding: 3px 8px;
   background: #1e1e1e;

@@ -76,35 +76,39 @@ const contactItems = computed(() => [
 <style scoped>
 .profile-section {
   display: flex;
-  gap: 40px;
+  gap: var(--space-entry);
   align-items: flex-start;
   flex-wrap: wrap;
 }
 
 .profile-avatar {
-  flex: 1 1 320px;
+  /* Largeur fixe et alignement à gauche : la photo se cale sur le même axe
+     que les titres de section, seul axe de la page depuis la suppression
+     des cartes. */
+  flex: 0 0 auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
 .profile-content {
+  /* Le padding de 30px datait des cartes de section supprimées : il décalait
+     le texte de 30px vers le bas et vers la droite, désalignant les deux
+     colonnes. */
   flex: 1 1 360px;
-  background: transparent;
-  padding: 30px;
 }
 
 .profile-line {
   font-size: 16px;
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.85);
-  margin: 0 0 16px 0;
+  margin: 0 0 var(--space-grid) 0;
 }
 
 /* ── Liste de contact : les SVG de public/icons/cv/ servent de puces ── */
 .contact-list {
   list-style: none;
-  margin: 24px 0 0 0;
+  margin: var(--space-entry) 0 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -132,7 +136,7 @@ const contactItems = computed(() => [
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin-top: 24px;
+  margin-top: var(--space-entry);
 }
 
 .availability-chip {

@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full pt-6">
+  <section class="w-full">
 
     <!-- Desktop: grille de cards -->
     <div class="hidden sm:block">
@@ -168,7 +168,7 @@ const openModal = (project: Project) => {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  gap: var(--space-grid);
 }
 
 .project-card {
@@ -202,7 +202,7 @@ const openModal = (project: Project) => {
   padding: 0 14px 14px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-inner-sm);
 }
 
 .project-card-title {
@@ -226,11 +226,12 @@ const openModal = (project: Project) => {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: var(--space-inner-md);
 }
 
 .project-tag {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
   padding: 3px 8px;
   background: #1e1e1e;
   border-radius: 4px;
@@ -332,6 +333,7 @@ const openModal = (project: Project) => {
 }
 
 .carousel-tag {
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 2px 6px;
   background: rgba(66, 184, 131, 0.35);

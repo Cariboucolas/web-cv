@@ -40,7 +40,7 @@ defineEmits<{
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-mono);
 }
 </style>
 

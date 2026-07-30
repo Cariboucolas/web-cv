@@ -1,34 +1,58 @@
 :root {
-    --color-background: #1a1a1a;
-    --color-primary: #42b883;
-    --color-secondary: #35495e;
-    --color-text: #ffffff;
-    --color-text-muted: #888888;
+  /* Le fond réel de la page est #0a0a0a (pages/index.vue) ; la variable
+       annonçait #1a1a1a, qui n'était appliqué nulle part. */
+  --color-background: #0a0a0a;
+  --color-primary: #42b883;
+  --color-secondary: #35495e;
+  --color-text: #ffffff;
+  --color-text-muted: #888888;
+
+  /* Trois rôles typographiques : le corps porte le pragmatisme, le mono le
+       craftsmanship, la display la touche sci-fi. */
+  --font-display: "Jost", sans-serif;
+  --font-body: "Mona Sans", -apple-system, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Échelle d'espacement. Sans bordure pour rattraper l'approximation, le
+       rapport séparation/regroupement doit tenir 4 : 1. */
+  --space-section: 64px;
+  --space-entry: 32px;
+  --space-title: 16px;
+  --space-grid: 16px;
+  --space-inner-md: 8px;
+  --space-inner-sm: 4px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --space-section: 48px;
+    --space-entry: 16px;
+  }
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    font-family: "Inter", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
 }
 
 @media (max-width: 767px) {
-    .btn {
-        padding: 0.75rem;
-        border-radius: 9999px;
-    }
+  .btn {
+    padding: 0.75rem;
+    border-radius: 9999px;
+  }
 
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 .btn:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
+  opacity: 0.9;
+  transform: translateY(-2px);
 }

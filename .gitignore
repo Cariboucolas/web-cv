@@ -31,3 +31,6 @@ tsconfig.tsbuildinfo
 .envrc
 tmp/
 .wireit/
+
+# Maquettes de brainstorming (companion visuel)
+.superpowers/

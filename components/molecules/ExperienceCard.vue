@@ -167,6 +167,7 @@ const period = computed(() => {
 }
 
 .xp-mobile-period {
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   color: #42b883;
@@ -193,6 +194,7 @@ const period = computed(() => {
 }
 
 .xp-mobile-tag {
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 2px 6px;
   background: #1e1e1e;
@@ -246,12 +248,33 @@ const period = computed(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 24px;
+  padding: 16px 18px;
   gap: 14px;
-  box-shadow: 0 0 30px rgba(66, 184, 131, 0.06);
+  border-radius: 12px;
+  /* Rien au repos : la carte n'entourait qu'un contenu non cliquable. Le
+     survol la révèle. box-shadow inset plutôt que border, pour qu'aucun
+     décalage de mise en page n'accompagne l'apparition. */
+  background: transparent;
+  box-shadow: inset 0 0 0 1px transparent;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Le survol n'existe pas au doigt : sur les appareils sans pointeur fin, la
+   carte reste visible en permanence plutôt que de dépendre d'un geste
+   impossible. La coupure à 640px ne suffisait pas — une tablette tactile
+   reçoit la version desktop. */
+@media (hover: hover) {
+  .xp-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: inset 0 0 0 1px rgba(66, 184, 131, 0.2);
+  }
+}
+
+@media (hover: none) {
+  .xp-card {
+    background: #111;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
 }
 
 .xp-header {
@@ -302,11 +325,12 @@ const period = computed(() => {
 }
 
 .xp-period {
-  font-size: 13px;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
   color: #42b883;
   white-space: nowrap;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
   flex-shrink: 0;
 }
 
@@ -327,15 +351,13 @@ const period = computed(() => {
 .xp-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 13px;
 }
 
 .desktop-tag {
-  font-size: 11px;
-  padding: 3px 8px;
-  background: #1e1e1e;
-  border-radius: 4px;
-  color: #42b883;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #8a8a8a;
 }
 
 /* ── Desktop sub-projects (2 columns) ── */
