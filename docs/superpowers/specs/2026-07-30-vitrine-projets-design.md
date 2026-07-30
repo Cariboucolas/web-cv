@@ -58,12 +58,17 @@ affiche. Le même `ProjectShowcase` est donc **incliné et rogné** sur la grill
 
 Les châssis sont dessinés en CSS, sans aucun asset :
 
-- **Téléphone** — rectangle au ratio 9:19.5, `border-radius` 18px, bordure de 2px en
+- **Téléphone** — rectangle au ratio 9:19.5, bordure de 2px en
   `rgba(255, 255, 255, 0.12)`, fond `#111`, barre d'encoche centrée en haut (32 % de
-  largeur, 4px de haut, `rgba(255, 255, 255, 0.25)`).
-- **Navigateur** — rectangle au ratio 16:10, `border-radius` 10px, bandeau supérieur de
-  `#1a1a1a` portant trois pastilles de 5px en `rgba(255, 255, 255, 0.2)` et une barre
-  d'adresse muette (40 % de largeur, fond `#262626`).
+  largeur, `rgba(255, 255, 255, 0.25)`).
+- **Navigateur** — rectangle au ratio 16:10, bandeau supérieur de `#1a1a1a` portant trois
+  pastilles en `rgba(255, 255, 255, 0.2)` et une barre d'adresse muette (40 % de largeur,
+  fond `#262626`).
+
+Les proportions internes — rayons, encoche, hauteur du bandeau, taille des pastilles — sont
+exprimées en unités de conteneur (`cqw`) plutôt qu'en pixels. Le même composant sert ainsi à
+156 px sur une carte et à 458 px dans la modale sans qu'aucune taille ne lui soit passée en
+prop.
 
 Un châssis photoréaliste a été écarté : un modèle d'appareil reconnaissable vieillit, et
 c'est l'argument même qui a fait écarter Orbitron au lot 1. Les pastilles restent grises
@@ -90,8 +95,11 @@ bas et vers la droite. C'est le bord de la carte qui le rogne.
 
 ```css
 --showcase-tilt: -8deg;
---showcase-interval: 2500ms;
 ```
+
+La cadence de défilement reste une prop du composant (`interval`, 2500 ms par défaut) et non
+une variable CSS : elle pilote un `setInterval`, et la lire depuis le CSS imposerait un
+`getComputedStyle` sans bénéfice.
 
 Un téléphone de 190 px de large mesure 412 px de haut, pour une zone visuelle de ~180 px :
 seul le haut de l'appareil est visible, ce qui met la partie haute de la capture — celle
@@ -214,7 +222,7 @@ illustre le parcours.
 | `components/molecules/ProjectModal.vue` | châssis redressés dans le slider, suppression du `modal-placeholder` |
 | `public/images/projects/*.webp` / `.jpg` | variantes rééchantillonnées à créer |
 | `assets/originals/projects/` | **créé** — originaux conservés hors du dossier servi |
-| `assets/css/main.css` | variables `--showcase-tilt` et `--showcase-interval` |
+| `assets/css/main.css` | variable `--showcase-tilt` |
 
 ## Ce qui ne change pas
 
