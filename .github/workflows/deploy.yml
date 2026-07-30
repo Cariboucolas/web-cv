@@ -22,18 +22,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           # La version vit dans .nvmrc, seule source de vérité partagée par le
           # CI et les postes de développement. « 20 » laissait setup-node
           # résoudre la dernière 20.x du runner : le build pouvait changer de
-          # patch sans qu'aucun commit ne bouge.
+          # patch sans qu'aucun commit ne bouge. Elle désigne le Node qui
+          # construit le site, pas celui qui exécute les actions ci-dessus.
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
