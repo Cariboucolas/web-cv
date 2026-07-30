@@ -2,7 +2,21 @@
   <div class="character-panel">
     <div class="character-avatar">
       <div class="large-avatar">
-        <img src="/images/avatar.jpg" alt="Colas Durcy" class="avatar-img"/>
+        <picture>
+          <source
+              type="image/webp"
+              srcset="/images/avatar-224.webp 224w, /images/avatar-336.webp 336w, /images/avatar-448.webp 448w"
+              sizes="(max-width: 1024px) 110px, 160px"
+          />
+          <img
+              src="/images/avatar-448.jpg"
+              alt="Colas Durcy"
+              class="avatar-img"
+              width="160"
+              height="160"
+              decoding="async"
+          />
+        </picture>
       </div>
     </div>
     <div class="character-info">
