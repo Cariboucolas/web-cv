@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full pt-6">
+  <section class="w-full">
 
     <!-- Desktop: grille de cards -->
     <div class="hidden sm:block">
@@ -333,6 +333,7 @@ const openModal = (project: Project) => {
 }
 
 .carousel-tag {
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 2px 6px;
   background: rgba(66, 184, 131, 0.35);

@@ -259,9 +259,22 @@ const period = computed(() => {
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.xp-card:hover {
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 0 0 1px rgba(66, 184, 131, 0.2);
+/* Le survol n'existe pas au doigt : sur les appareils sans pointeur fin, la
+   carte reste visible en permanence plutôt que de dépendre d'un geste
+   impossible. La coupure à 640px ne suffisait pas — une tablette tactile
+   reçoit la version desktop. */
+@media (hover: hover) {
+  .xp-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: inset 0 0 0 1px rgba(66, 184, 131, 0.2);
+  }
+}
+
+@media (hover: none) {
+  .xp-card {
+    background: #111;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
 }
 
 .xp-header {

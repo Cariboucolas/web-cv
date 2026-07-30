@@ -13,7 +13,6 @@
 <script setup lang="ts">
 interface Skill {
   name: string
-  level?: string
 }
 
 const skillCategories: { label: string; skills: Skill[] }[] = [
@@ -53,7 +52,7 @@ const skillCategories: { label: string; skills: Skill[] }[] = [
 
 .skills-row {
   display: flex;
-  gap: 16px;
+  gap: var(--space-grid);
   align-items: baseline;
 }
 
@@ -62,7 +61,7 @@ const skillCategories: { label: string; skills: Skill[] }[] = [
   font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #5f5f5f;
+  color: #8a8a8a;
   width: 140px;
   flex-shrink: 0;
 }

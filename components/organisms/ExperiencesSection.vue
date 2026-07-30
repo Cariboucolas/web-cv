@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full pt-6">
+  <section class="w-full">
 
     <!-- Mobile: cards empilées -->
     <div class="sm:hidden">

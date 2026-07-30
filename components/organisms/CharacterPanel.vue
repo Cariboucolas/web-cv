@@ -6,11 +6,11 @@
           <source
               type="image/webp"
               srcset="/images/avatar-224.webp 224w, /images/avatar-336.webp 336w, /images/avatar-448.webp 448w"
-              sizes="(max-width: 1024px) 110px, 160px"
+              sizes="(max-width: 1024px) 110px, (max-width: 1200px) 140px, 160px"
           />
           <img
               src="/images/avatar-448.jpg"
-              alt="Colas Durcy"
+              alt=""
               class="avatar-img"
               width="160"
               height="160"
@@ -38,7 +38,7 @@ const { t } = useI18n()
 .character-panel {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 30px;
 }
 
@@ -61,11 +61,10 @@ const { t } = useI18n()
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center -10%;
 }
 
 .character-info {
-  text-align: center;
+  text-align: left;
 }
 
 .character-name {
@@ -82,7 +81,7 @@ const { t } = useI18n()
   font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.3px;
-  color: #fff;
+  color: #42b883;
   margin: var(--space-inner-md) 0 0;
   line-height: 1.2;
 }
