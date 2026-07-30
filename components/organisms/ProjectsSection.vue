@@ -127,6 +127,7 @@ const projects = ref<Project[]>([
       '/images/projects/winky_dashboard.png',
       '/images/projects/winky-dashboard_2.png',
       '/images/projects/winky_paiment.png',
+      '/images/projects/winky_login.png',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
     link: '#',
