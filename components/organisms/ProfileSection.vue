@@ -76,7 +76,10 @@ const contactItems = computed(() => [
 <style scoped>
 .profile-section {
   display: flex;
-  gap: var(--space-entry);
+  /* Gouttière de colonne, pas d'entrée : --space-entry laissait le texte
+     coller à l'avatar. Le token retombe seul aux valeurs verticales une
+     fois la section repliée en pile (voir assets/css/main.css). */
+  gap: var(--space-column);
   align-items: flex-start;
   flex-wrap: wrap;
 }
@@ -218,10 +221,6 @@ const contactItems = computed(() => [
 }
 
 @media (max-width: 640px) {
-  .profile-section {
-    gap: 24px;
-  }
-
   .profile-avatar {
     flex: none;
     width: 100%;

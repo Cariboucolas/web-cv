@@ -55,7 +55,9 @@
 
 .page-card {
   width: min(100%, 1100px);
-  padding: 0 50px 60px;
+  /* 64px de marge latérale plutôt que 50 : la mesure de ligne se raccourcit
+     d'une poignée de caractères et le contenu cesse d'affleurer le bord. */
+  padding: 0 64px 80px;
   display: flex;
   flex-direction: column;
   /* C'est ce vide qui sépare les sections : la carte encadrée a disparu. */
