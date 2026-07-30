@@ -26,10 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import { computed } from 'vue'
 
 // @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
-const {locale} = useI18n()
+const { locale } = useI18n()
 
 const currentLang = computed(() => locale.value as 'fr' | 'en')
 
@@ -84,12 +84,12 @@ const socialLinks = [
 }
 
 .header-link {
-  font-size: 12px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
-  text-transform: uppercase;
+  text-transform: none;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -125,7 +125,7 @@ const socialLinks = [
 
 @media (max-width: 900px) {
   .header-link {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
@@ -143,8 +143,8 @@ const socialLinks = [
   }
 
   .header-link {
-    font-size: 8px;
-    letter-spacing: 1px;
+    font-size: 11px;
+    letter-spacing: 0;
   }
 
   .header-separator {
