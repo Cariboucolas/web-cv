@@ -82,7 +82,7 @@ const experiences = computed<Experience[]>(() => {
 .xp-mobile-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-entry);
 }
 
 /* ── Desktop: timeline ── */
@@ -90,7 +90,7 @@ const experiences = computed<Experience[]>(() => {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-entry);
 }
 
 .xp-row {
@@ -115,7 +115,7 @@ const experiences = computed<Experience[]>(() => {
   position: absolute;
   left: 50%;
   top: 0;
-  bottom: -24px;
+  bottom: calc(var(--space-entry) * -1);
   width: 2px;
   background: rgba(66, 184, 131, 0.35);
   transform: translateX(-50%);
