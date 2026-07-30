@@ -73,6 +73,13 @@ Chaque intention de l'utilisateur reçoit un rôle typographique dédié :
 
 **Orbitron et Inter sont supprimées.**
 
+Orbitron est référencée dans cinq fichiers, tous à migrer :
+`pages/index.vue:86` (titres de section), `components/molecules/HeaderBar.vue:90` (liens de
+navigation), `components/atoms/LanguageIndicator.vue:43`,
+`components/organisms/CharacterPanel.vue:55` (le nom), et
+`components/atoms/TitleBlock.vue:38,56` — ce dernier n'étant importé nulle part, il est
+supprimé plutôt que migré.
+
 Jost est l'hommage libre à Futura, seule police à avoir atteint la surface lunaire — la
 plaque d'Apollo 11 — et police officielle de la NASA dans les années 60. La référence
 science-fiction passe par l'histoire plutôt que par la forme, ce qui évite le registre
@@ -124,6 +131,28 @@ propre. Seule leur police passe en JetBrains Mono pour rester dans le système.
 **Compromis assumé :** on perd la lecture « en un coup d'œil » que donnaient les pastilles.
 Décision réversible sans toucher au reste du design.
 
+### 6. Hero et avatar
+
+La page n'a aujourd'hui aucun titre de poste : `profile.title` (« DÉVELOPPEUR WEB ») et
+`profile.subtitle` (« FULLSTACK ») existent dans `locales/fr.json` et `locales/en.json` mais
+ne sont rendus nulle part — vestiges de `TitleBlock`, le composant orphelin. Le haut de page
+se limite à l'avatar et au nom.
+
+Le hero des maquettes est donc **créé** : titre de poste en Jost sous le nom, alimenté par
+les clés i18n existantes.
+
+L'avatar est **allégé** en parallèle. Il mesure 225 px, avec un halo vert et une bordure de
+3 px qui le font dominer le haut de page et concurrencer le titre qu'on ajoute. Cible :
+160 px en desktop, 110 px en mobile, halo et bordure atténués. Le centrage mobile doit
+rester cohérent entre l'avatar, le nom et le titre.
+
+**Le fichier source est disproportionné :** `public/images/avatar.jpg` fait 4472 × 6708 px
+pour 2,0 Mo, affiché dans un cercle de 225 px — un facteur 20 en largeur. Le navigateur
+réduit en une passe, sans filtrage progressif, ce qui provoque de l'aliasing sur les détails
+fins : le rendu paraît à la fois trop dur et sale. L'image doit être recadrée au carré,
+rééchantillonnée aux tailles réellement affichées et servie en WebP avec `srcset`, avec un
+JPEG en repli.
+
 ## Dette technique corrigée au passage
 
 Le changement de polices oblige à toucher leur chargement — l'occasion de réparer trois
@@ -158,13 +187,18 @@ utilise `#0a0a0a`. La variable ment sur l'état réel.
 | `components/organisms/ExperiencesSection.vue` | espacements, métadonnées en mono |
 | `components/organisms/SkillsSection.vue`, `molecules/SkillCategory.vue`, `atoms/SkillBadge.vue` | passage en colonnes de texte |
 | `components/organisms/ProjectsSection.vue` | cartes conservées, espacements alignés sur l'échelle |
+| `components/molecules/HeaderBar.vue` | liens de navigation : Orbitron → Jost |
+| `components/atoms/LanguageIndicator.vue` | Orbitron → Jost |
+| `components/organisms/CharacterPanel.vue` | nom en Jost, avatar allégé, `srcset`, centrage mobile |
+| `components/atoms/TitleBlock.vue` | **supprimé** (jamais importé) |
+| `public/images/avatar-*.webp` / `.jpg` | variantes rééchantillonnées à créer |
 
 ## Ce qui ne change pas
 
 - L'ordre et le découpage des sections
 - Les couleurs : fond sombre, `#42b883`
 - La timeline verticale verte des expériences (desktop), absente en mobile comme aujourd'hui
-- `ProjectModal`, `HeaderBar`, la navigation, l'i18n
+- `ProjectModal`, la structure de navigation et l'i18n (seule la police de `HeaderBar` change)
 - Les cartes de projet
 
 ## Vérification
@@ -182,6 +216,11 @@ comparaison avant/après :
       survol
 - [ ] Le titre de section à 16 px ne paraît pas collé à la timeline verte dans
       « Expériences » — seul endroit où le resserrement peut mal tomber
+- [ ] L'avatar ne présente plus d'aliasing sur les cheveux et la peau, en @1x comme en @2x
+- [ ] Le poids transféré de l'avatar passe sous 60 Ko (contre 2,0 Mo)
+- [ ] En mobile, avatar, nom et titre de poste partagent le même axe de centrage
+- [ ] Aucune référence résiduelle à Orbitron : `grep -rn Orbitron pages components` ne
+      retourne rien
 
 ## Points réversibles
 
@@ -195,6 +234,9 @@ Ces décisions ont été prises pour la cohérence d'ensemble et peuvent être a
 ## Hors périmètre
 
 - **Lot 2** : transitions entre sections, effet de curseur en cubes
+- **Les captures de projets** : `public/images/projects/winky_*.png` pèsent 9,7 Mo à elles
+  seules (4346 × 2258 px) pour un affichage en carte de ~280 px. Même défaut que l'avatar, à
+  traiter dans un chantier de performance dédié — le signaler ici évite de l'oublier.
 - `CLAUDE.md` décrit une architecture obsolète (`TopBar`, `BottomBar`, `TextPanel`,
   `ContactSection`, navigation par `activeSection`) qui ne correspond plus au code. À
   corriger dans un commit séparé pour ne pas mêler documentation et refonte visuelle.
