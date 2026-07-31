@@ -1063,7 +1063,7 @@ See `docs/superpowers/specs/2026-07-30-vitrine-projets-design.md` for the full r
 - [ ] **Step 5: Ouvrir la pull request**
 
 ```bash
-git push -u origin feat/refonte-ui-lot1
+git push -u origin feat/vitrine-projets
 gh pr create --title "feat: vitrine projets — châssis d'appareils et allègement des captures" --body "$(cat <<'EOF'
 ## Objectif
 
