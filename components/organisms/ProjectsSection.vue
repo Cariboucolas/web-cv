@@ -83,6 +83,7 @@ interface Project {
   logoBg?: string
   /** Icône material-symbols, affichée à défaut de logo. */
   icon?: string
+  /** Chemins sans suffixe ni extension : ProjectShowcase construit le srcset. */
   images: string[]
   technologies: string[]
   link: string
@@ -102,10 +103,10 @@ const projects = ref<Project[]>([
     key: 'mgm',
     icon: 'material-symbols:monitoring',
     images: [
-      '/images/projects/mgm_dashboard.png',
-      '/images/projects/mgm_debrief.png',
-      '/images/projects/mgm_debrieflastweek.png',
-      '/images/projects/mgm_topmodel.png',
+      '/images/projects/mgm_dashboard',
+      '/images/projects/mgm_debrief',
+      '/images/projects/mgm_debrieflastweek',
+      '/images/projects/mgm_topmodel',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Datadog', 'Sentry', 'SonarQube', 'GraphQL', 'Storybook', 'Cypress'],
     link: '#',
@@ -114,7 +115,7 @@ const projects = ref<Project[]>([
   {
     key: 'fcs',
     icon: 'material-symbols:sentiment-satisfied',
-    images: ['/images/projects/fcs_dashboard.png'],
+    images: ['/images/projects/fcs_dashboard'],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Datadog', 'Sentry', 'SonarQube', 'GraphQL', 'Storybook', 'Cypress'],
     link: '#',
     orientation: 'portrait',
@@ -124,10 +125,10 @@ const projects = ref<Project[]>([
     logo: '/logos/logo_winkyverse.png',
     logoBg: '#ffffff',
     images: [
-      '/images/projects/winky_dashboard.png',
-      '/images/projects/winky-dashboard_2.png',
-      '/images/projects/winky_paiment.png',
-      '/images/projects/winky_login.png',
+      '/images/projects/winky_dashboard',
+      '/images/projects/winky-dashboard_2',
+      '/images/projects/winky_paiment',
+      '/images/projects/winky_login',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
     link: '#',
@@ -146,8 +147,8 @@ const projects = ref<Project[]>([
     key: 'stic',
     icon: 'material-symbols:pedal-bike',
     images: [
-      '/images/projects/stic_dashboard.png',
-      '/images/projects/stic_immat.png',
+      '/images/projects/stic_dashboard',
+      '/images/projects/stic_immat',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Sentry', 'SonarQube', 'Scandit', 'Cypress'],
     link: '#',

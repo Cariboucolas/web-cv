@@ -5,49 +5,42 @@
         <Icon name="material-symbols:close" size="20"/>
       </button>
 
-      <!-- Slider d'images si screenshots disponibles -->
-      <template v-if="project.images.length > 0">
-        <div
-            class="modal-slider"
-            :class="project.orientation === 'portrait' ? 'slider-portrait' : 'slider-landscape'"
-        >
-          <img
-              :src="project.images[sliderIndex]"
-              :alt="t(`projects.projects.${project.key}.title`)"
-              class="slider-img"
-              :class="project.orientation === 'portrait' ? 'img-contain' : 'img-cover'"
-          />
-          <template v-if="project.images.length > 1">
-            <button class="slider-btn slider-btn-prev"
-                    @click="sliderIndex = (sliderIndex - 1 + project.images.length) % project.images.length">
-              <Icon name="material-symbols:chevron-left" size="28"/>
-            </button>
-            <button class="slider-btn slider-btn-next"
-                    @click="sliderIndex = (sliderIndex + 1) % project.images.length">
-              <Icon name="material-symbols:chevron-right" size="28"/>
-            </button>
-            <div class="slider-dots">
-              <span
-                  v-for="(_, i) in project.images"
-                  :key="i"
-                  class="slider-dot"
-                  :class="{ active: i === sliderIndex }"
-                  @click="sliderIndex = i"
-              />
-            </div>
-          </template>
-        </div>
-      </template>
-
-      <!-- Placeholder si pas de screenshots : même badge que la carte du projet -->
-      <div v-else class="modal-placeholder">
-        <AtomsProjectBadge
-            size="lg"
+      <div
+          class="modal-slider"
+          :class="project.orientation === 'portrait' ? 'slider-portrait' : 'slider-landscape'"
+      >
+        <!-- Une seule capture est passée à la fois : c'est le slider de la
+             modale qui pilote, le showcase ne défile pas ici. -->
+        <MoleculesProjectShowcase
+            :images="project.images.length > 0 ? [project.images[sliderIndex]] : []"
+            :orientation="project.orientation"
             :logo="project.logo"
             :logo-bg="project.logoBg"
             :icon="project.icon"
             :alt="t(`projects.projects.${project.key}.title`)"
+            :sizes="project.orientation === 'portrait' ? '190px' : '458px'"
+            class="modal-showcase"
         />
+
+        <template v-if="project.images.length > 1">
+          <button class="slider-btn slider-btn-prev"
+                  @click="sliderIndex = (sliderIndex - 1 + project.images.length) % project.images.length">
+            <Icon name="material-symbols:chevron-left" size="28"/>
+          </button>
+          <button class="slider-btn slider-btn-next"
+                  @click="sliderIndex = (sliderIndex + 1) % project.images.length">
+            <Icon name="material-symbols:chevron-right" size="28"/>
+          </button>
+          <div class="slider-dots">
+            <span
+                v-for="(_, i) in project.images"
+                :key="i"
+                class="slider-dot"
+                :class="{ active: i === sliderIndex }"
+                @click="sliderIndex = i"
+            />
+          </div>
+        </template>
       </div>
 
       <div class="modal-content">
@@ -134,31 +127,22 @@ watch(() => props.project, () => {
 /* ── Slider ── */
 .modal-slider {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  overflow: hidden;
+  padding: 24px 0;
+  background: #0f0f0f;
 }
 
-.slider-portrait {
-  height: 420px;
-  background: #0a0a0a;
+/* Le portrait se dimensionne par la hauteur : un téléphone entier à 88% de
+   la largeur de la modale mesurerait 700px de haut et déborderait l'écran. */
+.slider-portrait .modal-showcase {
+  height: 400px;
 }
 
-.slider-landscape {
-  height: 280px;
-  background: #111;
-}
-
-.slider-img {
-  width: 100%;
-  height: 100%;
-}
-
-.img-contain {
-  object-fit: contain;
-}
-
-.img-cover {
-  object-fit: cover;
+.slider-landscape .modal-showcase {
+  width: 88%;
 }
 
 .slider-btn {
@@ -207,16 +191,6 @@ watch(() => props.project, () => {
 
 .slider-dot.active {
   background: #42b883;
-}
-
-/* ── Placeholder ── */
-.modal-placeholder {
-  width: 100%;
-  aspect-ratio: 5 / 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0a0a0a;
 }
 
 /* ── Content ── */
