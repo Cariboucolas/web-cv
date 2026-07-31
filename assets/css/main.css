@@ -26,6 +26,10 @@
   --space-grid: 16px;
   --space-inner-md: 8px;
   --space-inner-sm: 4px;
+
+  /* Vitrine projets : l'inclinaison se règle ici, comme le rapport 4:1 de
+     l'échelle d'espacement — sans toucher au moindre composant. */
+  --showcase-tilt: -8deg;
 }
 
 /* Sous 900px, les blocs en colonnes repassent en pile : la gouttière

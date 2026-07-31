@@ -9,14 +9,23 @@
             :key="project.key"
             class="project-card"
             @click="openModal(project)"
+            @mouseenter="activeKey = project.key"
+            @mouseleave="activeKey = null"
         >
-          <div class="project-card-visual">
-            <AtomsProjectBadge
-                size="md"
+          <div class="project-card-stage">
+            <MoleculesProjectShowcase
+                :images="project.images"
+                :orientation="project.orientation"
                 :logo="project.logo"
                 :logo-bg="project.logoBg"
                 :icon="project.icon"
-                :alt="t(`projects.projects.${project.key}.title`)"
+                alt=""
+                :sizes="project.orientation === 'portrait' ? '156px' : '264px'"
+                :active="activeKey === project.key"
+                class="project-card-showcase"
+                :class="project.orientation === 'portrait'
+                  ? 'project-card-showcase--phone'
+                  : 'project-card-showcase--browser'"
             />
           </div>
           <div class="project-card-body">
@@ -159,6 +168,9 @@ const projects = ref<Project[]>([
 const modalOpen = ref(false)
 const selectedProject = ref<Project | null>(null)
 
+/** Projet dont les captures défilent. Une seule carte à la fois. */
+const activeKey = ref<string | null>(null)
+
 const openModal = (project: Project) => {
   selectedProject.value = project
   modalOpen.value = true
@@ -174,29 +186,65 @@ const openModal = (project: Project) => {
 }
 
 .project-card {
+  position: relative;
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 20px rgba(66, 184, 131, 0.04);
 }
 
+/* overflow: hidden descend de la carte vers la scène : la carte doit laisser
+   sortir le panneau de tags de la tâche 6, la scène doit rogner le châssis. */
 .project-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 24px rgba(66, 184, 131, 0.15);
+  z-index: 5;
 }
 
-/* ── Bandeau uni portant le badge du projet ── */
-.project-card-visual {
+.project-card-stage {
+  position: relative;
   width: 100%;
   aspect-ratio: 5 / 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   background: #1a1a1a;
   border-radius: 12px 12px 0 0;
+}
+
+.project-card-showcase {
+  position: absolute;
+  /* Ancré en haut à droite et débordant : le bas de l'appareil est rogné,
+     ce qui laisse dans le champ la partie haute de la capture. */
+  top: 12%;
+  right: -8%;
+  transform: rotate(var(--showcase-tilt));
+  transform-origin: top right;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+.project-card-showcase--phone {
+  width: 52%;
+}
+
+.project-card-showcase--browser {
+  width: 88%;
+}
+
+.project-card:hover .project-card-showcase {
+  transform: rotate(var(--showcase-tilt)) translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card-showcase {
+    transition: none;
+  }
+
+  .project-card:hover .project-card-showcase {
+    transform: rotate(var(--showcase-tilt));
+  }
 }
 
 
