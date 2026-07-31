@@ -4,13 +4,16 @@
     <!-- Desktop: grille de cards -->
     <div class="hidden sm:block">
       <div class="projects-grid">
-        <div
+        <button
             v-for="project in projects"
             :key="project.key"
+            type="button"
             class="project-card"
             @click="openModal(project)"
             @mouseenter="activeKey = project.key"
             @mouseleave="activeKey = null"
+            @focus="activeKey = project.key"
+            @blur="activeKey = null"
         >
           <div class="project-card-stage">
             <MoleculesProjectShowcase
@@ -31,13 +34,28 @@
           <div class="project-card-body">
             <h4 class="project-card-title">{{ t(`projects.projects.${project.key}.title`) }}</h4>
             <p class="project-card-desc">{{ t(`projects.projects.${project.key}.shortDescription`) }}</p>
-            <div class="project-card-tags">
-              <span v-for="tech in project.technologies" :key="tech" class="project-tag">
-                {{ tech }}
-              </span>
+            <div class="project-card-tagzone">
+              <!-- Liste tronquée : décorative, c'est le panneau complet qui
+                   porte l'information pour les lecteurs d'écran. -->
+              <div class="project-card-tags" aria-hidden="true">
+                <span v-for="tech in project.technologies.slice(0, 3)" :key="tech" class="project-tag">
+                  {{ tech }}
+                </span>
+                <span v-if="project.technologies.length > 3" class="project-tag project-tag--count">
+                  +{{ project.technologies.length - 3 }}
+                </span>
+              </div>
+
+              <!-- Opacité nulle plutôt que display ou visibility : le panneau
+                   reste annoncé, donc la liste complète est accessible. -->
+              <div class="project-card-tags-full">
+                <span v-for="tech in project.technologies" :key="tech" class="project-tag">
+                  {{ tech }}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -193,6 +211,23 @@ const openModal = (project: Project) => {
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 20px rgba(66, 184, 131, 0.04);
+  /* Réinitialisation du bouton natif : l'apparence reste celle d'une carte. */
+  appearance: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  display: block;
+}
+
+.project-card:focus-visible {
+  outline: 2px solid #42b883;
+  outline-offset: 2px;
+}
+
+.project-card:focus-within {
+  z-index: 5;
 }
 
 /* overflow: hidden descend de la carte vers la scène : la carte doit laisser
@@ -272,11 +307,48 @@ const openModal = (project: Project) => {
   overflow: hidden;
 }
 
-.project-card-tags {
+.project-card-tagzone {
+  position: relative;
+  margin-top: var(--space-inner-md);
+}
+
+.project-card-tags,
+.project-card-tags-full {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: var(--space-inner-md);
+}
+
+.project-card-tags-full {
+  position: absolute;
+  /* Déborde jusqu'au bord extérieur de la carte — 14px de padding du corps
+     plus 1px de bordure — pour recouvrir son bas et paraître la prolonger. */
+  top: 0;
+  left: -15px;
+  right: -15px;
+  padding: 0 15px 14px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.project-card:hover .project-card-tags-full,
+.project-card:focus-within .project-card-tags-full {
+  opacity: 1;
+}
+
+.project-tag--count {
+  color: #6f6f6f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card-tags-full {
+    transition: none;
+  }
 }
 
 .project-tag {
