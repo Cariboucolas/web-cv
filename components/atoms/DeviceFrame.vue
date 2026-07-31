@@ -1,0 +1,113 @@
+<template>
+  <div class="device-frame" :class="`device-frame--${variant}`">
+    <div class="device-body">
+      <!-- Encoche ou bandeau : purement décoratifs, jamais annoncés. -->
+      <div v-if="variant === 'phone'" class="device-notch" aria-hidden="true"/>
+      <div v-else class="device-chrome" aria-hidden="true">
+        <span class="device-dot"/>
+        <span class="device-dot"/>
+        <span class="device-dot"/>
+        <span class="device-address"/>
+      </div>
+      <div class="device-screen">
+        <slot/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  variant: 'phone' | 'browser'
+}>()
+</script>
+
+<style scoped>
+.device-frame {
+  /* Les proportions internes sont exprimées en cqw plutôt qu'en pixels : le
+     même châssis sert à 156px sur une carte et à 458px dans la modale sans
+     qu'aucune taille ait à être passée en prop. */
+  container-type: inline-size;
+  position: relative;
+}
+
+.device-frame--phone {
+  aspect-ratio: 9 / 19.5;
+}
+
+.device-frame--browser {
+  aspect-ratio: 16 / 10;
+}
+
+/* Le corps est un enfant plutôt que le conteneur lui-même : un conteneur ne
+   peut pas se styler avec ses propres unités de requête. */
+.device-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #111;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.device-frame--phone .device-body {
+  border-radius: 9cqw;
+}
+
+.device-frame--browser .device-body {
+  border-radius: 3cqw;
+}
+
+/* ── Téléphone ── */
+.device-notch {
+  position: absolute;
+  top: 1.6cqw;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32%;
+  height: 1.6cqw;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: 1;
+}
+
+.device-frame--phone .device-screen {
+  margin-top: 5cqw;
+}
+
+/* ── Navigateur ── */
+.device-chrome {
+  display: flex;
+  align-items: center;
+  gap: 1.2cqw;
+  padding: 0 2cqw;
+  height: 6cqw;
+  flex-shrink: 0;
+  background: #1a1a1a;
+}
+
+.device-dot {
+  width: 1.6cqw;
+  height: 1.6cqw;
+  border-radius: 50%;
+  /* Gris plutôt que rouge/jaune/vert : la charte n'a que deux couleurs. */
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.device-address {
+  height: 2cqw;
+  width: 40%;
+  margin-left: 1.5cqw;
+  border-radius: 999px;
+  background: #262626;
+}
+
+.device-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+</style>
