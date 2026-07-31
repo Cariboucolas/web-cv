@@ -10,7 +10,7 @@
           class="showcase-logo"
           :style="logoBg ? { background: logoBg } : undefined"
       />
-      <Icon v-else-if="icon" :name="icon" class="showcase-icon" size="32"/>
+      <Icon v-else-if="icon" :name="icon" class="showcase-icon"/>
     </div>
 
     <!-- Les captures sont montées au fur et à mesure du défilement : au repos,
@@ -147,6 +147,11 @@ onBeforeUnmount(stop)
 }
 
 .showcase-icon {
+  /* Le composant Icon de @nuxt/icon dimensionne via `font-size` (em) : la
+     prop `size` pose un style inline qui l'emporterait sur toute règle CSS
+     de même spécificité, donc elle n'est pas utilisée ici. cqw plutôt que px
+     pour suivre le châssis, comme .showcase-logo et DeviceFrame.vue. */
+  font-size: 22cqw;
   color: #42b883;
   opacity: 0.6;
 }

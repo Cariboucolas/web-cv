@@ -9,6 +9,7 @@
             :key="project.key"
             type="button"
             class="project-card"
+            :aria-label="t('projects.openDetail', { title: t(`projects.projects.${project.key}.title`) })"
             @click="openModal(project)"
             @mouseenter="activeKey = project.key"
             @mouseleave="activeKey = null"
@@ -35,8 +36,11 @@
             <h4 class="project-card-title">{{ t(`projects.projects.${project.key}.title`) }}</h4>
             <p class="project-card-desc">{{ t(`projects.projects.${project.key}.shortDescription`) }}</p>
             <div class="project-card-tagzone">
-              <!-- Liste tronquée : décorative, c'est le panneau complet qui
-                   porte l'information pour les lecteurs d'écran. -->
+              <!-- Liste tronquée : décorative, comme le panneau complet juste en
+                   dessous. Les technologies ne sont pas portées par le texte
+                   de la carte : c'est le bouton qui a son propre aria-label,
+                   et la liste complète reste accessible via la modale que la
+                   carte ouvre. -->
               <div class="project-card-tags" aria-hidden="true">
                 <span v-for="tech in project.technologies.slice(0, 3)" :key="tech" class="project-tag">
                   {{ tech }}
@@ -46,9 +50,9 @@
                 </span>
               </div>
 
-              <!-- Opacité nulle plutôt que display ou visibility : le panneau
-                   reste annoncé, donc la liste complète est accessible. -->
-              <div class="project-card-tags-full">
+              <!-- Opacité nulle plutôt que display ou visibility : la révélation au
+                   survol reste animable. -->
+              <div class="project-card-tags-full" aria-hidden="true">
                 <span v-for="tech in project.technologies" :key="tech" class="project-tag">
                   {{ tech }}
                 </span>
@@ -192,6 +196,11 @@ const activeKey = ref<string | null>(null)
 const openModal = (project: Project) => {
   selectedProject.value = project
   modalOpen.value = true
+  // Le survol/focus qui a déclenché le clic ne reçoit pas toujours de
+  // mouseleave/blur (clic sans déplacement de souris, Safari macOS qui ne
+  // focus pas les <button> au clic) : on arrête explicitement le défilement
+  // pour qu'il ne continue pas derrière la modale.
+  activeKey.value = null
 }
 </script>
 
@@ -230,14 +239,14 @@ const openModal = (project: Project) => {
   z-index: 5;
 }
 
-/* overflow: hidden descend de la carte vers la scène : la carte doit laisser
-   sortir le panneau de tags de la tâche 6, la scène doit rogner le châssis. */
 .project-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 24px rgba(66, 184, 131, 0.15);
   z-index: 5;
 }
 
+/* overflow: hidden descend de la carte vers la scène : la carte doit laisser
+   sortir le panneau de tags de la tâche 6, la scène doit rogner le châssis. */
 .project-card-stage {
   position: relative;
   width: 100%;
@@ -281,7 +290,6 @@ const openModal = (project: Project) => {
     transform: rotate(var(--showcase-tilt));
   }
 }
-
 
 .project-card-body {
   padding: 0 14px 14px;
