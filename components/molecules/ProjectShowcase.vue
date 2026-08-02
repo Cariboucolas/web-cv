@@ -117,10 +117,11 @@ onBeforeUnmount(stop)
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  /* Cadrage par le haut : c'est la partie de la capture qui porte l'identité
-     de l'écran, et la seule visible une fois le châssis rogné par la carte. */
-  object-position: top center;
+  /* contain et non cover : les captures n'ont pas toutes le format exact de
+     l'écran, et un rognage même léger donne l'impression d'un écran tronqué.
+     Mieux vaut une fine bande noire, invisible dans un châssis sombre. */
+  object-fit: contain;
+  object-position: center;
   opacity: 0;
   /* Fondu resserré avec la cadence : à 400ms pour 1,5s de cycle, l'image
      passait un quart du temps en transition et paraissait molle. */

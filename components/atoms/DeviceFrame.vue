@@ -36,7 +36,11 @@ defineProps<{
 }
 
 .device-frame--browser {
-  aspect-ratio: 16 / 10;
+  /* 1.46 et non 16/10 : le bandeau supérieur occupe 6% de la largeur, donc
+     c'est le châssis qui doit être plus haut pour que l'ÉCRAN, lui, retombe
+     exactement en 16:10 — le ratio des captures. Sinon elles y perdent 10%
+     de hauteur. */
+  aspect-ratio: 1.46;
 }
 
 /* Le corps est un enfant plutôt que le conteneur lui-même : un conteneur ne
@@ -118,5 +122,8 @@ defineProps<{
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  /* Un écran au repos est noir : les captures dont le format ne tombe pas
+     pile s'y posent sans qu'aucune bande ne se remarque. */
+  background: #000;
 }
 </style>

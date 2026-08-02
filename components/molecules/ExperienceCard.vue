@@ -251,25 +251,21 @@ const period = computed(() => {
   padding: 16px 18px;
   gap: 14px;
   border-radius: 12px;
-  /* Rien au repos : la carte n'entourait qu'un contenu non cliquable. Le
-     survol la révèle. box-shadow inset plutôt que border, pour qu'aucun
-     décalage de mise en page n'accompagne l'apparition. */
+  /* Nue en desktop : la carte n'entoure qu'un contenu non cliquable, et
+     l'espacement suffit à séparer les entrées. Elle ne réapparaît que là où
+     le survol n'existe pas (voir plus bas). */
   background: transparent;
-  box-shadow: inset 0 0 0 1px transparent;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
+
+/* Aucune réaction au survol : révéler un encadrement sous le curseur promet
+   une action que la carte n'offre pas — rien n'y est cliquable. Le lot 1
+   l'avait introduit pour marquer l'entrée survolée ; à l'usage, il se lit
+   comme une invitation au clic. */
 
 /* Le survol n'existe pas au doigt : sur les appareils sans pointeur fin, la
    carte reste visible en permanence plutôt que de dépendre d'un geste
    impossible. La coupure à 640px ne suffisait pas — une tablette tactile
    reçoit la version desktop. */
-@media (hover: hover) {
-  .xp-card:hover {
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: inset 0 0 0 1px rgba(66, 184, 131, 0.2);
-  }
-}
-
 @media (hover: none) {
   .xp-card {
     background: #111;
