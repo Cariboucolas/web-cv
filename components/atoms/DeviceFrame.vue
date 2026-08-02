@@ -52,7 +52,13 @@ defineProps<{
 }
 
 .device-frame--phone .device-body {
-  border-radius: 9cqw;
+  border-radius: 12cqw;
+  /* Le châssis est un vrai bord d'appareil, pas un filet : un padding
+     proportionnel sur trois côtés, plus épais en haut pour loger l'encoche.
+     À 3,5% de la largeur, il se lit encore à 156px de large — un iPhone
+     tourne autour de 2,8%. */
+  padding: 7cqw 3.5cqw 3.5cqw;
+  background: #0b0b0b;
 }
 
 .device-frame--browser .device-body {
@@ -62,18 +68,21 @@ defineProps<{
 /* ── Téléphone ── */
 .device-notch {
   position: absolute;
-  top: 1.6cqw;
+  /* Centrée dans la bande supérieure de 7cqw. */
+  top: 2.4cqw;
   left: 50%;
   transform: translateX(-50%);
-  width: 32%;
-  height: 1.6cqw;
+  width: 28%;
+  height: 1.8cqw;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.25);
   z-index: 1;
 }
 
 .device-frame--phone .device-screen {
-  margin-top: 5cqw;
+  /* Rayon intérieur plus serré que celui du châssis, comme sur un appareil
+     réel où l'écran suit le bord sans l'épouser. */
+  border-radius: 6cqw;
 }
 
 /* ── Navigateur ── */

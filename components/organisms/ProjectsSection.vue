@@ -258,25 +258,35 @@ const openModal = (project: Project) => {
 
 .project-card-showcase {
   position: absolute;
-  /* Ancré en haut à droite et débordant : le bas de l'appareil est rogné,
-     ce qui laisse dans le champ la partie haute de la capture. */
+  /* Le bas de l'appareil est rogné par la scène : c'est la partie haute de
+     la capture, celle qui porte l'identité de l'écran, qui reste dans le
+     champ. L'ancrage horizontal diffère selon l'appareil. */
   top: 12%;
-  right: -8%;
-  transform: rotate(var(--showcase-tilt));
-  transform-origin: top right;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
   transition: transform 0.3s ease;
 }
 
+/* Un téléphone est étroit : centré, il tient dans la carte sans être rogné
+   latéralement, là où un navigateur large doit déborder pour rester lisible. */
 .project-card-showcase--phone {
   width: 52%;
+  left: 50%;
+  transform: translateX(-50%) rotate(var(--showcase-tilt));
+  transform-origin: top center;
 }
 
 .project-card-showcase--browser {
   width: 88%;
+  right: -8%;
+  transform: rotate(var(--showcase-tilt));
+  transform-origin: top right;
 }
 
-.project-card:hover .project-card-showcase {
+.project-card:hover .project-card-showcase--phone {
+  transform: translateX(-50%) rotate(var(--showcase-tilt)) translateY(-6px);
+}
+
+.project-card:hover .project-card-showcase--browser {
   transform: rotate(var(--showcase-tilt)) translateY(-6px);
 }
 
@@ -286,7 +296,11 @@ const openModal = (project: Project) => {
     transition: none;
   }
 
-  .project-card:hover .project-card-showcase {
+  .project-card:hover .project-card-showcase--phone {
+    transform: translateX(-50%) rotate(var(--showcase-tilt));
+  }
+
+  .project-card:hover .project-card-showcase--browser {
     transform: rotate(var(--showcase-tilt));
   }
 }

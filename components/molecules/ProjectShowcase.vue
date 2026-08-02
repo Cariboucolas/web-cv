@@ -52,7 +52,7 @@ const props = withDefaults(
   }>(),
   {
     active: false,
-    interval: 2500,
+    interval: 1500,
   },
 )
 
@@ -122,7 +122,9 @@ onBeforeUnmount(stop)
      de l'écran, et la seule visible une fois le châssis rogné par la carte. */
   object-position: top center;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  /* Fondu resserré avec la cadence : à 400ms pour 1,5s de cycle, l'image
+     passait un quart du temps en transition et paraissait molle. */
+  transition: opacity 0.25s ease;
 }
 
 .showcase-img--active {
