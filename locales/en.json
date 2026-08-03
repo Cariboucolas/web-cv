@@ -34,6 +34,7 @@
   "projects": {
     "title": "Projects",
     "viewProject": "View project →",
+    "openDetail": "{title} — view project details",
     "today": "Now",
     "projects": {
       "mgm": {

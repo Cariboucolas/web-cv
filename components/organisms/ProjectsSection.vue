@@ -4,31 +4,62 @@
     <!-- Desktop: grille de cards -->
     <div class="hidden sm:block">
       <div class="projects-grid">
-        <div
+        <button
             v-for="project in projects"
             :key="project.key"
+            type="button"
             class="project-card"
+            :aria-label="t('projects.openDetail', { title: t(`projects.projects.${project.key}.title`) })"
             @click="openModal(project)"
+            @mouseenter="activeKey = project.key"
+            @mouseleave="activeKey = null"
+            @focus="activeKey = project.key"
+            @blur="activeKey = null"
         >
-          <div class="project-card-visual">
-            <AtomsProjectBadge
-                size="md"
+          <div class="project-card-stage">
+            <MoleculesProjectShowcase
+                :images="project.images"
+                :orientation="project.orientation"
                 :logo="project.logo"
                 :logo-bg="project.logoBg"
                 :icon="project.icon"
-                :alt="t(`projects.projects.${project.key}.title`)"
+                alt=""
+                :sizes="project.orientation === 'portrait' ? '156px' : '264px'"
+                :active="activeKey === project.key"
+                class="project-card-showcase"
+                :class="project.orientation === 'portrait'
+                  ? 'project-card-showcase--phone'
+                  : 'project-card-showcase--browser'"
             />
           </div>
           <div class="project-card-body">
             <h4 class="project-card-title">{{ t(`projects.projects.${project.key}.title`) }}</h4>
             <p class="project-card-desc">{{ t(`projects.projects.${project.key}.shortDescription`) }}</p>
-            <div class="project-card-tags">
-              <span v-for="tech in project.technologies" :key="tech" class="project-tag">
-                {{ tech }}
-              </span>
+            <div class="project-card-tagzone">
+              <!-- Liste tronquée : décorative, comme le panneau complet juste en
+                   dessous. Les technologies ne sont pas portées par le texte
+                   de la carte : c'est le bouton qui a son propre aria-label,
+                   et la liste complète reste accessible via la modale que la
+                   carte ouvre. -->
+              <div class="project-card-tags" aria-hidden="true">
+                <span v-for="tech in project.technologies.slice(0, 3)" :key="tech" class="project-tag">
+                  {{ tech }}
+                </span>
+                <span v-if="project.technologies.length > 3" class="project-tag project-tag--count">
+                  +{{ project.technologies.length - 3 }}
+                </span>
+              </div>
+
+              <!-- Opacité nulle plutôt que display ou visibility : la révélation au
+                   survol reste animable. -->
+              <div class="project-card-tags-full" aria-hidden="true">
+                <span v-for="tech in project.technologies" :key="tech" class="project-tag">
+                  {{ tech }}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -83,6 +114,7 @@ interface Project {
   logoBg?: string
   /** Icône material-symbols, affichée à défaut de logo. */
   icon?: string
+  /** Chemins sans suffixe ni extension : ProjectShowcase construit le srcset. */
   images: string[]
   technologies: string[]
   link: string
@@ -102,10 +134,10 @@ const projects = ref<Project[]>([
     key: 'mgm',
     icon: 'material-symbols:monitoring',
     images: [
-      '/images/projects/mgm_dashboard.png',
-      '/images/projects/mgm_debrief.png',
-      '/images/projects/mgm_debrieflastweek.png',
-      '/images/projects/mgm_topmodel.png',
+      '/images/projects/mgm_dashboard',
+      '/images/projects/mgm_debrief',
+      '/images/projects/mgm_debrieflastweek',
+      '/images/projects/mgm_topmodel',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Datadog', 'Sentry', 'SonarQube', 'GraphQL', 'Storybook', 'Cypress'],
     link: '#',
@@ -114,7 +146,7 @@ const projects = ref<Project[]>([
   {
     key: 'fcs',
     icon: 'material-symbols:sentiment-satisfied',
-    images: ['/images/projects/fcs_dashboard.png'],
+    images: ['/images/projects/fcs_dashboard'],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Datadog', 'Sentry', 'SonarQube', 'GraphQL', 'Storybook', 'Cypress'],
     link: '#',
     orientation: 'portrait',
@@ -124,9 +156,10 @@ const projects = ref<Project[]>([
     logo: '/logos/logo_winkyverse.png',
     logoBg: '#ffffff',
     images: [
-      '/images/projects/winky_dashboard.png',
-      '/images/projects/winky-dashboard_2.png',
-      '/images/projects/winky_paiment.png',
+      '/images/projects/winky_dashboard',
+      '/images/projects/winky-dashboard_2',
+      '/images/projects/winky_paiment',
+      '/images/projects/winky_login',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
     link: '#',
@@ -145,8 +178,8 @@ const projects = ref<Project[]>([
     key: 'stic',
     icon: 'material-symbols:pedal-bike',
     images: [
-      '/images/projects/stic_dashboard.png',
-      '/images/projects/stic_immat.png',
+      '/images/projects/stic_dashboard',
+      '/images/projects/stic_immat',
     ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'Sentry', 'SonarQube', 'Scandit', 'Cypress'],
     link: '#',
@@ -157,9 +190,17 @@ const projects = ref<Project[]>([
 const modalOpen = ref(false)
 const selectedProject = ref<Project | null>(null)
 
+/** Projet dont les captures défilent. Une seule carte à la fois. */
+const activeKey = ref<string | null>(null)
+
 const openModal = (project: Project) => {
   selectedProject.value = project
   modalOpen.value = true
+  // Le survol/focus qui a déclenché le clic ne reçoit pas toujours de
+  // mouseleave/blur (clic sans déplacement de souris, Safari macOS qui ne
+  // focus pas les <button> au clic) : on arrête explicitement le défilement
+  // pour qu'il ne continue pas derrière la modale.
+  activeKey.value = null
 }
 </script>
 
@@ -172,31 +213,97 @@ const openModal = (project: Project) => {
 }
 
 .project-card {
+  position: relative;
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 0 20px rgba(66, 184, 131, 0.04);
+  /* Réinitialisation du bouton natif : l'apparence reste celle d'une carte. */
+  appearance: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  display: block;
+}
+
+.project-card:focus-visible {
+  outline: 2px solid #42b883;
+  outline-offset: 2px;
+}
+
+.project-card:focus-within {
+  z-index: 5;
 }
 
 .project-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 24px rgba(66, 184, 131, 0.15);
+  z-index: 5;
 }
 
-/* ── Bandeau uni portant le badge du projet ── */
-.project-card-visual {
+/* overflow: hidden descend de la carte vers la scène : la carte doit laisser
+   sortir le panneau de tags de la tâche 6, la scène doit rogner le châssis. */
+.project-card-stage {
+  position: relative;
   width: 100%;
   aspect-ratio: 5 / 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   background: #1a1a1a;
   border-radius: 12px 12px 0 0;
 }
 
+.project-card-showcase {
+  position: absolute;
+  /* Le bas de l'appareil est rogné par la scène : c'est la partie haute de
+     la capture, celle qui porte l'identité de l'écran, qui reste dans le
+     champ. L'ancrage horizontal diffère selon l'appareil. */
+  top: 12%;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+  transition: transform 0.3s ease;
+}
+
+/* Un téléphone est étroit : centré, il tient dans la carte sans être rogné
+   latéralement, là où un navigateur large doit déborder pour rester lisible. */
+.project-card-showcase--phone {
+  width: 52%;
+  left: 50%;
+  transform: translateX(-50%) rotate(var(--showcase-tilt));
+  transform-origin: top center;
+}
+
+.project-card-showcase--browser {
+  width: 88%;
+  right: -8%;
+  transform: rotate(var(--showcase-tilt));
+  transform-origin: top right;
+}
+
+.project-card:hover .project-card-showcase--phone {
+  transform: translateX(-50%) rotate(var(--showcase-tilt)) translateY(-6px);
+}
+
+.project-card:hover .project-card-showcase--browser {
+  transform: rotate(var(--showcase-tilt)) translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card-showcase {
+    transition: none;
+  }
+
+  .project-card:hover .project-card-showcase--phone {
+    transform: translateX(-50%) rotate(var(--showcase-tilt));
+  }
+
+  .project-card:hover .project-card-showcase--browser {
+    transform: rotate(var(--showcase-tilt));
+  }
+}
 
 .project-card-body {
   padding: 0 14px 14px;
@@ -222,11 +329,48 @@ const openModal = (project: Project) => {
   overflow: hidden;
 }
 
-.project-card-tags {
+.project-card-tagzone {
+  position: relative;
+  margin-top: var(--space-inner-md);
+}
+
+.project-card-tags,
+.project-card-tags-full {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: var(--space-inner-md);
+}
+
+.project-card-tags-full {
+  position: absolute;
+  /* Déborde jusqu'au bord extérieur de la carte — 14px de padding du corps
+     plus 1px de bordure — pour recouvrir son bas et paraître la prolonger. */
+  top: 0;
+  left: -15px;
+  right: -15px;
+  padding: 0 15px 14px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.project-card:hover .project-card-tags-full,
+.project-card:focus-within .project-card-tags-full {
+  opacity: 1;
+}
+
+.project-tag--count {
+  color: #6f6f6f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card-tags-full {
+    transition: none;
+  }
 }
 
 .project-tag {

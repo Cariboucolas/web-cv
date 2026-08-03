@@ -41,25 +41,35 @@ filet disparaît aussi, ce qui aligne enfin les deux tailles d'écran sur le mê
 
 ### 2. Traitement des cartes de contenu
 
-| Bloc | Desktop | Mobile |
+| Bloc | Desktop | Mobile et tactile |
 |---|---|---|
-| Expériences | aucun encadrement au repos, **révélé au survol** | **cartes conservées** (état actuel) |
+| Expériences | **aucun encadrement** | **cartes conservées** (état actuel) |
 | Projets | **cartes conservées** (état actuel) | **cartes conservées** (état actuel) |
 
 L'arbitrage est fonctionnel, pas esthétique : une carte d'expérience est décorative — rien
 n'y est cliquable — alors qu'une carte de projet signale l'ouverture de `ProjectModal`. Le
 minimalisme s'applique donc là où il ne coûte aucune clarté.
 
-L'état de survol des expériences (desktop) :
+Le mobile conserve ses cartes parce que le survol n'y existe pas : la distinction se fait sur
+`@media (hover: none)` et non sur une largeur, une tablette tactile recevant la version
+desktop.
 
-```css
-background: rgba(255, 255, 255, 0.03);
-box-shadow: inset 0 0 0 1px rgba(66, 184, 131, 0.2);
-border-radius: 12px;
-```
-
-Le `box-shadow: inset` plutôt qu'une `border` évite tout décalage de mise en page à
-l'apparition. Le mobile conserve ses cartes parce que le survol n'existe pas au doigt.
+> **Révisé le 2026-08-02 — le survol des expériences est supprimé.**
+>
+> La version initiale de cette décision gardait un encadrement révélé au survol en desktop :
+>
+> ```css
+> background: rgba(255, 255, 255, 0.03);
+> box-shadow: inset 0 0 0 1px rgba(66, 184, 131, 0.2);
+> ```
+>
+> L'intention était de marquer l'entrée survolée sans décalage de mise en page — d'où le
+> `box-shadow: inset` plutôt qu'une `border`. À l'usage, l'effet produit exactement ce que
+> la décision cherchait à éviter : **un encadrement qui apparaît sous le curseur promet une
+> action que la carte n'offre pas.** Le raisonnement d'origine — « rien n'y est cliquable,
+> donc l'encadrement ne communique rien » — valait aussi contre son propre état de survol.
+>
+> Les cartes d'expérience sont donc nues en desktop, en toutes circonstances.
 
 ### 3. Système typographique à trois rôles
 
@@ -105,6 +115,7 @@ rapport doit monter à **4 : 1**.
 | Token | Desktop | Mobile | Usage | Aujourd'hui |
 |---|---|---|---|---|
 | `--space-section` | **64** | **48** | entre deux grandes sections | 50 / 25 |
+| `--space-column` | **48** | 32 / 24 | gouttière entre deux colonnes | — |
 | `--space-entry` | **32** | 16 | entre deux entrées d'expérience | 24 / 16 |
 | `--space-title` | **16** | 16 | titre de section → son contenu | 20 |
 | `--space-grid` | 16 | 16 | grille projets, cartes empilées | 16 / 12 |
@@ -116,6 +127,19 @@ portable — un lecteur voit le hero *et* le pitch sans défiler.
 
 Les valeurs mobiles sont proposées, non validées en maquette ; à ajuster à
 l'implémentation.
+
+> **Ajouté le 2026-08-02 — `--space-column`.**
+>
+> L'échelle initiale n'avait aucun token horizontal, et la gouttière entre l'avatar et le
+> pitch du profil empruntait `--space-entry`. Or ce token est calibré pour du vertical : à
+> écart égal, l'œil parcourt une ligne sans effort mais doit franchir une colonne, si bien
+> que 32 px paraissent serrés à l'horizontale là où ils respirent à la verticale.
+>
+> `--space-column` vaut 48 px en desktop et retombe à `--space-entry` sous 900 px, où les
+> blocs en colonnes repassent en pile et où la gouttière redevient un écart vertical.
+>
+> Les marges latérales de `.page-card` passent au même moment de 50 à 64 px : la mesure de
+> ligne se raccourcit de quelques caractères et le contenu cesse d'affleurer le bord.
 
 ### 5. Métadonnées et compétences
 
@@ -183,7 +207,7 @@ utilise `#0a0a0a`. La variable ment sur l'état réel.
 | `nuxt.config.ts` | déclaration des polices avec `preconnect`, retrait d'Inter |
 | `assets/css/main.css` | variables d'espacement, correction de `--color-background`, retrait d'Inter |
 | `components/organisms/ProfileSection.vue` | hero en Jost, casse normale, interlettrage |
-| `components/molecules/ExperienceCard.vue` | desktop nu + état de survol ; mobile inchangé |
+| `components/molecules/ExperienceCard.vue` | desktop nu, sans réaction au survol ; mobile et tactile inchangés |
 | `components/organisms/ExperiencesSection.vue` | espacements, métadonnées en mono |
 | `components/organisms/SkillsSection.vue`, `molecules/SkillCategory.vue`, `atoms/SkillBadge.vue` | passage en colonnes de texte |
 | `components/organisms/ProjectsSection.vue` | cartes conservées, espacements alignés sur l'échelle |
@@ -211,7 +235,8 @@ comparaison avant/après :
 - [ ] Aucune requête vers `fonts.googleapis.com/css2?family=Inter` ni vers Orbitron dans
       l'onglet réseau
 - [ ] Rendu conforme à la maquette validée, aux largeurs 375 / 768 / 1280 / 1440
-- [ ] Le survol des expériences n'induit aucun décalage de mise en page
+- [ ] Les expériences ne réagissent pas au survol : aucun encadrement n'apparaît sous le
+      curseur
 - [ ] Au doigt (iOS et Android), les expériences restent en cartes et rien ne dépend du
       survol
 - [ ] Le titre de section à 16 px ne paraît pas collé à la timeline verte dans
@@ -230,6 +255,13 @@ Ces décisions ont été prises pour la cohérence d'ensemble et peuvent être a
 - Le remplacement des badges de stack par du texte mono
 - Les colonnes de texte de la section Compétences
 - Les valeurs d'espacement mobiles, non validées en maquette
+
+## Révisions
+
+- **2026-08-02** — Suppression du survol des expériences (§2) : l'encadrement révélé sous le
+  curseur promettait une action que la carte n'offre pas. Ajout du token `--space-column`
+  à l'échelle d'espacement (§4) et passage des marges latérales de `.page-card` de 50 à
+  64 px. Ces changements sont portés par la branche `feat/vitrine-projets`.
 
 ## Hors périmètre
 

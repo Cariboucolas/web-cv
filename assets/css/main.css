@@ -16,17 +16,35 @@
   /* Échelle d'espacement. Sans bordure pour rattraper l'approximation, le
        rapport séparation/regroupement doit tenir 4 : 1. */
   --space-section: 64px;
+  /* Gouttière entre deux colonnes. Plus large que --space-entry, qui est
+     calibré pour du vertical : l'œil parcourt une ligne sans effort, il
+     franchit une colonne. À écart égal, l'horizontale paraît toujours
+     plus serrée. */
+  --space-column: 48px;
   --space-entry: 32px;
   --space-title: 16px;
   --space-grid: 16px;
   --space-inner-md: 8px;
   --space-inner-sm: 4px;
+
+  /* Vitrine projets : l'inclinaison se règle ici, comme le rapport 4:1 de
+     l'échelle d'espacement — sans toucher au moindre composant. */
+  --showcase-tilt: -8deg;
+}
+
+/* Sous 900px, les blocs en colonnes repassent en pile : la gouttière
+   redevient un écart vertical et reprend la valeur correspondante. */
+@media (max-width: 900px) {
+  :root {
+    --space-column: 32px;
+  }
 }
 
 @media (max-width: 640px) {
   :root {
     --space-section: 48px;
     --space-entry: 16px;
+    --space-column: 24px;
   }
 }
 
