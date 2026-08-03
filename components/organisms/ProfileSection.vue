@@ -155,13 +155,13 @@ const contactItems = computed(() => [
 
 .availability-chip--on {
   color: #42b883;
-  background: rgba(66, 184, 131, 0.1);
+  background: #101b16;
   border-color: rgba(66, 184, 131, 0.3);
 }
 
 .availability-chip--off {
   color: #e05260;
-  background: rgba(224, 82, 96, 0.1);
+  background: #1f1113;
   border-color: rgba(224, 82, 96, 0.3);
 }
 

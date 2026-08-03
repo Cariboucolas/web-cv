@@ -107,7 +107,7 @@ const socialLinks = [
 .header-social {
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #161616;
   border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@ const socialLinks = [
 }
 
 .header-social:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #222222;
   border-color: rgba(255, 255, 255, 0.25);
   color: #42b883;
 }

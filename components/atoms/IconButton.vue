@@ -30,7 +30,7 @@ defineEmits<{
 .icon-button {
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #161616;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0;
   display: flex;
@@ -42,12 +42,12 @@ defineEmits<{
 }
 
 .icon-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: #222222;
   border-color: rgba(255, 255, 255, 0.25);
 }
 
 .icon-button.active {
-  background: rgba(66, 184, 131, 0.15);
+  background: #12241c;
   border-color: rgba(66, 184, 131, 0.4);
 }
 

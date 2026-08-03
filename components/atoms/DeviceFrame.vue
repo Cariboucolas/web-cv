@@ -36,11 +36,11 @@ defineProps<{
 }
 
 .device-frame--browser {
-  /* 1.46 et non 16/10 : le bandeau supérieur occupe 6% de la largeur, donc
+  /* Ni 16/10 ni 1.46 : le bandeau supérieur occupe 4,5% de la largeur, donc
      c'est le châssis qui doit être plus haut pour que l'ÉCRAN, lui, retombe
-     exactement en 16:10 — le ratio des captures. Sinon elles y perdent 10%
-     de hauteur. */
-  aspect-ratio: 1.46;
+     exactement en 16:10 — le ratio des captures. Toute retouche du bandeau
+     impose de recalculer cette valeur : 1 / (0,625 + hauteur du bandeau). */
+  aspect-ratio: 1.4925;
 }
 
 /* Le corps est un enfant plutôt que le conteneur lui-même : un conteneur ne
@@ -95,7 +95,9 @@ defineProps<{
   align-items: center;
   gap: 1.2cqw;
   padding: 0 2cqw;
-  height: 6cqw;
+  /* Resserré : au-dessus d'une capture rognée par la carte, un bandeau épais
+     se lit comme une marge noire plutôt que comme le haut d'un navigateur. */
+  height: 4.5cqw;
   flex-shrink: 0;
   background: #1a1a1a;
 }
