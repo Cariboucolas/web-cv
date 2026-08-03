@@ -1,6 +1,11 @@
 <template>
   <div class="skills-grid">
-    <div v-for="category in skillCategories" :key="category.label" class="skills-row">
+    <div
+        v-for="(category, index) in skillCategories"
+        :key="category.label"
+        v-reveal="index"
+        class="skills-row"
+    >
       <span class="skills-label">{{ category.label }}</span>
       <span class="skills-list">
         <template v-for="(skill, i) in category.skills" :key="skill.name">{{ skill.name }}<template

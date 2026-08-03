@@ -5,8 +5,9 @@
     <div class="hidden sm:block">
       <div class="projects-grid">
         <button
-            v-for="project in projects"
+            v-for="(project, index) in projects"
             :key="project.key"
+            v-reveal="index"
             type="button"
             class="project-card"
             :aria-label="t('projects.openDetail', { title: t(`projects.projects.${project.key}.title`) })"
