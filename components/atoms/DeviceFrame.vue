@@ -36,11 +36,10 @@ defineProps<{
 }
 
 .device-frame--browser {
-  /* Ni 16/10 ni 1.46 : le bandeau supérieur occupe 4,5% de la largeur, donc
-     c'est le châssis qui doit être plus haut pour que l'ÉCRAN, lui, retombe
-     exactement en 16:10 — le ratio des captures. Toute retouche du bandeau
-     impose de recalculer cette valeur : 1 / (0,625 + hauteur du bandeau). */
-  aspect-ratio: 1.4925;
+  /* Retour au 16:10 franc : le bandeau étant passé en surimpression, il ne
+     prend plus de hauteur et l'écran occupe tout le châssis. Son ratio est
+     donc celui du cadre, et c'est exactement celui des captures. */
+  aspect-ratio: 16 / 10;
 }
 
 /* Le corps est un enfant plutôt que le conteneur lui-même : un conteneur ne
@@ -57,11 +56,12 @@ defineProps<{
 
 .device-frame--phone .device-body {
   border-radius: 12cqw;
-  /* Le châssis est un vrai bord d'appareil, pas un filet : un padding
-     proportionnel sur trois côtés, plus épais en haut pour loger l'encoche.
-     À 3,5% de la largeur, il se lit encore à 156px de large — un iPhone
-     tourne autour de 2,8%. */
-  padding: 7cqw 3.5cqw 3.5cqw;
+  /* Bezel uniforme sur les quatre côtés, comme sur un appareil actuel :
+     l'écran va jusqu'au bord et l'encoche se pose PAR-DESSUS. Un bord
+     supérieur épais pour la loger produisait une bande noire au-dessus de
+     la capture. À 3,5% de la largeur, le bezel se lit encore à 156px — un
+     iPhone tourne autour de 2,8%. */
+  padding: 3.5cqw;
   background: #0b0b0b;
 }
 
@@ -72,14 +72,14 @@ defineProps<{
 /* ── Téléphone ── */
 .device-notch {
   position: absolute;
-  /* Centrée dans la bande supérieure de 7cqw. */
-  top: 2.4cqw;
+  /* Posée sur l'écran, juste sous le bord — elle ne prend plus de hauteur. */
+  top: 5cqw;
   left: 50%;
   transform: translateX(-50%);
   width: 28%;
   height: 1.8cqw;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
@@ -91,15 +91,21 @@ defineProps<{
 
 /* ── Navigateur ── */
 .device-chrome {
+  /* En surimpression sur la capture plutôt qu'au-dessus d'elle : un bandeau
+     opaque qui pousse l'écran vers le bas se lit comme une marge noire. Le
+     fond translucide garde le signal « fenêtre » sans coûter de hauteur. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 1.2cqw;
   padding: 0 2cqw;
-  /* Resserré : au-dessus d'une capture rognée par la carte, un bandeau épais
-     se lit comme une marge noire plutôt que comme le haut d'un navigateur. */
   height: 4.5cqw;
-  flex-shrink: 0;
-  background: #1a1a1a;
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(6px);
 }
 
 .device-dot {

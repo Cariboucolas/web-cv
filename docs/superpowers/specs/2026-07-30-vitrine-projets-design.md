@@ -74,6 +74,27 @@ Un châssis photoréaliste a été écarté : un modèle d'appareil reconnaissab
 c'est l'argument même qui a fait écarter Orbitron au lot 1. Les pastilles restent grises
 plutôt que rouge/jaune/vert, la charte n'ayant que deux couleurs.
 
+> **Révisé le 2026-08-03 — le chrome passe en surimpression.**
+>
+> La première version donnait au téléphone un bezel supérieur deux fois plus épais que les
+> côtés pour y loger l'encoche, et au navigateur un bandeau opaque qui poussait l'écran vers
+> le bas. Les deux produisaient, au-dessus de la capture, **une bande noire** que l'œil lit
+> comme une marge et non comme un appareil.
+>
+> C'est la construction d'un téléphone de 2015. Les appareils actuels font l'inverse :
+> l'écran va jusqu'au bord, le chrome se pose par-dessus. Désormais :
+>
+> - **Téléphone** — bezel uniforme de 3,5 % de la largeur sur les quatre côtés ; l'encoche
+>   est posée sur l'écran et ne prend plus de hauteur.
+> - **Navigateur** — la barre est en `position: absolute` sur la capture, fond
+>   `rgba(10, 10, 10, 0.55)` et léger flou d'arrière-plan. Le châssis revient au 16:10 franc,
+>   puisque son écran occupe désormais toute sa surface.
+>
+> **Le ratio des captures doit suivre celui de l'écran.** Les captures portrait sont
+> recadrées à 0,44356 — la valeur qu'impose un bezel de 3,5 % dans un cadre 9:19.5. Toute
+> retouche du bezel ou du bandeau oblige à recalculer ce ratio et à régénérer les variantes,
+> sinon `object-fit: contain` réintroduit la bande qu'on vient de supprimer.
+
 ### 2. Quel châssis pour quel projet
 
 Le champ `orientation` du modèle `Project` décide seul — aucun champ nouveau :
