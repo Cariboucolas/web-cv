@@ -29,7 +29,7 @@
 
   /* Vitrine projets : l'inclinaison se règle ici, comme le rapport 4:1 de
      l'échelle d'espacement — sans toucher au moindre composant. */
-  --showcase-tilt: -8deg;
+  --showcase-tilt: -5deg;
 
   /* Champ de cubes : maille du quadrillage, rayon du halo qui le révèle,
      et couleur des lignes. */
