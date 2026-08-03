@@ -259,10 +259,11 @@ const openModal = (project: Project) => {
 
 .project-card-showcase {
   position: absolute;
-  /* Le bas de l'appareil est rogné par la scène : c'est la partie haute de
-     la capture, celle qui porte l'identité de l'écran, qui reste dans le
-     champ. L'ancrage horizontal diffère selon l'appareil. */
-  top: 12%;
+  /* Ancré au bord haut, sans retrait : tout écart laisse au-dessus une bande
+     du fond de scène, sur toute la largeur de la carte — l'œil la lit comme
+     une marge noire, pas comme de la respiration. L'appareil est rogné par
+     le bas, ce qui garde dans le champ la partie haute de la capture. */
+  top: 0;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
   transition: transform 0.3s ease;
 }
