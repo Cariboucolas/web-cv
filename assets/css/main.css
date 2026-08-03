@@ -29,7 +29,19 @@
 
   /* Vitrine projets : l'inclinaison se règle ici, comme le rapport 4:1 de
      l'échelle d'espacement — sans toucher au moindre composant. */
-  --showcase-tilt: -8deg;
+  --showcase-tilt: -5deg;
+
+  /* Champ de cubes : maille du quadrillage, rayon du halo qui le révèle,
+     et couleur des lignes. */
+  --cube-size: 44px;
+  --cube-radius: 190px;
+  --cube-line: rgba(66, 184, 131, 0.3);
+
+  /* Apparition au défilement. Le pas de cascade est volontairement court :
+     multiplié par huit au maximum, il reste sous la demi-seconde. */
+  --reveal-shift: 12px;
+  --reveal-duration: 0.45s;
+  --reveal-step: 60ms;
 }
 
 /* Sous 900px, les blocs en colonnes repassent en pile : la gouttière
@@ -56,6 +68,35 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);
+}
+
+/* ── Apparition au défilement ──────────────────────────────────────────
+   Le masquage n'est actif que si le script d'amorçage a posé .js-reveal sur
+   <html> — c'est-à-dire uniquement quand le JavaScript tourne, qu'il peut
+   observer, et que l'utilisateur n'a pas demandé moins d'animation. Sans
+   lui, [data-reveal] existe dans le HTML mais ne masque rien : la page
+   s'affiche entière, pour un lecteur comme pour un robot d'indexation.
+
+   L'attribut est posé par le rendu serveur (getSSRProps de la directive) et
+   non au montage : le contenu ne s'affiche donc jamais avant d'être masqué. */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-shift));
+  transition: opacity var(--reveal-duration) ease, transform
+    var(--reveal-duration) ease;
+}
+
+.js-reveal [data-reveal].reveal--in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 767px) {

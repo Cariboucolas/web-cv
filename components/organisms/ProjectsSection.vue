@@ -5,8 +5,9 @@
     <div class="hidden sm:block">
       <div class="projects-grid">
         <button
-            v-for="project in projects"
+            v-for="(project, index) in projects"
             :key="project.key"
+            v-reveal="index"
             type="button"
             class="project-card"
             :aria-label="t('projects.openDetail', { title: t(`projects.projects.${project.key}.title`) })"
@@ -227,7 +228,15 @@ const openModal = (project: Project) => {
   color: inherit;
   text-align: left;
   width: 100%;
-  display: block;
+  /* Colonne flex, et non `block` : la grille étire toutes les cartes d'une
+     rangée à la hauteur de la plus haute, et un <button> centre verticalement
+     son contenu quand on l'étire — c'est le comportement natif du bouton, pas
+     une règle d'ici, et rien dans l'inspecteur ne le désigne. La carte la plus
+     courte de la rangée voyait donc son surplus se répartir en deux : une
+     bande de fond au-dessus de la scène, une autre sous les tags. En colonne,
+     la scène est calée en haut et le surplus part dans le corps. */
+  display: flex;
+  flex-direction: column;
 }
 
 .project-card:focus-visible {
@@ -252,42 +261,52 @@ const openModal = (project: Project) => {
   width: 100%;
   aspect-ratio: 5 / 3;
   overflow: hidden;
-  background: #1a1a1a;
+  /* Un aplat uniforme derrière un appareil incliné se lit comme une bande
+     noire : le vide que laisse la rotation n'a aucune raison d'être là. Un
+     dégradé qui s'éclaircit vers le haut, plus un halo à l'accent au point
+     de fuite, donne au contraire une scène éclairée — le vide devient le
+     fond sur lequel l'appareil est posé. */
+  background:
+    radial-gradient(120% 90% at 50% -15%, rgba(66, 184, 131, 0.10), transparent 62%),
+    linear-gradient(180deg, #242424 0%, #171717 100%);
   border-radius: 12px 12px 0 0;
 }
 
 .project-card-showcase {
   position: absolute;
-  /* Le bas de l'appareil est rogné par la scène : c'est la partie haute de
-     la capture, celle qui porte l'identité de l'écran, qui reste dans le
-     champ. L'ancrage horizontal diffère selon l'appareil. */
-  top: 12%;
+  /* L'appareil est rogné par le bas, ce qui garde dans le champ la partie
+     haute de la capture. Le pivot est toujours pris dans la zone visible et
+     jamais sur un bord : autour d'un coin, tout ce qui est plus bas dérive
+     latéralement, et l'appareil paraît décentré alors que `left: 50%` le dit
+     centré. */
+  left: 50%;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
   transition: transform 0.3s ease;
 }
 
-/* Un téléphone est étroit : centré, il tient dans la carte sans être rogné
-   latéralement, là où un navigateur large doit déborder pour rester lisible. */
+/* Le téléphone dépasse trois fois la hauteur de la scène : son centre
+   géométrique tombe hors champ, donc le pivot se cale sur le milieu de la
+   bande réellement visible (~25% de sa hauteur). */
 .project-card-showcase--phone {
-  width: 52%;
-  left: 50%;
+  width: 50%;
+  top: 12%;
   transform: translateX(-50%) rotate(var(--showcase-tilt));
-  transform-origin: top center;
+  transform-origin: 50% 25%;
 }
 
+/* Le navigateur, lui, a la hauteur de la scène : il pivote sur son centre,
+   ce qui répartit le débord également à gauche et à droite au lieu de tout
+   verser d'un côté. Le `top` est calé pour que le coin le plus haut — celui
+   de droite, que l'inclinaison remonte de largeur/2 × sin(5°) — retombe
+   sous le bord de la carte au lieu d'en être tranché. */
 .project-card-showcase--browser {
-  width: 88%;
-  right: -8%;
-  transform: rotate(var(--showcase-tilt));
-  transform-origin: top right;
+  width: 92%;
+  top: 11%;
+  transform: translateX(-50%) rotate(var(--showcase-tilt));
 }
 
-.project-card:hover .project-card-showcase--phone {
+.project-card:hover .project-card-showcase {
   transform: translateX(-50%) rotate(var(--showcase-tilt)) translateY(-6px);
-}
-
-.project-card:hover .project-card-showcase--browser {
-  transform: rotate(var(--showcase-tilt)) translateY(-6px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -296,12 +315,8 @@ const openModal = (project: Project) => {
     transition: none;
   }
 
-  .project-card:hover .project-card-showcase--phone {
+  .project-card:hover .project-card-showcase {
     transform: translateX(-50%) rotate(var(--showcase-tilt));
-  }
-
-  .project-card:hover .project-card-showcase--browser {
-    transform: rotate(var(--showcase-tilt));
   }
 }
 
@@ -310,6 +325,8 @@ const openModal = (project: Project) => {
   display: flex;
   flex-direction: column;
   gap: var(--space-inner-sm);
+  /* Absorbe le surplus de hauteur que la grille impose aux cartes courtes. */
+  flex: 1;
 }
 
 .project-card-title {
@@ -329,9 +346,15 @@ const openModal = (project: Project) => {
   overflow: hidden;
 }
 
+/* Le surplus est versé au-dessus des tags, pas en dessous : le panneau
+   déroulé au survol part de cette zone et doit toucher le bas de la carte
+   pour paraître la prolonger. En prime, les rangées de tags s'alignent d'une
+   carte à l'autre. La marge passe en padding, sinon `auto` l'écraserait
+   quand il n'y a aucun surplus à absorber. */
 .project-card-tagzone {
   position: relative;
-  margin-top: var(--space-inner-md);
+  margin-top: auto;
+  padding-top: var(--space-inner-md);
 }
 
 .project-card-tags,
@@ -348,7 +371,9 @@ const openModal = (project: Project) => {
   top: 0;
   left: -15px;
   right: -15px;
-  padding: 0 15px 14px;
+  /* Même retrait haut que la zone qu'il recouvre : la première rangée de tags
+     ne bouge pas d'un pixel entre la liste tronquée et la liste complète. */
+  padding: var(--space-inner-md) 15px 14px;
   background: #111;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-top: none;

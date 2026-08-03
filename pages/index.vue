@@ -1,32 +1,34 @@
 <template>
   <div class="page-layout">
+    <AtomsCubeField/>
+
     <div class="page-card">
       <MoleculesHeaderBar/>
 
-      <OrganismsProfileSection/>
+      <OrganismsProfileSection v-reveal/>
 
-      <section id="about" class="content-section">
+      <section id="about" class="content-section" v-reveal>
         <div class="section-header">
           <div class="section-title">{{ $t('about.title') }}</div>
         </div>
         <MoleculesAboutSection/>
       </section>
 
-      <section id="experiences" class="content-section">
+      <section id="experiences" class="content-section" v-reveal>
         <div class="section-header">
           <div class="section-title">{{ $t('experiences.title') }}</div>
         </div>
         <OrganismsExperiencesSection/>
       </section>
 
-      <section id="skills" class="content-section">
+      <section id="skills" class="content-section" v-reveal>
         <div class="section-header">
           <div class="section-title">{{ $t('skills.title') }}</div>
         </div>
         <OrganismsSkillsSection/>
       </section>
 
-      <section id="projects" class="content-section">
+      <section id="projects" class="content-section" v-reveal>
         <div class="section-header">
           <div class="section-title">{{ $t('projects.title') }}</div>
         </div>
@@ -46,7 +48,8 @@
 
 .page-layout {
   min-height: 100vh;
-  background: #0a0a0a;
+  /* Pas de fond ici : celui du <body> suffit, et un fond opaque à ce niveau
+     masquerait le champ de cubes, qui vit sur une couche négative. */
   display: flex;
   justify-content: center;
   font-family: var(--font-body);
@@ -54,6 +57,11 @@
 }
 
 .page-card {
+  /* Positionnée à dessein : un élément non positionné est peint AVANT tout
+     élément positionné, quel que soit son z-index — le champ de cubes serait
+     alors par-dessus le texte. */
+  position: relative;
+  z-index: 1;
   width: min(100%, 1100px);
   /* 64px de marge latérale plutôt que 50 : la mesure de ligne se raccourcit
      d'une poignée de caractères et le contenu cesse d'affleurer le bord. */

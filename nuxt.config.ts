@@ -68,6 +68,21 @@ export default defineNuxtConfig({
           href: 'https://fonts.cdnfonts.com/css/mona-sans',
         },
       ],
+      script: [
+        {
+          // Amorçage de l'apparition au défilement. Le CSS ne masque les
+          // éléments à révéler que si cette classe est présente : elle n'est
+          // posée que lorsque le navigateur sait observer ET que l'utilisateur
+          // n'a pas demandé moins d'animation. Sans JavaScript, la classe
+          // n'arrive jamais et la page s'affiche entière.
+          //
+          // Inline et dans le <head> à dessein : exécuté avant le premier
+          // rendu, il évite que le contenu se montre puis disparaisse.
+          innerHTML:
+            "if('IntersectionObserver' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-reveal')",
+          tagPosition: 'head',
+        },
+      ],
     },
   },
 

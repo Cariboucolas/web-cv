@@ -43,7 +43,7 @@ const handleClick = () => {
 .social-square {
   width: 60px;
   height: 60px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #161616;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0;
   display: flex;
@@ -64,7 +64,7 @@ const handleClick = () => {
   content: '';
   position: absolute;
   inset: -8px;
-  background: rgba(255, 255, 255, 0.15);
+  background: #2f2f2f;
   border: 1px solid rgba(255, 255, 255, 0.3);
   z-index: -1;
   border-radius: 0;

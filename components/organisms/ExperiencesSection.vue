@@ -16,7 +16,7 @@
     <!-- Desktop: timeline + cards -->
     <div class="hidden sm:block">
       <div class="xp-timeline">
-        <div v-for="(xp, index) in experiences" :key="index" class="xp-row">
+        <div v-for="(xp, index) in experiences" :key="index" v-reveal="index" class="xp-row">
           <!-- Timeline -->
           <div class="timeline-col">
             <span class="timeline-dot" :class="{ 'timeline-dot--active': xp.periodEnd === null }"></span>
