@@ -259,29 +259,36 @@ const openModal = (project: Project) => {
 
 .project-card-showcase {
   position: absolute;
-  /* Ancré au bord haut, sans retrait : tout écart laisse au-dessus une bande
-     du fond de scène, sur toute la largeur de la carte — l'œil la lit comme
-     une marge noire, pas comme de la respiration. L'appareil est rogné par
-     le bas, ce qui garde dans le champ la partie haute de la capture. */
-  top: 0;
+  /* L'appareil est rogné par le bas, ce qui garde dans le champ la partie
+     haute de la capture. L'ancrage vertical dépend de l'appareil : ce qui
+     compte n'est pas la valeur de `top`, mais la hauteur du vide que
+     l'inclinaison laisse au-dessus du bord le plus bas. */
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
   transition: transform 0.3s ease;
 }
 
 /* Un téléphone est étroit : centré, il tient dans la carte sans être rogné
-   latéralement, là où un navigateur large doit déborder pour rester lisible. */
+   latéralement, là où un navigateur large doit déborder pour rester lisible.
+   Pivotant sur son centre, il ne décroche que de la moitié de sa largeur ×
+   sin(8°) — une dizaine de pixels : un léger retrait reste donc possible. */
 .project-card-showcase--phone {
   width: 52%;
+  top: 5%;
   left: 50%;
   transform: translateX(-50%) rotate(var(--showcase-tilt));
   transform-origin: top center;
 }
 
+/* Pivot au coin haut-gauche, et non haut-droit : autour du coin droit, tout
+   le bord gauche plongeait de sa largeur entière × sin(8°), soit près de
+   40px de vide en haut de la carte. Ancré à gauche, ce bord reste à zéro et
+   c'est le côté droit qui monte — là où le châssis déborde déjà. */
 .project-card-showcase--browser {
   width: 88%;
+  top: 0;
   right: -8%;
   transform: rotate(var(--showcase-tilt));
-  transform-origin: top right;
+  transform-origin: top left;
 }
 
 .project-card:hover .project-card-showcase--phone {
