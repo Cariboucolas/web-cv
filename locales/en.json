@@ -15,7 +15,10 @@
     },
     "contact": {
       "location": "Toulouse",
-      "hireMe": "Hire me"
+      "hireMe": "Hire me",
+      "copyPhone": "Copy",
+      "phoneCopied": "Copied",
+      "phoneCopyFailed": "Copy failed"
     },
     "availability": {
       "available": "Available",

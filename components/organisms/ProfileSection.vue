@@ -14,10 +14,34 @@
       </p>
 
       <ul class="contact-list">
-        <li v-for="item in contactItems" :key="item.key" class="contact-item">
-          <!-- L'icône tient lieu de puce : décorative, le texte porte déjà l'information. -->
-          <img :src="item.icon" alt="" aria-hidden="true" class="contact-bullet"/>
-          <span>{{ item.label }}</span>
+        <!-- L'icône tient lieu de puce : décorative, le texte porte déjà l'information. -->
+        <li class="contact-item">
+          <img src="/icons/cv/location.svg" alt="" aria-hidden="true" class="contact-bullet"/>
+          <span>{{ t('profile.contact.location') }}</span>
+        </li>
+
+        <!-- Un lien tel: en toutes circonstances — c'est ce qui sert sur un
+             téléphone. Là où un vrai pointeur existe, composer le numéro n'a
+             aucun sens : le clic copie alors le numéro au lieu d'appeler. -->
+        <li class="contact-item contact-item--phone">
+          <a :href="`tel:${PHONE_E164}`" class="contact-link" @click="onPhoneClick">
+            <img src="/icons/cv/phone.svg" alt="" aria-hidden="true" class="contact-bullet"/>
+            <span>{{ PHONE_DISPLAY }}</span>
+            <Icon
+                name="material-symbols:content-copy-outline"
+                class="contact-copy"
+                aria-hidden="true"
+            />
+          </a>
+          <!-- role="status" : la confirmation est annoncée aux lecteurs d'écran,
+               que le tooltip soit visible ou non. -->
+          <span
+              class="contact-tip"
+              :class="{ 'contact-tip--pinned': feedback !== 'idle' }"
+              role="status"
+          >
+            {{ tipLabel }}
+          </span>
         </li>
         <!-- Même grammaire que ci-dessus : puce puis libellé. Le libellé porte le
              sens, ce qui dispense l'icône Malt — un logotype couché dans son
@@ -57,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import {computed, onBeforeUnmount, ref} from 'vue'
 
 // @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
 const {t} = useI18n()
@@ -70,6 +94,9 @@ const profileDescription = computed(() => [
 
 const PHONE_DISPLAY = '06 68 51 07 78'
 
+/** Format E.164 pour le lien tel: — le seul que composent tous les systèmes. */
+const PHONE_E164 = '+33668510778'
+
 const EMAIL = 'cdurcy@gmail.com'
 
 /** Espace insécable avant le symbole : la typographie française l'impose,
@@ -79,18 +106,47 @@ const DAILY_RATE = '500 €'
 /** Bascule manuelle de la disponibilité affichée dans la chip. */
 const isAvailable = true
 
-const contactItems = computed(() => [
-  {
-    key: 'location',
-    icon: '/icons/cv/location.svg',
-    label: t('profile.contact.location'),
-  },
-  {
-    key: 'phone',
-    icon: '/icons/cv/phone.svg',
-    label: PHONE_DISPLAY,
-  },
-])
+/** Ce que le tooltip raconte, selon ce qui vient de se passer. */
+const feedback = ref<'idle' | 'copied' | 'failed'>('idle')
+
+const tipLabel = computed(() => {
+  if (feedback.value === 'copied') return t('profile.contact.phoneCopied')
+  if (feedback.value === 'failed') return t('profile.contact.phoneCopyFailed')
+  return t('profile.contact.copyPhone')
+})
+
+let resetTimer: ReturnType<typeof setTimeout> | undefined
+
+/**
+ * Vrai seulement là où composer un numéro ne sert à rien et où le presse-papier
+ * est accessible. `pointer: fine` écarte les tablettes tactiles, qui savent
+ * appeler ; `navigator.clipboard` est absent hors contexte sécurisé.
+ */
+const canCopyInstead = () =>
+  !!navigator.clipboard &&
+  window.matchMedia('(hover: hover) and (pointer: fine)').matches
+
+const onPhoneClick = async (event: MouseEvent) => {
+  if (!canCopyInstead()) return
+
+  event.preventDefault()
+  clearTimeout(resetTimer)
+
+  try {
+    await navigator.clipboard.writeText(PHONE_DISPLAY)
+    feedback.value = 'copied'
+  } catch {
+    // Le presse-papier peut être refusé par la politique de permissions. On le
+    // dit plutôt que de laisser croire à une copie qui n'a pas eu lieu.
+    feedback.value = 'failed'
+  }
+
+  resetTimer = setTimeout(() => {
+    feedback.value = 'idle'
+  }, 2000)
+}
+
+onBeforeUnmount(() => clearTimeout(resetTimer))
 
 const socialLinks = [
   {
@@ -173,10 +229,17 @@ const socialLinks = [
   align-items: center;
   gap: 12px;
   font-size: 15px;
+  /* Gras sur toute la ligne, coordonnées comprises : elle s'affirme face aux
+     paragraphes qui restent en 400. Les chasses de Mona Sans ne varient pas
+     avec le poids, donc la ligne garde exactement sa largeur. */
+  font-weight: 700;
   color: rgba(255, 255, 255, 0.85);
 }
 
 .contact-link {
+  /* Ancre de l'icône de copie, qui se place à droite du libellé sans peser
+     dans le flux. */
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -185,9 +248,10 @@ const socialLinks = [
   transition: color 0.2s ease;
 }
 
+/* Le gras étant désormais permanent, le survol ne se signale que par la
+   couleur — rien ne change de graisse sous le curseur. */
 .contact-link:hover {
   color: #42b883;
-  font-weight: bold;
 }
 
 .contact-bullet-icon {
@@ -206,12 +270,73 @@ const socialLinks = [
   /* Les SVG sont déjà au vert #42b883 : aucune recoloration nécessaire. */
 }
 
+/* ── Téléphone : copie au clic là où le survol existe ── */
+.contact-item--phone {
+  /* Ancre du tooltip, qui vit hors du lien pour rester hors de sa zone cliquable. */
+  position: relative;
+}
+
+.contact-copy {
+  /* Hors du flux, dans la gouttière de 28px qui suit l'entrée : réservée dans le
+     flux, elle creusait un trou de 27px au repos et déséquilibrait la ligne.
+     Ici elle n'occupe rien et ne décale donc rien en apparaissant. */
+  position: absolute;
+  left: 100%;
+  margin-left: 5px;
+  width: 15px;
+  height: 15px;
+  opacity: 0;
+  color: rgba(255, 255, 255, 0.5);
+  transition: opacity 0.2s ease;
+}
+
+.contact-tip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 0;
+  /* Le tooltip ne doit jamais intercepter le pointeur : il se placerait entre
+     le curseur et le lien, et le survol se mettrait à clignoter. */
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Épinglé après un clic : la confirmation s'affiche même curseur parti. */
+.contact-tip--pinned {
+  opacity: 1;
+  color: #42b883;
+  border-color: rgba(66, 184, 131, 0.35);
+}
+
+/* Rien de tout cela sur un appareil tactile : sans survol, le lien tel: reprend
+   son rôle et l'invitation à copier n'aurait aucun sens. */
+@media (hover: hover) and (pointer: fine) {
+  .contact-item--phone:hover .contact-copy {
+    opacity: 1;
+  }
+
+  .contact-item--phone:hover .contact-tip {
+    opacity: 1;
+  }
+}
+
 /* Rattrapage optique. `align-items: center` aligne les boîtes au pixel, mais le
    centre d'une line-box n'est pas le centre du texte : la boîte réserve la place
    des descendantes, qu'aucun de ces cinq libellés ne contient. Les glyphes
    occupent donc la moitié haute et les puces portaient 2,5 px trop bas. */
 .contact-bullet,
-.contact-bullet-icon {
+.contact-bullet-icon,
+.contact-copy {
   transform: translateY(-2px);
 }
 

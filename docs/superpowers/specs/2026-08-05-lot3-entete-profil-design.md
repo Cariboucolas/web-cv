@@ -172,6 +172,34 @@ Les trois autres fonds translucides du projet ne sont pas exposés : les pastill
 et de `ProjectModal` reposent sur des conteneurs opaques, et `IconButton` n'est atteint que par
 `NavigationIcon`, lui-même jamais monté.
 
+### 8. La ligne de contact passe en gras, et le téléphone se copie
+
+**Le gras est permanent sur les cinq entrées**, coordonnées comprises : la ligne s'affirme face aux
+paragraphes qui restent en 400. Le survol ne se signale donc plus que par la couleur, la règle de
+graisse au survol devenant redondante.
+
+Mesuré avant de trancher : **Mona Sans garde des chasses identiques entre 400 et 700**, au centième
+de pixel près — le libellé « GitHub » fait 48,97 px dans les deux poids, et les cinq entrées ne
+bougent d'aucun centième. Le piège habituel du gras au survol, la ligne qui se recompose sous le
+curseur, n'existe donc pas ici. En contrepartie l'effet de graisse est visuellement discret, ce qui
+explique qu'il passait inaperçu à côté du changement de couleur.
+
+**Le téléphone reste un lien `tel:`** au format E.164, le seul que composent tous les systèmes.
+C'est ce qui sert sur un téléphone, et c'est délibérément conservé. **Là où un vrai pointeur
+existe**, composer un numéro n'a aucun sens : le clic copie alors le numéro au presse-papier au lieu
+d'appeler, et un tooltip discret confirme. La bascule se fait sur
+`(hover: hover) and (pointer: fine)` — `pointer: fine` écarte les tablettes tactiles, qui savent
+appeler — doublée de la présence de `navigator.clipboard`, absente hors contexte sécurisé.
+
+Le tooltip porte trois états : « Copier » au survol — sans quoi rien n'indiquerait que le numéro est
+copiable —, « Copié » après le clic, et « Copie impossible » si le presse-papier est refusé par la
+politique de permissions. Il est en `role="status"`, donc annoncé aux lecteurs d'écran. L'icône de
+copie vit **hors du flux**, dans la gouttière de 28 px qui suit l'entrée : réservée dans le flux,
+elle creusait un trou de 27 px au repos et repoussait les trois réseaux d'autant.
+
+Rien de tout cela n'apparaît sur un appareil tactile : icône et tooltip restent à `opacity: 0`, et
+le lien reprend son rôle.
+
 ## Vérifications
 
 - [ ] Desktop ≥ 1200 px : la ligne de contact tient d'un seul tenant, les deux colonnes se
@@ -186,6 +214,10 @@ et de `ProjectModal` reposent sur des conteneurs opaques, et `IconButton` n'est 
 - [ ] Le libellé blanc du bouton tient 4,5:1 au repos comme au survol
 - [ ] Les puces de contact sont alignées optiquement sur les glyphes, à moins d'1 px
 - [ ] Le champ de cubes ne traverse plus le bouton `FR` quand le curseur le survole
+- [ ] Au pointeur fin : le clic sur le téléphone copie le numéro, le tooltip passe à « Copié »
+      puis revient à « Copier » après 2 s, et aucune navigation `tel:` n'est déclenchée
+- [ ] En tactile : `href="tel:+33668510778"` intact, icône de copie et tooltip à `opacity: 0`
+- [ ] L'icône de copie n'élargit pas la ligne — les cinq entrées gardent leurs positions
 
 **Contrainte de méthode.** Chrome headless plafonne son viewport à ~485 px sur macOS, quelle que
 soit la valeur passée à `--window-size` : une capture demandée à 380 px est un recadrage d'une
