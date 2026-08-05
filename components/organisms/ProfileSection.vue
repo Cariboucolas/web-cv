@@ -19,6 +19,15 @@
           <img :src="item.icon" alt="" aria-hidden="true" class="contact-bullet"/>
           <span>{{ item.label }}</span>
         </li>
+        <!-- Même grammaire que ci-dessus : puce puis libellé. Le libellé porte le
+             sens, ce qui dispense l'icône Malt — un logotype couché dans son
+             viewBox — d'être lisible seule. -->
+        <li v-for="link in socialLinks" :key="link.key" class="contact-item">
+          <a :href="link.url" target="_blank" rel="noopener noreferrer" class="contact-link">
+            <Icon :name="link.icon" class="contact-bullet-icon" aria-hidden="true"/>
+            <span>{{ link.label }}</span>
+          </a>
+        </li>
       </ul>
 
       <div class="profile-cta">
@@ -71,6 +80,28 @@ const contactItems = computed(() => [
     label: PHONE_DISPLAY,
   },
 ])
+
+/* Noms propres, identiques en français et en anglais : pas de passage par l'i18n. */
+const socialLinks = [
+  {
+    key: 'github',
+    label: 'GitHub',
+    icon: 'simple-icons:github',
+    url: 'https://github.com/Cariboucolas',
+  },
+  {
+    key: 'linkedin',
+    label: 'LinkedIn',
+    icon: 'simple-icons:linkedin',
+    url: 'https://www.linkedin.com/in/colas-durcy-5b5bbba5/',
+  },
+  {
+    key: 'malt',
+    label: 'Malt',
+    icon: 'simple-icons:malt',
+    url: 'https://www.malt.fr/profile/colasdurcy',
+  },
+]
 </script>
 
 <style scoped>
@@ -113,9 +144,13 @@ const contactItems = computed(() => [
   list-style: none;
   margin: var(--space-entry) 0 0 0;
   padding: 0;
+  /* En ligne, pas en colonne : les cinq entrées tiennent sur un rang de 554 px
+     jusqu'à 700 px de viewport, et se replient d'elles-mêmes en dessous. */
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
 }
 
 .contact-item {
@@ -124,6 +159,28 @@ const contactItems = computed(() => [
   gap: 12px;
   font-size: 15px;
   color: rgba(255, 255, 255, 0.85);
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-link:hover {
+  color: #42b883;
+}
+
+.contact-bullet-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  /* Le vert des puces SVG voisines : la ligne se lit comme un ensemble,
+     pas comme deux moitiés. */
+  color: #42b883;
 }
 
 .contact-bullet {
