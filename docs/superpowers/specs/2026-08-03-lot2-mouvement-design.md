@@ -154,3 +154,13 @@ passage.
   profil, ne laissant en haut que le téléchargement du CV et le changement de langue.
 - **L'aération du bloc profil** : borner la mesure de ligne des paragraphes et porter le
   rythme interne de la colonne droite de 32 à 48 px. En attente du déplacement ci-dessus.
+
+> **Amendement du 2026-08-05.** Ces deux points forment le lot 3, spécifié dans
+> [2026-08-05-lot3-entete-profil-design.md](./2026-08-05-lot3-entete-profil-design.md).
+>
+> La borne de mesure prescrite ci-dessus **n'a pas été retenue**. Trois variantes ont été
+> montées et mesurées : l'équilibre entre la colonne avatar et la colonne texte est déjà
+> atteint sans borne (17 px d'écart entre les bas de colonne), borner n'en gagne que 5 et
+> creuse un vide d'environ 250 px à droite qui fait décrocher le profil de la section
+> « À propos ». Le rythme porté à 48 px est en revanche conservé. Voir la décision 4 du
+> lot 3 pour le tableau des mesures.
