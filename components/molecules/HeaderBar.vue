@@ -11,7 +11,7 @@
     </div>
     <div class="header-actions">
       <a
-          v-for="link in socialLinks"
+          v-for="link in headerActions"
           :key="link.key"
           :href="link.url"
           target="_blank"
@@ -37,22 +37,9 @@ const toggleLanguage = () => {
   locale.value = locale.value === 'fr' ? 'en' : 'fr'
 }
 
-const socialLinks = [
-  {
-    key: 'github',
-    icon: 'simple-icons:github',
-    url: 'https://github.com/Cariboucolas',
-  },
-  {
-    key: 'linkedin',
-    icon: 'simple-icons:linkedin',
-    url: 'https://www.linkedin.com/in/colas-durcy-5b5bbba5/',
-  },
-  {
-    key: 'malt',
-    icon: 'simple-icons:malt',
-    url: 'https://www.malt.fr/profile/colasdurcy',
-  },
+/** Deux actions seulement, portant sur le document et non sur la personne :
+    les liens vers les profils vivent dans ProfileSection. */
+const headerActions = [
   {
     key: 'download',
     icon: 'material-symbols:download',
