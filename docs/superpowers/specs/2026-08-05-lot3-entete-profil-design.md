@@ -17,6 +17,7 @@ retouchée tant qu'on ignorait ce qui allait la rejoindre.
 | `components/molecules/HeaderBar.vue` | l'en-tête perd ses trois réseaux |
 | `components/organisms/ProfileSection.vue` | la ligne de contact les accueille, le rythme s'ouvre |
 | `components/atoms/SocialSquare.vue` | supprimé, plus aucun référent |
+| `components/atoms/LanguageIndicator.vue` | fond opacifié, le champ de cubes passait au travers |
 | `package.json` | `@iconify-json/simple-icons` passe en dépendance locale |
 
 ## Décisions validées
@@ -154,6 +155,23 @@ qu'aucun des cinq libellés ne porte. Les glyphes occupaient donc la moitié hau
 portaient 2,5 px trop bas. `line-height` n'y changeait rien, le demi-leading se répartissant
 également de part et d'autre. Après correction, l'écart tombe à 0–0,5 px.
 
+### 7. Le sélecteur de langue cesse de laisser passer le champ de cubes
+
+Le halo de cubes du lot 2 se voyait au travers du bouton `FR`, alors qu'il s'arrêtait net au bord du
+carré de téléchargement voisin — même z-index, même parent. Ce n'était pas un défaut
+d'empilement : le `z-index: 1` de `.page-card` protège bien tout le contenu, mais
+`.icon-button` posait un fond `rgba(255, 255, 255, 0.05)`, translucide, qui annulait cette
+protection localement.
+
+Le fond passe donc en opaque. **Le rendu est rigoureusement inchangé** : 0,05 de blanc composé sur
+le `#0a0a0a` de la page donne exactement `rgb(22, 22, 22)`, soit `#161616` — la valeur qu'emploie
+déjà `.header-social`. Vérifié par échantillonnage : les deux boutons de l'en-tête affichent la
+même couleur au pixel. Idem au survol, où 0,1 donne `rgb(34, 34, 34)` = `#222222`.
+
+Les trois autres fonds translucides du projet ne sont pas exposés : les pastilles de `DeviceFrame`
+et de `ProjectModal` reposent sur des conteneurs opaques, et `IconButton` n'est atteint que par
+`NavigationIcon`, lui-même jamais monté.
+
 ## Vérifications
 
 - [ ] Desktop ≥ 1200 px : la ligne de contact tient d'un seul tenant, les deux colonnes se
@@ -167,6 +185,7 @@ portaient 2,5 px trop bas. `line-height` n'y changeait rien, le demi-leading se 
 - [ ] Puce de disponibilité et bouton font la même hauteur (32 px)
 - [ ] Le libellé blanc du bouton tient 4,5:1 au repos comme au survol
 - [ ] Les puces de contact sont alignées optiquement sur les glyphes, à moins d'1 px
+- [ ] Le champ de cubes ne traverse plus le bouton `FR` quand le curseur le survole
 
 **Contrainte de méthode.** Chrome headless plafonne son viewport à ~485 px sur macOS, quelle que
 soit la valeur passée à `--window-size` : une capture demandée à 380 px est un recadrage d'une
