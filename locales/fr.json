@@ -16,7 +16,6 @@
     "contact": {
       "location": "Toulouse",
       "hireMe": "Embauchez-moi",
-      "copyPhone": "Copier",
       "phoneCopied": "Copié",
       "phoneCopyFailed": "Copie impossible"
     },

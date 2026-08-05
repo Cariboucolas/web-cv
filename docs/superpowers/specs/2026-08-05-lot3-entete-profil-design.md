@@ -191,11 +191,14 @@ d'appeler, et un tooltip discret confirme. La bascule se fait sur
 `(hover: hover) and (pointer: fine)` — `pointer: fine` écarte les tablettes tactiles, qui savent
 appeler — doublée de la présence de `navigator.clipboard`, absente hors contexte sécurisé.
 
-Le tooltip porte trois états : « Copier » au survol — sans quoi rien n'indiquerait que le numéro est
-copiable —, « Copié » après le clic, et « Copie impossible » si le presse-papier est refusé par la
-politique de permissions. Il est en `role="status"`, donc annoncé aux lecteurs d'écran. L'icône de
-copie vit **hors du flux**, dans la gouttière de 28 px qui suit l'entrée : réservée dans le flux,
-elle creusait un trou de 27 px au repos et repoussait les trois réseaux d'autant.
+**Le tooltip ne confirme, il n'invite pas.** Il reste vide au repos comme au survol, et ne paraît
+qu'après un clic : « Copié », ou « Copie impossible » si le presse-papier est refusé par la politique
+de permissions. Il est en `role="status"`, donc annoncé aux lecteurs d'écran. C'est **l'icône de
+copie apparaissant au survol** qui porte seule l'affordance — une invitation textuelle avait été
+essayée puis écartée comme trop bavarde pour une ligne de contact.
+
+Cette icône vit **hors du flux**, dans la gouttière de 28 px qui suit l'entrée : réservée dans le
+flux, elle creusait un trou de 27 px au repos et repoussait les trois réseaux d'autant.
 
 Rien de tout cela n'apparaît sur un appareil tactile : icône et tooltip restent à `opacity: 0`, et
 le lien reprend son rôle.
@@ -214,8 +217,9 @@ le lien reprend son rôle.
 - [ ] Le libellé blanc du bouton tient 4,5:1 au repos comme au survol
 - [ ] Les puces de contact sont alignées optiquement sur les glyphes, à moins d'1 px
 - [ ] Le champ de cubes ne traverse plus le bouton `FR` quand le curseur le survole
-- [ ] Au pointeur fin : le clic sur le téléphone copie le numéro, le tooltip passe à « Copié »
-      puis revient à « Copier » après 2 s, et aucune navigation `tel:` n'est déclenchée
+- [ ] Au pointeur fin : le survol ne montre que l'icône de copie, sans tooltip ; le clic copie le
+      numéro, le tooltip affiche « Copié » puis redevient vide après 2 s, et aucune navigation
+      `tel:` n'est déclenchée
 - [ ] En tactile : `href="tel:+33668510778"` intact, icône de copie et tooltip à `opacity: 0`
 - [ ] L'icône de copie n'élargit pas la ligne — les cinq entrées gardent leurs positions
 

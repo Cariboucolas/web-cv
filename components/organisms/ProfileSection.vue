@@ -109,10 +109,12 @@ const isAvailable = true
 /** Ce que le tooltip raconte, selon ce qui vient de se passer. */
 const feedback = ref<'idle' | 'copied' | 'failed'>('idle')
 
+/** Vide au repos : le tooltip ne confirme, il n'invite pas. C'est l'icône de
+    copie apparaissant au survol qui signale l'action. */
 const tipLabel = computed(() => {
   if (feedback.value === 'copied') return t('profile.contact.phoneCopied')
   if (feedback.value === 'failed') return t('profile.contact.phoneCopyFailed')
-  return t('profile.contact.copyPhone')
+  return ''
 })
 
 let resetTimer: ReturnType<typeof setTimeout> | undefined
@@ -318,14 +320,11 @@ const socialLinks = [
   border-color: rgba(66, 184, 131, 0.35);
 }
 
-/* Rien de tout cela sur un appareil tactile : sans survol, le lien tel: reprend
-   son rôle et l'invitation à copier n'aurait aucun sens. */
+/* Seule l'icône répond au survol : le tooltip ne paraît qu'après un clic, via
+   --pinned. Rien de tout cela sur un appareil tactile, où le lien tel: reprend
+   son rôle. */
 @media (hover: hover) and (pointer: fine) {
   .contact-item--phone:hover .contact-copy {
-    opacity: 1;
-  }
-
-  .contact-item--phone:hover .contact-tip {
     opacity: 1;
   }
 }
