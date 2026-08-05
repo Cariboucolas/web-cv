@@ -100,7 +100,7 @@ const PHONE_E164 = '+33668510778'
 const EMAIL = 'cdurcy@gmail.com'
 
 /** Espace insécable avant le symbole : la typographie française l'impose,
-    et il empêche le montant de se couper en fin de ligne. */
+ et il empêche le montant de se couper en fin de ligne. */
 const DAILY_RATE = '500 €'
 
 /** Bascule manuelle de la disponibilité affichée dans la chip. */
@@ -110,7 +110,7 @@ const isAvailable = true
 const feedback = ref<'idle' | 'copied' | 'failed'>('idle')
 
 /** Vide au repos : le tooltip ne confirme, il n'invite pas. C'est l'icône de
-    copie apparaissant au survol qui signale l'action. */
+ copie apparaissant au survol qui signale l'action. */
 const tipLabel = computed(() => {
   if (feedback.value === 'copied') return t('profile.contact.phoneCopied')
   if (feedback.value === 'failed') return t('profile.contact.phoneCopyFailed')
@@ -125,8 +125,8 @@ let resetTimer: ReturnType<typeof setTimeout> | undefined
  * appeler ; `navigator.clipboard` est absent hors contexte sécurisé.
  */
 const canCopyInstead = () =>
-  !!navigator.clipboard &&
-  window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    !!navigator.clipboard &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
 const onPhoneClick = async (event: MouseEvent) => {
   if (!canCopyInstead()) return
@@ -234,7 +234,7 @@ const socialLinks = [
   /* Gras sur toute la ligne, coordonnées comprises : elle s'affirme face aux
      paragraphes qui restent en 400. Les chasses de Mona Sans ne varient pas
      avec le poids, donc la ligne garde exactement sa largeur. */
-  font-weight: 700;
+  font-weight: 900;
   color: rgba(255, 255, 255, 0.85);
 }
 
