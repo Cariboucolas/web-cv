@@ -41,8 +41,15 @@
           {{ isAvailable ? t('profile.availability.available') : t('profile.availability.unavailable') }}
         </span>
 
+        <!-- Le montant porte l'accent par le seul contraste de taille : pas de
+             cadre, la ligne compte déjà une puce et un bouton. -->
+        <p class="rate">
+          <span class="rate-amount">{{ DAILY_RATE }}</span><span class="rate-unit">{{ t('profile.rate.perDay') }}</span>
+        </p>
+
         <a :href="`mailto:${EMAIL}`" class="hire-button">
           {{ t('profile.contact.hireMe') }}
+          <Icon name="material-symbols:arrow-outward" class="hire-button-icon" aria-hidden="true"/>
         </a>
       </div>
     </div>
@@ -57,13 +64,17 @@ const {t} = useI18n()
 
 const profileDescription = computed(() => [
   t('profile.description.line1'),
-  t('profile.description.line2', { years: devExperienceYears() }),
+  t('profile.description.line2', {years: devExperienceYears()}),
   t('profile.description.line3'),
 ])
 
 const PHONE_DISPLAY = '06 68 51 07 78'
 
 const EMAIL = 'cdurcy@gmail.com'
+
+/** Espace insécable avant le symbole : la typographie française l'impose,
+    et il empêche le montant de se couper en fin de ligne. */
+const DAILY_RATE = '500 €'
 
 /** Bascule manuelle de la disponibilité affichée dans la chip. */
 const isAvailable = true
@@ -81,7 +92,6 @@ const contactItems = computed(() => [
   },
 ])
 
-/* Noms propres, identiques en français et en anglais : pas de passage par l'i18n. */
 const socialLinks = [
   {
     key: 'github',
@@ -177,6 +187,7 @@ const socialLinks = [
 
 .contact-link:hover {
   color: #42b883;
+  font-weight: bold;
 }
 
 .contact-bullet-icon {
@@ -195,11 +206,25 @@ const socialLinks = [
   /* Les SVG sont déjà au vert #42b883 : aucune recoloration nécessaire. */
 }
 
-/* ── Appel à l'action : disponibilité + bouton ── */
+/* Rattrapage optique. `align-items: center` aligne les boîtes au pixel, mais le
+   centre d'une line-box n'est pas le centre du texte : la boîte réserve la place
+   des descendantes, qu'aucun de ces cinq libellés ne contient. Les glyphes
+   occupent donc la moitié haute et les puces portaient 2,5 px trop bas. */
+.contact-bullet,
+.contact-bullet-icon {
+  transform: translateY(-2px);
+}
+
+/* ── Appel à l'action : disponibilité + tarif + bouton ── */
 .profile-cta {
+  /* Une hauteur unique pour la puce et le bouton : ils se lisent comme deux
+     objets de même rang, et non comme un bouton qui écrase une étiquette. */
+  --cta-height: 32px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  /* Même gouttière que la ligne de contact au-dessus : les deux rangées se
+     lisent sur la même trame plutôt que chacune sur la sienne. */
+  gap: 12px 28px;
   flex-wrap: wrap;
   margin-top: var(--space-column);
 }
@@ -207,12 +232,38 @@ const socialLinks = [
 .availability-chip {
   display: inline-flex;
   align-items: center;
+  min-height: var(--cta-height);
   gap: 8px;
   padding: 5px 12px 5px 10px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
   border: 1px solid transparent;
+}
+
+/* ── Tarif journalier ── */
+.rate {
+  /* Alignement sur la ligne de base : le suffixe s'assoit sur le montant
+     plutôt que de flotter à mi-hauteur. */
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.rate-amount {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.rate-unit {
+  /* 2 px pour desserrer la barre oblique du symbole : à 22 px contre 13, les
+     deux glyphes se télescopent sans ce dégagement. */
+  margin-left: 2px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .availability-chip--on {
@@ -261,18 +312,32 @@ const socialLinks = [
 .hire-button {
   display: inline-flex;
   align-items: center;
-  padding: 9px 20px;
+  gap: 6px;
+  /* Hauteur imposée plutôt que déduite du padding vertical : c'est ce qui la
+     verrouille sur celle de la puce quelle que soit la police. */
+  min-height: var(--cta-height);
+  padding: 0 18px;
   border-radius: 8px;
-  background: #42b883;
-  color: #0a0a0a;
+  /* Le vert d'accent assombri à 70 %. Sur #42b883, un libellé blanc de 14 px ne
+     donne que 2,5:1 — très en dessous des 4,5:1 attendus, et le survol
+     éclaircissant tombait à 1,89. Ce vert-ci porte le blanc à 4,77:1. */
+  background: #2e815c;
+  /* L'icône suit par currentColor. */
+  color: #fff;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
   transition: background 0.2s ease, transform 0.2s ease;
 }
 
+.hire-button-icon {
+  width: 16px;
+  height: 16px;
+}
+
 .hire-button:hover {
-  background: #4fd39a;
+  /* S'éclaircit sans repasser sous le seuil : 3,79:1 au pointeur. */
+  background: #359369;
   transform: translateY(-1px);
 }
 

@@ -20,6 +20,9 @@
     "availability": {
       "available": "Disponible",
       "unavailable": "Indisponible"
+    },
+    "rate": {
+      "perDay": "/jour"
     }
   },
   "about": {
