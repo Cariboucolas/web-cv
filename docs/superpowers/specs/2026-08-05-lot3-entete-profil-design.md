@@ -105,10 +105,22 @@ de lecture dans l'absolu. Sur ce critère, la borne ne paie pas.
 carrés.
 
 **`@iconify-json/simple-icons` passe en dépendance locale.** Le paquet est absent de
-`package.json`, où seul `material-symbols` figure. Les trois icônes de réseaux sont donc
-résolues au runtime par `@nuxt/icon` via l'API distante `api.iconify.design` — une requête tierce
-pour du contenu au-dessus de la ligne de flottaison. Les descendre dans le profil ne change pas
-la nature du problème, mais c'est le moment de le régler.
+`package.json`, où seul `material-symbols` figure. Le journal de `pnpm build` le dit sans
+ambiguïté :
+
+```
+ℹ Nuxt Icon server bundle mode is set to `local`
+✔ Nuxt Icon discovered local-installed 1 collections: material-symbols
+```
+
+Le mode est bien `local` — le preset `firebase` ne contient aucun des mots-clés « edge » que
+`@nuxt/icon` recherche. Mais une seule collection est découverte : les trois icônes de réseaux
+retombent sur `fallbackToApi` et sont résolues au rendu via `api.iconify.design`.
+
+**C'est le serveur qui émet cet appel, pas le navigateur du visiteur** : en SSR, `@nuxt/icon`
+livre le SVG déjà inliné dans le HTML. Le gain n'est donc pas une requête épargnée au visiteur,
+mais une dépendance externe de moins au rendu en production, et la latence qui va avec. Les
+descendre dans le profil ne change pas la nature du problème, mais c'est le moment de le régler.
 
 ## Vérifications
 
@@ -118,8 +130,8 @@ la nature du problème, mais c'est le moment de le régler.
 - [ ] En dessous de 700 px : la ligne se replie proprement, aucune entrée tronquée
 - [ ] L'en-tête ne montre plus que le téléchargement du CV et l'indicateur de langue
 - [ ] Les trois liens externes ouvrent bien leur profil dans un nouvel onglet
-- [ ] Aucune requête vers `api.iconify.design` dans l'onglet réseau
-- [ ] `pnpm build` passe
+- [ ] `pnpm build` passe, et son journal annonce
+      `discovered local-installed 2 collections: material-symbols, simple-icons`
 
 **Contrainte de méthode.** Chrome headless plafonne son viewport à ~485 px sur macOS, quelle que
 soit la valeur passée à `--window-size` : une capture demandée à 380 px est un recadrage d'une
