@@ -122,6 +122,38 @@ livre le SVG déjà inliné dans le HTML. Le gain n'est donc pas une requête é
 mais une dépendance externe de moins au rendu en production, et la latence qui va avec. Les
 descendre dans le profil ne change pas la nature du problème, mais c'est le moment de le régler.
 
+### 6. Ajustements de la ligne d'action, ajoutés en cours de route
+
+Décidés après l'implémentation des cinq décisions ci-dessus, en travaillant la même section.
+
+**Le tarif journalier rejoint la ligne d'action**, entre la puce de disponibilité et le bouton :
+« 500 € » en display 22 px, « /jour » en 13 px atténué, les deux alignés sur la même ligne de base
+pour que le suffixe s'assoie sur le montant au lieu de flotter. Pas de cadre — la ligne compte déjà
+une puce et un bouton, un troisième objet encadré l'aurait alourdie ; le contraste de taille porte
+seul l'accent. Clé `profile.rate.perDay` en FR et EN, montant en constante avec espace insécable.
+
+**Le bouton reçoit une flèche sortante** (`material-symbols:arrow-outward`) et **sa hauteur est
+verrouillée sur celle de la puce** par une variable `--cta-height` portée par `.profile-cta`,
+appliquée en `min-height`. La hauteur est imposée plutôt que déduite du padding vertical : elle
+reste alignée même si la police change.
+
+**La gouttière de la ligne d'action reprend celle de la ligne de contact** (`12px 28px` au lieu de
+`14px`) : les deux rangées se lisent sur la même trame.
+
+**Le libellé passe en blanc gras sur un vert assombri.** Le blanc était demandé ; sur `#42b883` il
+ne donne que **2,50:1**, là où un texte de 14 px en réclame 4,5:1 — et le survol éclaircissant
+vers `#4fd39a` tombait à **1,89:1**, dégradant la lisibilité au moment même où le pointeur la
+sollicite. Le poids 800 n'ouvre aucune dispense : celle de WCAG pour le gras commence à 18,7 px.
+Le fond passe donc au vert d'accent assombri à 70 %, `#2e815c`, qui porte le blanc à **4,77:1** ;
+le survol remonte à `#359369`, soit 3,79:1.
+
+**Les puces de la ligne de contact sont remontées de 2 px.** `align-items: center` alignait les
+boîtes au pixel — mesuré, centre de puce et centre de span à 291,6 px tous les deux — mais le
+centre d'une line-box n'est pas le centre du texte : la boîte réserve la place des descendantes,
+qu'aucun des cinq libellés ne porte. Les glyphes occupaient donc la moitié haute et les dessins
+portaient 2,5 px trop bas. `line-height` n'y changeait rien, le demi-leading se répartissant
+également de part et d'autre. Après correction, l'écart tombe à 0–0,5 px.
+
 ## Vérifications
 
 - [ ] Desktop ≥ 1200 px : la ligne de contact tient d'un seul tenant, les deux colonnes se
@@ -132,6 +164,9 @@ descendre dans le profil ne change pas la nature du problème, mais c'est le mom
 - [ ] Les trois liens externes ouvrent bien leur profil dans un nouvel onglet
 - [ ] `pnpm build` passe, et son journal annonce
       `discovered local-installed 2 collections: material-symbols, simple-icons`
+- [ ] Puce de disponibilité et bouton font la même hauteur (32 px)
+- [ ] Le libellé blanc du bouton tient 4,5:1 au repos comme au survol
+- [ ] Les puces de contact sont alignées optiquement sur les glyphes, à moins d'1 px
 
 **Contrainte de méthode.** Chrome headless plafonne son viewport à ~485 px sur macOS, quelle que
 soit la valeur passée à `--window-size` : une capture demandée à 380 px est un recadrage d'une
