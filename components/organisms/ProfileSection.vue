@@ -142,7 +142,10 @@ const socialLinks = [
 /* ── Liste de contact : les SVG de public/icons/cv/ servent de puces ── */
 .contact-list {
   list-style: none;
-  margin: var(--space-entry) 0 0 0;
+  /* 48 px et non 32 : --space-column nomme une gouttière horizontale mais porte
+     ici le rythme vertical. Sa dégression à 32 puis 24 px sur petits écrans est
+     voulue — moins d'air quand la place manque. */
+  margin: var(--space-column) 0 0 0;
   padding: 0;
   /* En ligne, pas en colonne : les cinq entrées tiennent sur un rang de 554 px
      jusqu'à 700 px de viewport, et se replient d'elles-mêmes en dessous. */
@@ -196,7 +199,7 @@ const socialLinks = [
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  margin-top: var(--space-entry);
+  margin-top: var(--space-column);
 }
 
 .availability-chip {
