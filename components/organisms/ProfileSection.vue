@@ -139,7 +139,9 @@ const socialLinks = [
   margin: 0 0 var(--space-grid) 0;
 }
 
-/* ── Liste de contact : les SVG de public/icons/cv/ servent de puces ── */
+/* ── Ligne de contact : coordonnées puis profils externes, même grammaire.
+      Les deux premières puces sont des SVG de public/icons/cv/, les trois
+      suivantes des icônes Iconify — toutes au vert d'accent. ── */
 .contact-list {
   list-style: none;
   /* 48 px et non 32 : --space-column nomme une gouttière horizontale mais porte

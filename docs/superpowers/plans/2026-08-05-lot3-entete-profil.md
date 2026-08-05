@@ -749,7 +749,7 @@ git diff main...HEAD --stat
 git diff main...HEAD
 ```
 
-Attendu, neuf entrées : la spec du lot 3, les deux specs amendées, ce plan, `scripts/shot.mjs`,
+Attendu, dix entrées : la spec du lot 3, les deux specs amendées, ce plan, `scripts/shot.mjs`,
 `package.json`, `pnpm-lock.yaml`, `ProfileSection.vue`, `HeaderBar.vue`, et la suppression de
 `SocialSquare.vue`. Aucune trace de `CLAUDE.md`.
 
