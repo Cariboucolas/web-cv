@@ -297,3 +297,14 @@ Ces décisions ont été prises pour la cohérence d'ensemble et peuvent être a
   borner la mesure de ligne des paragraphes courants à ~68 caractères, et porter le rythme
   interne de la colonne de droite de 32 à 48 px. En attente, le contenu de cette section
   devant changer avec le déplacement des liens sociaux.
+
+> **Amendement du 2026-08-05.** Ces deux points forment le lot 3, spécifié dans
+> [2026-08-05-lot3-entete-profil-design.md](./2026-08-05-lot3-entete-profil-design.md).
+>
+> La forme prescrite pour les liens sociaux — « sous la même forme que la ville et le
+> téléphone » — est bien celle retenue : icône de 18 px suivie du libellé. La liste passe en
+> revanche à l'horizontale, les cinq entrées tenant sur un rang de 554 px.
+>
+> La borne de ~68 caractères **n'a pas été retenue** : l'équilibre entre la colonne avatar et
+> la colonne texte est déjà atteint sans elle, et borner creuse un vide à droite qui fait
+> décrocher le profil de la section « À propos ». Le rythme porté à 48 px est conservé.

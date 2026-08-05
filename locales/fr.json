@@ -15,11 +15,16 @@
     },
     "contact": {
       "location": "Toulouse",
-      "hireMe": "Embauchez-moi"
+      "hireMe": "Embauchez-moi",
+      "phoneCopied": "Copié",
+      "phoneCopyFailed": "Copie impossible"
     },
     "availability": {
       "available": "Disponible",
       "unavailable": "Indisponible"
+    },
+    "rate": {
+      "perDay": "/jour"
     }
   },
   "about": {
