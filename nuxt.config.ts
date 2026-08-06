@@ -88,7 +88,6 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-18',
 
-  // @ts-expect-error - i18n types are augmented by @nuxtjs/i18n module at runtime
   i18n: {
     locales: [
       {

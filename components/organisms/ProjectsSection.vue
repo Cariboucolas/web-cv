@@ -104,7 +104,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// @ts-expect-error - auto-importé par @nuxtjs/i18n
 const { t } = useI18n()
 
 interface Project {

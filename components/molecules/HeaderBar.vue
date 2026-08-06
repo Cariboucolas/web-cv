@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-// @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
 const { locale } = useI18n()
 
 const currentLang = computed(() => locale.value as 'fr' | 'en')

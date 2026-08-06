@@ -83,7 +83,6 @@
 <script setup lang="ts">
 import {computed, onBeforeUnmount, ref} from 'vue'
 
-// @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
 const {t} = useI18n()
 
 const profileDescription = computed(() => [
