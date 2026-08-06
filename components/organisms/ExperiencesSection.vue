@@ -45,6 +45,34 @@ const {tm, rt} = useI18n()
  */
 const translateMessageList = tm as (key: string) => unknown
 
+/**
+ * Message de traduction non résolu, tel qu'il sort de `tm`. Sa forme interne
+ * appartient à vue-i18n et c'est précisément celle qui fait capituler
+ * l'inférence : on l'emprunte donc à la signature de `rt`, seule fonction
+ * capable de la réduire en chaîne, plutôt que de la redéclarer.
+ */
+type RawMessage = Parameters<typeof rt>[0]
+
+/**
+ * Forme des entrées telles que les portent `locales/fr.json` et `en.json`.
+ * Tout y est optionnel sauf l'identité de l'expérience : un fichier de
+ * traduction peut mentir, chaque champ de liste reste donc gardé à l'exécution.
+ */
+interface RawSubProject {
+  name: RawMessage
+  highlights?: RawMessage[]
+}
+
+interface RawExperience {
+  company: RawMessage
+  position: RawMessage
+  periodStart: RawMessage
+  periodEnd?: RawMessage
+  technologies?: RawMessage[]
+  highlights?: RawMessage[]
+  subProjects?: RawSubProject[]
+}
+
 interface SubProject {
   name: string
   highlights: string[]
@@ -63,22 +91,22 @@ interface Experience {
 const experiences = computed<Experience[]>(() => {
   const rawExperiences = translateMessageList('experiences.items')
   if (!Array.isArray(rawExperiences)) return []
-  return rawExperiences.map((item: any) => ({
-    company: rt(item.company),
-    position: rt(item.position),
-    periodStart: rt(item.periodStart),
-    periodEnd: item.periodEnd ? rt(item.periodEnd) : null,
-    technologies: Array.isArray(item.technologies)
-        ? item.technologies.map((tech: any) => rt(tech))
+  return rawExperiences.map((rawExperience: RawExperience) => ({
+    company: rt(rawExperience.company),
+    position: rt(rawExperience.position),
+    periodStart: rt(rawExperience.periodStart),
+    periodEnd: rawExperience.periodEnd ? rt(rawExperience.periodEnd) : null,
+    technologies: Array.isArray(rawExperience.technologies)
+        ? rawExperience.technologies.map((technology) => rt(technology))
         : [],
-    highlights: Array.isArray(item.highlights)
-        ? item.highlights.map((h: any) => rt(h))
+    highlights: Array.isArray(rawExperience.highlights)
+        ? rawExperience.highlights.map((highlight) => rt(highlight))
         : [],
-    subProjects: Array.isArray(item.subProjects)
-        ? item.subProjects.map((sub: any) => ({
-          name: rt(sub.name),
-          highlights: Array.isArray(sub.highlights)
-              ? sub.highlights.map((h: any) => rt(h))
+    subProjects: Array.isArray(rawExperience.subProjects)
+        ? rawExperience.subProjects.map((rawSubProject) => ({
+          name: rt(rawSubProject.name),
+          highlights: Array.isArray(rawSubProject.highlights)
+              ? rawSubProject.highlights.map((highlight) => rt(highlight))
               : [],
         }))
         : undefined,
