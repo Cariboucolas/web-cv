@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-// @ts-expect-error - useI18n est auto-importé par @nuxtjs/i18n
 const { t } = useI18n()
 </script>
 

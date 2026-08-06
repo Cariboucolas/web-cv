@@ -34,8 +34,16 @@
 <script setup lang="ts">
 import {computed} from 'vue'
 
-// @ts-expect-error - auto-importé par @nuxtjs/i18n
 const {tm, rt} = useI18n()
+
+/**
+ * `tm` expose un type de retour récursif que TypeScript renonce à instancier
+ * (TS2589). Le type s'effondre alors sur `never`, et la garde `Array.isArray`
+ * juste en dessous ne narrow plus rien — `.map` disparaît. On lit donc `tm`
+ * à travers une signature minimale : la forme réelle du message est de toute
+ * façon vérifiée à l'exécution.
+ */
+const translateMessageList = tm as (key: string) => unknown
 
 interface SubProject {
   name: string
@@ -53,9 +61,9 @@ interface Experience {
 }
 
 const experiences = computed<Experience[]>(() => {
-  const raw = tm('experiences.items')
-  if (!Array.isArray(raw)) return []
-  return raw.map((item: any) => ({
+  const rawExperiences = translateMessageList('experiences.items')
+  if (!Array.isArray(rawExperiences)) return []
+  return rawExperiences.map((item: any) => ({
     company: rt(item.company),
     position: rt(item.position),
     periodStart: rt(item.periodStart),
