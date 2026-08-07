@@ -1,3 +1,9 @@
+/* Injectées ici depuis le retrait de `@nuxtjs/tailwindcss` : le module les
+   posait lui-même, aucune de ses versions n'accepte `@nuxt/kit` 4. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Le fond réel de la page est #0a0a0a (pages/index.vue) ; la variable
        annonçait #1a1a1a, qui n'était appliqué nulle part. */

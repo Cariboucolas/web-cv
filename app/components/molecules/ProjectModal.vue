@@ -12,7 +12,7 @@
         <!-- Une seule capture est passée à la fois : c'est le slider de la
              modale qui pilote, le showcase ne défile pas ici. -->
         <MoleculesProjectShowcase
-            :images="project.images.length > 0 ? [project.images[sliderIndex]] : []"
+            :images="currentSlideImages"
             :orientation="project.orientation"
             :logo="project.logo"
             :logo-bg="project.logoBg"
@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 
 const {t} = useI18n()
 
@@ -93,6 +93,17 @@ defineEmits<{
 }>()
 
 const sliderIndex = ref(0)
+
+/**
+ * Une seule capture est montrée à la fois, celle du rang courant. L'accès par
+ * index peut sortir des bornes, ce que Nuxt 4 signale désormais en typant la
+ * case `string | undefined` : on filtre donc l'absence ici plutôt que dans le
+ * template, où le narrowing ne se propage pas.
+ */
+const currentSlideImages = computed(() => {
+  const image = props.project?.images[sliderIndex.value]
+  return image ? [image] : []
+})
 
 watch(() => props.project, () => {
   sliderIndex.value = 0
