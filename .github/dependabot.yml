@@ -1,20 +1,37 @@
 version: 2
+
 updates:
+  # ── Dépendances npm ──────────────────────────────────────────────────────
+  # Les correctifs et montées mineures partent groupés : ils sont sans risque
+  # et se relisent en un lot. Les majeures, elles, ne sont volontairement pas
+  # groupées : chacune arrive dans sa propre PR, donc un échec de CI désigne
+  # toujours un paquet précis. La configuration précédente les empilait par
+  # dizaines (PR #14 et #19 : dix paquets, rouges, cause indiscernable).
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
-    open-pull-requests-limit: 1
+      interval: "weekly"
+      day: "monday"
+    # Une seule PR à la fois faisait qu'une majeure rouge bloquait la file et
+    # empêchait les correctifs inoffensifs d'arriver.
+    open-pull-requests-limit: 6
     groups:
-      major-dependencies:
-        applies-to: version-updates
-        update-types:
-          - "major"
-      minor-dependencies:
+      safe-updates:
         applies-to: version-updates
         update-types:
           - "minor"
-      patch-dependencies:
-        applies-to: version-updates
-        update-types:
           - "patch"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # ── Actions GitHub ───────────────────────────────────────────────────────
+  # Absentes de la configuration précédente : les quatre actions de
+  # deploy.yml sont épinglées par tag majeur et ne bougeaient jamais.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "ci"
