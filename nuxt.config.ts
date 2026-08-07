@@ -88,6 +88,14 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-18',
 
+  // Nuxt 4 place le code applicatif sous `app/`. Le drapeau est accepté dès
+  // Nuxt 3.12 : il fait résoudre `srcDir` vers `app/` avant la montée de
+  // version, ce qui permet de valider le déménagement seul, sans le confondre
+  // avec les ruptures propres à Nuxt 4.
+  future: {
+    compatibilityVersion: 4,
+  },
+
   i18n: {
     locales: [
       {
