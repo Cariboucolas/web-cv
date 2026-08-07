@@ -2,12 +2,18 @@ import type {Config} from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
-    // Pas de `content` ici : le module @nuxtjs/tailwindcss dérive déjà les
-    // chemins de `srcDir`, en absolu, et les recalcule donc tout seul après le
-    // déménagement vers `app/`. Les redéclarer en relatif les faisait résoudre
-    // depuis `.nuxt/tailwind/`, où ils ne matchaient rien — et le merger les
-    // faisait gagner sur la détection correcte du module, vidant la feuille
-    // sans la moindre erreur de build.
+    // Depuis le retrait de `@nuxtjs/tailwindcss`, plus personne ne dérive ces
+    // chemins de `srcDir` : Tailwind les lit lui-même via PostCSS, résolus
+    // depuis la racine du projet, où ces globs relatifs sont corrects.
+    // Un glob qui ne matche rien vide la feuille sans lever d'erreur : toute
+    // modification ici se vérifie sur les marqueurs du CSS produit.
+    content: [
+        './app/pages/**/*.{vue,js,ts}',
+        './app/components/**/*.{vue,js,ts}',
+        './app/layouts/**/*.{vue,js,ts}',
+        './app/plugins/**/*.{js,ts}',
+        './app/app.vue',
+    ],
     theme: {
         extend: {
             fontFamily: {
@@ -19,7 +25,4 @@ export default {
         },
     },
     plugins: [],
-    // `content` est volontairement absent (voir plus haut), or le type `Config`
-    // l'exige : on le retire du contrat plutôt que de déclarer une liste vide,
-    // qui entrerait en concurrence avec celle du module au moment de la fusion.
-} satisfies Omit<Config, 'content'>
+} satisfies Config

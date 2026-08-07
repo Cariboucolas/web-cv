@@ -5,7 +5,12 @@ export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
   css: ['vuetify/styles', '~/assets/css/main.css'],
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
+  // `@nuxtjs/tailwindcss` a été retiré : aucune de ses versions, pas même la
+  // 7.0.0-beta, n'accepte `@nuxt/kit` 4. Tailwind reste en 3.4.17 et passe
+  // désormais par le seul bloc `postcss` ci-dessous, que le projet déclarait
+  // déjà. Les directives que le module injectait vivent maintenant en tête de
+  // `app/assets/css/main.css`.
+  modules: ['@nuxt/icon', '@nuxtjs/i18n'],
 
   build: {
     transpile: ['vuetify'],
@@ -115,6 +120,7 @@ export default defineNuxtConfig({
     langDir: 'locales',
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
-    lazy: false,
+    // `lazy` n'existe plus depuis i18n 10 : le chargement différé est appliqué
+    // à tous les fichiers de locale, sans possibilité de le désactiver.
   },
 })
