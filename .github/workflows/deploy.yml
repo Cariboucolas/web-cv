@@ -20,6 +20,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      # GitHub n'expose pas les secrets du dépôt aux workflows déclenchés par
+      # Dependabot : ses pull requests tournent dans un contexte restreint. Le
+      # secret arrivait donc vide et l'étape de déploiement échouait *après* un
+      # build réussi, rendant chaque PR de Dependabot rouge quel que soit son
+      # contenu. On teste sa présence pour ne conditionner que le déploiement.
+      HAS_FIREBASE_CREDENTIALS: ${{ secrets.GCP_SA_KEY != '' }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -44,7 +52,11 @@ jobs:
       - name: Build the project
         run: pnpm run generate
 
+      # Sans identifiants — cas d'une pull request de Dependabot — on s'arrête
+      # après le build. La compilation reste le vrai signal : c'est elle qui dit
+      # si une montée de version passe. Seule la preview déployée manque.
       - name: Deploy to Firebase
+        if: env.HAS_FIREBASE_CREDENTIALS == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
