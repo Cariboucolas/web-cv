@@ -25,6 +25,7 @@ const MIME_TYPES = {
   '.webp': 'image/webp',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
   '.txt': 'text/plain; charset=utf-8',
@@ -71,9 +72,10 @@ const startServer = () =>
 /** Renvoie la liste des violations relevées à ce breakpoint. */
 const checkBreakpoint = async (baseUrl, width) => {
   const violations = []
-  const page = await openPage({ width, height: 900, still: true })
+  let page
 
   try {
+    page = await openPage({ width, height: 900, still: true })
     await page.goto(`${baseUrl}/`)
 
     const { clientWidth, scrollWidth } = await page.metrics()
@@ -84,7 +86,7 @@ const checkBreakpoint = async (baseUrl, width) => {
     }
 
     const missingSections = await page.evaluate(
-      `JSON.stringify(${JSON.stringify(SECTIONS)}.filter((id) => !document.getElementById(id)))`,
+      `JSON.stringify(${JSON.stringify(SECTIONS)}.filter((sectionId) => !document.getElementById(sectionId)))`,
     )
     for (const sectionId of JSON.parse(missingSections)) {
       violations.push(`section #${sectionId} absente de la page`)
@@ -101,8 +103,13 @@ const checkBreakpoint = async (baseUrl, width) => {
     for (const consoleError of page.consoleErrors) {
       violations.push(consoleError)
     }
+  } catch (error) {
+    // Un échec de lancement de Chrome ou de la prise de contact CDP ne doit
+    // pas faire planter le script : il devient une violation comme les
+    // autres, avec le message d'origine conservé intégralement.
+    violations.push(error.message)
   } finally {
-    page.close()
+    page?.close()
   }
 
   return violations
@@ -112,17 +119,23 @@ const { server, port } = await startServer()
 const baseUrl = `http://127.0.0.1:${port}`
 let totalViolations = 0
 
-for (const width of BREAKPOINTS) {
-  const violations = await checkBreakpoint(baseUrl, width)
-  if (violations.length === 0) {
-    console.log(`${width}px : conforme`)
-    continue
+try {
+  for (const width of BREAKPOINTS) {
+    const violations = await checkBreakpoint(baseUrl, width)
+    if (violations.length === 0) {
+      console.log(`${width}px : conforme`)
+      continue
+    }
+    totalViolations += violations.length
+    for (const violation of violations) {
+      console.error(`${width}px : ${violation}`)
+    }
   }
-  totalViolations += violations.length
-  for (const violation of violations) {
-    console.error(`${width}px : ${violation}`)
-  }
+} finally {
+  // Le serveur doit s'arrêter même si une violation imprévue s'échappe de
+  // la boucle : sans ce filet, le port resterait ouvert derrière un process
+  // qui a pourtant déjà rendu la main.
+  server.close()
 }
 
-server.close()
 process.exit(totalViolations === 0 ? 0 : 1)
