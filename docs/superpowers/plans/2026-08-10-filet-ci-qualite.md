@@ -232,6 +232,15 @@ git commit -m "ci: add a quality workflow running Biome and vue-tsc"
 
 ### Task 3: Validation du titre de pull request
 
+> **Divergences constatées à l'exécution** (tâche livrée, commits `87b720a` et `787b120`) :
+> — la sortie RED de l'étape 2 vaut `12`, pas `6` : le validateur absent renvoie `127` pour
+> tous les cas, donc ceux qui attendent `1` échouent aussi ;
+> — la règle 3 de l'étape 3 est fausse telle qu'écrite ci-dessous. `grep -qE ': [A-Z][a-z]'`
+> cherche partout dans le titre et rejette `fix: update readme: Add screenshot`. La version
+> livrée isole d'abord le sujet — `sed -E "s/^($TYPES)(\([a-z-]+\))?: //"` — puis l'ancre
+> avec `^[A-Z][a-z]`. Voir le spec pour le raisonnement ;
+> — la suite compte 14 cas, pas 12. Les vérifications de tabulations attendent donc `14`.
+
 **Files:**
 - Create: `.github/scripts/check-pr-title.sh`
 - Create: `.github/scripts/check-pr-title.test.sh`
