@@ -39,7 +39,7 @@ La tâche 7 (protection de branche) n'est pas du code : elle s'exécute après l
 | `package.json` | ajoute les scripts `lint` et `typecheck` | 2 |
 | `.github/workflows/ci.yml` | jobs `quality` et `pr-title` | 2, 3 |
 | `.github/scripts/check-pr-title.sh` | les 4 règles de titre | 3 |
-| `.github/scripts/check-pr-title.test.sh` | les 12 cas qui valident les règles, lancé en CI | 3 |
+| `.github/scripts/check-pr-title.test.sh` | les 15 cas qui valident les règles, lancé en CI | 3 |
 | `scripts/lib/cdp.mjs` | lancement de Chrome, client CDP, attentes de page | 4 |
 | `scripts/shot.mjs` | capture PNG à un viewport, depuis une URL | 4 |
 | `scripts/smoke.mjs` | serveur statique + invariants + code de sortie | 5 |
@@ -111,7 +111,9 @@ gh pr create --title "chore: apply Biome formatting across the repo" \
 
 - [ ] **Step 8: Fusionner après CI verte**
 
-Run: `gh pr checks --watch` puis `gh pr merge --squash --delete-branch`
+Run: `gh pr checks --watch` puis `gh pr merge --rebase --delete-branch`
+
+Le ruleset du dépôt (13369495) n'autorise que la fusion en rebase — `--squash` échouerait.
 Expected: le check `deploy` est vert avant la fusion.
 
 ---
@@ -239,7 +241,22 @@ git commit -m "ci: add a quality workflow running Biome and vue-tsc"
 > cherche partout dans le titre et rejette `fix: update readme: Add screenshot`. La version
 > livrée isole d'abord le sujet — `sed -E "s/^($TYPES)(\([a-z-]+\))?: //"` — puis l'ancre
 > avec `^[A-Z][a-z]`. Voir le spec pour le raisonnement ;
-> — la suite compte 14 cas, pas 12. Les vérifications de tabulations attendent donc `14`.
+> — la suite compte 14 cas, pas 12. Les vérifications de tabulations attendent donc `14`, puis
+> `15` après l'ajout d'un cas demi-cadratin lors de la revue finale ;
+> — le commentaire du job `pr-title` ci-dessous prétendait que le titre devient une ligne de
+> l'historique de `main` via `squash_merge_commit_title`. Faux sur ce dépôt : le ruleset
+> 13369495 impose `allowed_merge_methods: ["rebase"]`, qui rejoue chaque commit avec son
+> propre message — le titre de la PR n'atteint jamais `git log`. Corrigé dans le fichier
+> livré : le check reste utile comme surface de revue (`gh pr list`, notifications) et prépare
+> un futur changement de politique de fusion ;
+> — la règle 4 de l'étape 3, `grep -q '[—–]'`, dépend de la locale : sous `LC_ALL=C` elle
+> dégénère en un test sur les octets UTF-8 du cadratin et du demi-cadratin, et rejette à tort
+> une apostrophe typographique ou des points de suspension. Corrigé dans le fichier livré par
+> `grep -qF -e '—' -e '–'`, qui compare des séquences d'octets exactes quelle que soit la
+> locale ;
+> — `refuser()` lit `$PR_TITLE` sous `set -u` : si la variable est totalement absente (pas
+> seulement vide), la ligne « Titre reçu » plante en variable non liée avant même le message
+> d'erreur voulu. Corrigé dans le fichier livré par `${PR_TITLE:-}`.
 
 **Files:**
 - Create: `.github/scripts/check-pr-title.sh`
@@ -248,7 +265,7 @@ git commit -m "ci: add a quality workflow running Biome and vue-tsc"
 
 **Interfaces:**
 - Consumes: `ci.yml` créé en tâche 2
-- Produces: le contexte de status check nommé **`pr-title`** — repris tel quel par la tâche 7. `check-pr-title.sh` lit le titre dans la variable d'environnement `PR_TITLE` et sort en `0` ou `1`. `check-pr-title.test.sh` exécute les 12 cas et sort en `0` si tous passent, en `N` s'il reste `N` cas en échec.
+- Produces: le contexte de status check nommé **`pr-title`** — repris tel quel par la tâche 7. `check-pr-title.sh` lit le titre dans la variable d'environnement `PR_TITLE` et sort en `0` ou `1`. `check-pr-title.test.sh` exécute les 15 cas et sort en `0` si tous passent, en `N` s'il reste `N` cas en échec.
 
 - [ ] **Step 1: Écrire les cas de test qui doivent échouer**
 
@@ -423,6 +440,20 @@ git ls-files -s .github/scripts/   # Expected: mode 100755 sur les deux lignes
 ---
 
 ### Task 4: Extraire la mécanique CDP et rendre `shot.mjs` portable
+
+> **Divergences constatées à l'exécution** (tâche livrée, commit `8e60a63`, puis revue finale) :
+> — `close()` n'est plus un simple `chrome.kill()`. Une fonction `cleanup()` attend la sortie
+> réelle du processus avant de supprimer le profil temporaire — `kill()` ne fait qu'envoyer le
+> signal, Chrome continue d'écrire dans son répertoire de profil le temps de terminer ses
+> sous-processus — et sert aussi de filet de sécurité sur le chemin d'erreur d'`openPage` : si
+> une erreur survient avant que la `Page` ne soit renvoyée, l'appelant n'a encore aucune
+> référence sur laquelle appeler `close()`, et Chrome resterait orphelin sans elle ;
+> — la revue finale a ajouté un gestionnaire `socket.onclose` dans `send()` : si Chrome meurt
+> en cours de route, la fermeture du socket ne rejetait rien par elle-même et un appel encore
+> en attente restait indéfiniment pendant, sans jamais produire d'erreur. Voir le fichier
+> livré pour le raisonnement complet ;
+> — la ligne 39 retirée de `.gitignore` (étape 5) laissait un commentaire de section orphelin
+> au-dessus d'elle ; la revue finale l'a retiré aussi.
 
 **Files:**
 - Create: `scripts/lib/cdp.mjs`
@@ -748,6 +779,21 @@ git commit -m "refactor: extract the CDP plumbing from the screenshot tool"
 
 ### Task 5: Le test de fumée
 
+> **Divergences constatées à l'exécution** (tâche livrée, commit `6120cea`, puis revue finale) :
+> — `checkBreakpoint` gagne un `try/catch` autour de tout son corps, pas seulement le
+> `try/finally` qui ferme la page : un échec de lancement de Chrome ou de prise de contact CDP
+> devient une violation comme les autres, message d'origine conservé, plutôt qu'une exception
+> qui remonterait hors de la boucle du breakpoint suivant ;
+> — la boucle sur `BREAKPOINTS` passe elle aussi sous un `try/finally` : `server.close()` doit
+> tourner même si une violation imprévue s'échappe de la boucle, sans quoi le port resterait
+> ouvert derrière un processus qui a pourtant déjà rendu la main ;
+> — `MIME_TYPES` gagne l'entrée `.jpeg` à côté de `.jpg` ;
+> — la revue finale a ajouté un `try/catch` dans le gestionnaire de requêtes du serveur, autour
+> de `decodeURIComponent` : une séquence d'échappement mal formée dans l'URL levait une
+> exception que le callback async ne rattrapait pas, ce qui devenait un rejet non géré et
+> tuait le processus avant que `finally { server.close() }` n'ait sa chance de tourner. Répond
+> désormais `400`.
+
 **Files:**
 - Create: `scripts/smoke.mjs`
 
@@ -998,7 +1044,7 @@ Ajoute un filet de CI qui échoue vraiment, en trunk-based.
 ## Plan de test
 
 - [x] `pnpm lint` et `pnpm typecheck` verts en local
-- [x] 12 cas de titre vérifiés, dont 6 refus attendus
+- [x] 15 cas de titre vérifiés, dont 8 refus attendus
 - [x] Test de fumée vert sur le site sain
 - [x] Test de fumée rouge sur un débordement introduit volontairement
 - [ ] Les trois checks verts sur cette pull request
@@ -1016,8 +1062,10 @@ Expected: `quality`, `pr-title` et `deploy` verts. Le titre de la PR (`ci: add a
 - [ ] **Step 5: Fusionner**
 
 ```bash
-gh pr merge --squash --delete-branch
+gh pr merge --rebase --delete-branch
 ```
+
+Le ruleset du dépôt (13369495) n'autorise que la fusion en rebase — `--squash` échouerait.
 
 ---
 

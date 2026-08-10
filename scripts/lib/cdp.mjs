@@ -109,9 +109,9 @@ export const openPage = async ({ width, height = 800, still = false }) => {
     socket.onmessage = (message) => {
       const payload = JSON.parse(message.data)
       if (payload.id !== undefined) {
-        const resolve = pending.get(payload.id)
+        const waitingCall = pending.get(payload.id)
         pending.delete(payload.id)
-        resolve?.(payload.result)
+        waitingCall?.resolve(payload.result)
         return
       }
       events.push(payload.method)
@@ -135,7 +135,25 @@ export const openPage = async ({ width, height = 800, still = false }) => {
     const send = (method, params = {}) => {
       const id = ++nextId
       socket.send(JSON.stringify({ id, method, params }))
-      return new Promise((resolve) => pending.set(id, resolve))
+      return new Promise((resolve, reject) =>
+        pending.set(id, { resolve, reject }),
+      )
+    }
+
+    /**
+     * Si Chrome meurt en cours de route (crash, tué depuis l'extérieur…), la
+     * fermeture du socket ne rejette rien par elle-même : chaque appel
+     * `send()` encore en attente resterait indéfiniment pendant, sans jamais
+     * se résoudre ni produire d'erreur, et le job de CI qui l'attend irait
+     * jusqu'à la limite par défaut de GitHub. On rejette donc ici tout ce qui
+     * reste dans `pending`, puis on vide la table : plus rien n'y reste pour
+     * produire un rejet non géré si la fermeture survient deux fois.
+     */
+    socket.onclose = () => {
+      for (const waitingCall of pending.values()) {
+        waitingCall.reject(new Error('connexion CDP fermée avant la réponse'))
+      }
+      pending.clear()
     }
 
     await send('Page.enable')

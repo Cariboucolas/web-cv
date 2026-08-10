@@ -12,7 +12,7 @@ LONGUEUR_MAX=72
 
 refuser() {
   echo "::error::$1"
-  echo "Titre reçu : $PR_TITLE"
+  echo "Titre reçu : ${PR_TITLE:-}"
   exit 1
 }
 
@@ -43,8 +43,12 @@ if printf '%s' "$sujet" | grep -qE '^[A-Z][a-z]'; then
 fi
 
 # 4. Ni cadratin ni demi-cadratin : la convention du dépôt les proscrit dans les
-#    commits comme dans les titres de pull request.
-if printf '%s' "$PR_TITLE" | grep -q '[—–]'; then
+#    commits comme dans les titres de pull request. `-F` compare des chaînes
+#    littérales et non une expression régulière : sous une locale non UTF-8
+#    (LC_ALL=C), la classe de caractères [—–] dégénérerait en un ensemble
+#    d'octets qui rejetterait à tort une apostrophe typographique ou des
+#    points de suspension.
+if printf '%s' "$PR_TITLE" | grep -qF -e '—' -e '–'; then
   refuser "Tiret cadratin (—) ou demi-cadratin (–) interdit. Utiliser un tiret simple ou deux-points."
 fi
 

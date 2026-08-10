@@ -40,7 +40,19 @@ const MIME_TYPES = {
 const startServer = () =>
   new Promise((ready) => {
     const server = createServer(async (request, response) => {
-      const requestedPath = decodeURIComponent(request.url.split('?')[0])
+      // `decodeURIComponent` lève sur une séquence d'échappement mal formée
+      // (`%E0` orphelin, par exemple). Sans ce filet, l'exception échapperait
+      // au callback async de `createServer`, deviendrait un rejet non géré et
+      // tuerait le processus avant que le `finally { server.close() }` plus
+      // bas n'ait sa chance de tourner.
+      let requestedPath
+      try {
+        requestedPath = decodeURIComponent(request.url.split('?')[0])
+      } catch {
+        response.writeHead(400).end()
+        return
+      }
+
       const relativePath = requestedPath.endsWith('/')
         ? `${requestedPath}index.html`
         : requestedPath

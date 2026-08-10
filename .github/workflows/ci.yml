@@ -17,6 +17,7 @@ concurrency:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -44,12 +45,16 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-  # Le titre d'une pull request peut devenir une ligne de l'historique de main :
-  # squash_merge_commit_title vaut COMMIT_OR_PR_TITLE sur ce dépôt. Le valider,
-  # c'est valider `git log`.
+  # Le dépôt fusionne en rebase (ruleset 13369495, allowed_merge_methods:
+  # ["rebase"]) : le titre de la pull request n'entre jamais dans l'historique
+  # de main, chaque commit y garde son propre message. Le check reste utile
+  # ailleurs — c'est la surface de revue, ce qu'affichent `gh pr list` et les
+  # notifications — et garde la convention prête pour le jour où la politique
+  # de fusion changerait.
   pr-title:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout code
