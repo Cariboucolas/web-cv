@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import { computed } from 'vue'
 
 interface SubProject {
   name: string
@@ -95,23 +95,29 @@ const companyLogos: Record<string, string> = {
   'Decathlon MayDay': '/logos/logo_mayday.png',
   'Decathlon WeParis': '/logos/logo_weparis.png',
   'Decathlon InStore': '/logos/logo_decathlon.jpg',
-  'Brocorp': '/logos/logo_brocorp.png',
+  Brocorp: '/logos/logo_brocorp.png',
   'Biscuiterie Poult': '/logos/logo_poult.jpg',
-  'Intersport': '/logos/logo_intersport.jpg',
-  'Infodis': '/logos/logo_infodis.jpeg',
+  Intersport: '/logos/logo_intersport.jpg',
+  Infodis: '/logos/logo_infodis.jpeg',
 }
 
 const companyBgColors: Record<string, string> = {
   'Decathlon InStore': '#0363d0',
   'Decathlon MayDay': '#ffffff',
-  'Brocorp': '#ffffff',
+  Brocorp: '#ffffff',
   'Biscuiterie Poult': '#ffffff',
-  'Intersport': '#ffffff',
+  Intersport: '#ffffff',
 }
 
-const companyLogo = computed(() => companyLogos[props.experience.company] ?? null)
-const companyBg = computed(() => companyBgColors[props.experience.company] ?? null)
-const isOversized = computed(() => props.experience.company === 'Decathlon InStore')
+const companyLogo = computed(
+  () => companyLogos[props.experience.company] ?? null,
+)
+const companyBg = computed(
+  () => companyBgColors[props.experience.company] ?? null,
+)
+const isOversized = computed(
+  () => props.experience.company === 'Decathlon InStore',
+)
 
 const period = computed(() => {
   const xp = props.experience

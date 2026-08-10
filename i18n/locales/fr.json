@@ -235,12 +235,7 @@
         "position": "Technicien Helpdesk",
         "periodStart": "2008",
         "periodEnd": "2016",
-        "technologies": [
-          "Active Directory",
-          "GLPI",
-          "ITIL",
-          "Windows"
-        ],
+        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
         "highlights": [
           "Support utilisateurs N1/N2",
           "Déploiement et configuration de postes de travail",

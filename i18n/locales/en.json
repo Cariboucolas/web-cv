@@ -235,12 +235,7 @@
         "position": "Helpdesk Technician",
         "periodStart": "2008",
         "periodEnd": "2016",
-        "technologies": [
-          "Active Directory",
-          "GLPI",
-          "ITIL",
-          "Windows"
-        ],
+        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
         "highlights": [
           "N1/N2 user support",
           "Workstation deployment and configuration",
