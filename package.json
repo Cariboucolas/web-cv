@@ -10,7 +10,7 @@
     "lint": "biome ci .",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.check.json"
   },
   "packageManager": "pnpm@9.15.2",
   "dependencies": {

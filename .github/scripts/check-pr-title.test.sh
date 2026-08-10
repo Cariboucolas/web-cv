@@ -20,12 +20,15 @@ CASES=$(cat <<'EOF'
 1	random text without any prefix at all
 0	fix: update readme: Add screenshot
 1	fix(ci): Bump the runner image
+1	feat: refonte UI lot 2 – mouvement (champ de cubes)
 EOF
 )
 
+total=0
 failures=0
 while IFS=$'\t' read -r expected title; do
   [ -z "$expected" ] && continue
+  total=$((total + 1))
   PR_TITLE="$title" "$VALIDATEUR" >/dev/null 2>&1
   actual=$?
   if [ "$actual" != "$expected" ]; then
@@ -35,7 +38,7 @@ while IFS=$'\t' read -r expected title; do
 done <<< "$CASES"
 
 if [ "$failures" -eq 0 ]; then
-  echo "Les 14 cas passent."
+  echo "Les $total cas passent."
 else
   echo "$failures cas en échec."
 fi

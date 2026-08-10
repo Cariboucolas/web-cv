@@ -19,6 +19,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     env:
       # GitHub n'expose pas les secrets du dépôt aux workflows déclenchés par
