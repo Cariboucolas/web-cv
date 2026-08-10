@@ -36,4 +36,3 @@ tmp/
 .superpowers/
 
 # Outillage de vérification visuelle, local au poste de travail
-scripts/shot.mjs
