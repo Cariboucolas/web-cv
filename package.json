@@ -7,8 +7,10 @@
     "deploy": "firebase deploy --only hosting",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "lint": "biome ci .",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "vue-tsc --noEmit"
   },
   "packageManager": "pnpm@9.15.2",
   "dependencies": {

@@ -1,0 +1,45 @@
+name: Quality
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Sur une pull request, un nouveau push annule la vérification en cours : seul
+# le dernier commit compte. Sur main, les runs restent en file d'attente.
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      # Le postinstall lance `nuxt prepare`, qui génère le .nuxt/tsconfig.json
+      # dont tsconfig.json hérite. Le typecheck n'a donc pas besoin d'un build :
+      # c'est ce qui permet à ce workflow de tourner en parallèle du déploiement
+      # plutôt qu'après lui.
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint and check formatting
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
