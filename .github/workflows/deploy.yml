@@ -52,6 +52,12 @@ jobs:
       - name: Build the project
         run: pnpm run generate
 
+      # Le test a besoin de l'artefact construit : il vit donc ici plutôt que
+      # dans ci.yml, ce qui évite un second `pnpm generate`. Il teste exactement
+      # ce qui sera déployé. Chrome est préinstallé sur les runners ubuntu.
+      - name: Smoke test the built site
+        run: node scripts/smoke.mjs .output/public
+
       # Sans identifiants — cas d'une pull request de Dependabot — on s'arrête
       # après le build. La compilation reste le vrai signal : c'est elle qui dit
       # si une montée de version passe. Seule la preview déployée manque.
