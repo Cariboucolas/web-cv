@@ -23,27 +23,46 @@ interface Skill {
 const skillCategories: { label: string; skills: Skill[] }[] = [
   {
     label: 'Frontend',
-    skills: [{name: 'Vue'}, {name: 'Nuxt'}, {name: 'React'}, {name: 'Next'}, {name: 'JavaScript'}, {name: 'TypeScript'}, {name: 'Tailwind'}],
+    skills: [
+      { name: 'Vue' },
+      { name: 'Nuxt' },
+      { name: 'React' },
+      { name: 'Next' },
+      { name: 'JavaScript' },
+      { name: 'TypeScript' },
+      { name: 'Tailwind' },
+    ],
   },
   {
     label: 'Backend & Data',
-    skills: [{name: 'Firebase'}, {name: 'Node.js'}, {name: 'SQL'}, {name: 'NoSQL'}, {name: 'REST APIs'}],
+    skills: [
+      { name: 'Firebase' },
+      { name: 'Node.js' },
+      { name: 'SQL' },
+      { name: 'NoSQL' },
+      { name: 'REST APIs' },
+    ],
   },
   {
     label: 'DevOps',
-    skills: [{name: 'Git'}, {name: 'CI/CD'}, {name: 'Docker'}],
+    skills: [{ name: 'Git' }, { name: 'CI/CD' }, { name: 'Docker' }],
   },
   {
     label: 'Architecture',
-    skills: [{name: 'TDD'}, {name: 'DDD'}, {name: 'Hexagonal'}],
+    skills: [{ name: 'TDD' }, { name: 'DDD' }, { name: 'Hexagonal' }],
   },
   {
     label: 'Tests',
-    skills: [{name: 'Cypress'}, {name: 'Playwright'}, {name: 'Jest'}, {name: 'Mocha'}],
+    skills: [
+      { name: 'Cypress' },
+      { name: 'Playwright' },
+      { name: 'Jest' },
+      { name: 'Mocha' },
+    ],
   },
   {
     label: 'Langages',
-    skills: [{name: 'Python'}, {name: 'Java'}],
+    skills: [{ name: 'Python' }, { name: 'Java' }],
   },
 ]
 </script>

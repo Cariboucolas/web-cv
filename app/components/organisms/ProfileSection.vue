@@ -81,13 +81,13 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, ref} from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 
-const {t} = useI18n()
+const { t } = useI18n()
 
 const profileDescription = computed(() => [
   t('profile.description.line1'),
-  t('profile.description.line2', {years: devExperienceYears()}),
+  t('profile.description.line2', { years: devExperienceYears() }),
   t('profile.description.line3'),
 ])
 
@@ -124,8 +124,8 @@ let resetTimer: ReturnType<typeof setTimeout> | undefined
  * appeler ; `navigator.clipboard` est absent hors contexte sécurisé.
  */
 const canCopyInstead = () =>
-    !!navigator.clipboard &&
-    window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  !!navigator.clipboard &&
+  window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
 const onPhoneClick = async (event: MouseEvent) => {
   if (!canCopyInstead()) return

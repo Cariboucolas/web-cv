@@ -32,9 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import { computed } from 'vue'
 
-const {tm, rt} = useI18n()
+const { tm, rt } = useI18n()
 
 /**
  * `tm` expose un type de retour récursif que TypeScript renonce à instancier
@@ -97,19 +97,19 @@ const experiences = computed<Experience[]>(() => {
     periodStart: rt(rawExperience.periodStart),
     periodEnd: rawExperience.periodEnd ? rt(rawExperience.periodEnd) : null,
     technologies: Array.isArray(rawExperience.technologies)
-        ? rawExperience.technologies.map((technology) => rt(technology))
-        : [],
+      ? rawExperience.technologies.map((technology) => rt(technology))
+      : [],
     highlights: Array.isArray(rawExperience.highlights)
-        ? rawExperience.highlights.map((highlight) => rt(highlight))
-        : [],
+      ? rawExperience.highlights.map((highlight) => rt(highlight))
+      : [],
     subProjects: Array.isArray(rawExperience.subProjects)
-        ? rawExperience.subProjects.map((rawSubProject) => ({
+      ? rawExperience.subProjects.map((rawSubProject) => ({
           name: rt(rawSubProject.name),
           highlights: Array.isArray(rawSubProject.highlights)
-              ? rawSubProject.highlights.map((highlight) => rt(highlight))
-              : [],
+            ? rawSubProject.highlights.map((highlight) => rt(highlight))
+            : [],
         }))
-        : undefined,
+      : undefined,
   }))
 })
 </script>

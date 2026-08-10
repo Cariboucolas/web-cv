@@ -65,9 +65,9 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue'
+import { computed, ref, watch } from 'vue'
 
-const {t} = useI18n()
+const { t } = useI18n()
 
 interface Project {
   key: string
@@ -105,9 +105,12 @@ const currentSlideImages = computed(() => {
   return image ? [image] : []
 })
 
-watch(() => props.project, () => {
-  sliderIndex.value = 0
-})
+watch(
+  () => props.project,
+  () => {
+    sliderIndex.value = 0
+  },
+)
 </script>
 
 <style scoped>
