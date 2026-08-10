@@ -115,15 +115,34 @@ durement acquises y sont écrites et commentées — la neutralisation de `v-rev
 (l. 128), et le `image.decode()` de la ligne 146 sans lequel la capture montre « un bug
 d'affichage qui n'existe que dans l'image ».
 
-Trois modifications :
+#### Découpage en trois fichiers
 
-- **Remettre le fichier sous suivi git.** Il est actuellement exclu (`.gitignore:39`, PR #31).
+Le mode `--assert` greffé sur `shot.mjs` a été écarté : le smoke test doit servir un dossier
+statique, et un serveur HTTP n'a rien à faire dans un outil de capture qui, en local, vise le
+serveur de développement. Les deux usages divergent par leurs entrées — une URL d'un côté, un
+répertoire de l'autre — mais partagent toute la mécanique CDP.
+
+```
+scripts/
+  lib/cdp.mjs   # lancement de Chrome, client CDP, les trois attentes  (~80 lignes)
+  shot.mjs      # capture PNG à un viewport donné, depuis une URL
+  smoke.mjs     # sert .output/public, vérifie les invariants, sort en 0 ou 1
+```
+
+L'extraction est justifiée par un second consommateur réel, pas anticipée : les trois attentes
+représentent la moitié du script actuel et sont sa partie subtile. Les dupliquer serait
+exactement le défaut reproché à l'option « script CI distinct » écartée plus haut. Le
+découpage suit la règle de `CLAUDE.md` — beaucoup de petits fichiers cohésifs.
+
+Trois modifications par ailleurs :
+
+- **Remettre `shot.mjs` sous suivi git.** Il est actuellement exclu (`.gitignore:39`, PR #31).
   Un runner ne peut pas exécuter un fichier absent du dépôt.
 - **Rendre le chemin de Chrome portable.** `scripts/shot.mjs:17` code en dur
   `/Applications/Google Chrome.app/…`. Remplacer par `process.env.CHROME_PATH` avec repli sur
   le chemin macOS en local ; les runners `ubuntu-latest` embarquent Chrome stable.
-- **Ajouter un mode `--assert`** qui sort en `1`. Aujourd'hui le script journalise même ses
-  propres détections — `DEBORDEMENT +Npx` est affiché puis oublié, exit `0` systématique.
+- **Sortir en `1` sur invariant violé.** Aujourd'hui le script journalise jusqu'à ses propres
+  détections — `DEBORDEMENT +Npx` est affiché puis oublié, exit `0` systématique.
 
 Invariants vérifiés à **390 px** et **1440 px**, sans aucune image de référence :
 
@@ -137,9 +156,28 @@ Invariants vérifiés à **390 px** et **1440 px**, sans aucune image de référ
 Placé dans `deploy.yml` après `Build the project`, parce que ce test a besoin de l'artefact
 buildé : l'y mettre évite un second `pnpm generate`, et teste exactement l'artefact déployé.
 
-Le site est servi depuis `.output/public` par `python3 -m http.server`, préinstallé sur le
-runner. Le choix suit le même raisonnement que le `grep` du titre : aucune dépendance tierce
-à auditer ni à faire monter de version, pour un besoin d'une ligne.
+#### Servir `.output/public`
+
+`smoke.mjs` embarque son propre serveur statique, en `node:http`, sur une vingtaine de lignes.
+Écarté au passage : `pnpm dlx serve`, qui télécharge un paquet tiers non épinglé à chaque run,
+et `python3 -m http.server`, préinstallé mais étranger à la chaîne d'outils du dépôt.
+
+Trois propriétés que ni l'un ni l'autre n'offre, et qui décident :
+
+- **Écoute sur le port `0`**, attribué par le système. Aucun conflit possible avec un serveur
+  de développement déjà lancé en local, ni entre deux jobs concurrents en CI. Le port réel se
+  lit sur le handle après `listen`.
+- **Aucune attente arbitraire.** Le rappel de `listen` dit exactement quand le serveur écoute,
+  là où un serveur externe impose un `sleep` ou une boucle de sondage — le genre de délai
+  approximatif qui rend un test intermittent.
+- **Rien à installer, rien à auditer.** Démarrage immédiat, aucun paquet à faire monter de
+  version par Dependabot, même raisonnement que le `grep` du titre de PR.
+
+Le serveur reste dans `smoke.mjs` plutôt que dans `lib/` : un seul consommateur, aucune raison
+de l'extraire avant qu'un second n'existe.
+
+`cleanUrls: true` côté Firebase n'a pas d'incidence : le site est mono-page et le smoke test
+ne visite que `/`, servi par `index.html`.
 
 ### 4. Protection de `main`
 
@@ -190,6 +228,7 @@ toute PR devient inmergeable.
 1. Commit de reformatage sur `main`
 2. Scripts `lint` et `typecheck` dans `package.json`
 3. `ci.yml` (jobs `quality` et `pr-title`)
-4. `shot.mjs` : re-versionné, portable, mode `--assert`
-5. Étape smoke dans `deploy.yml`
-6. Protection de branche, une fois les trois contextes vus au moins une fois par GitHub
+4. `scripts/lib/cdp.mjs` extrait de `shot.mjs`, qui est re-versionné et rendu portable
+5. `scripts/smoke.mjs` : serveur statique, invariants, code de sortie
+6. Étape smoke dans `deploy.yml`
+7. Protection de branche, une fois les trois contextes vus au moins une fois par GitHub
