@@ -90,7 +90,11 @@ motif monolithique dirait « titre invalide » sans dire pourquoi :
    Types tirés de `~/.claude/rules/git-workflow.md`, plus `build`, utilisé par Dependabot
    jusqu'à la PR #19. **Le scope est facultatif** : aucun des 98 commits de `main` n'en
    porte, alors que Dependabot en met systématiquement (`chore(deps-dev)`).
-3. **Sujet en minuscule** — attrape `Feat: add ui on mouse mouvement` (PR #28).
+3. **Sujet ne commençant pas par un mot capitalisé**, soit le rejet du motif `: [A-Z][a-z]`.
+   Formulée en « sujet en minuscule », la règle serait à la fois redondante — le contrôle 2
+   rejette déjà `Feat:` par sa regex de type — et fausse : elle condamnerait
+   `feat: UI redesign phase 3` (PR #30), où l'acronyme est légitime. La version retenue
+   rejette `Add something` et accepte `UI redesign`.
 4. **Aucun tiret cadratin ni demi-cadratin** (`—`, `–`) — la mémoire projet les proscrit dans
    les commits et titres de PR. Quatre titres de l'historique en contiennent (#24, #26, #27,
    #29), tous antérieurs à la règle.
