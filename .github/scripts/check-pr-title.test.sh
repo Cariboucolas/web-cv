@@ -18,6 +18,8 @@ CASES=$(cat <<'EOF'
 1	feat: refonte UI lot 2 — mouvement (champ de cubes)
 1	feat: add a section that is far too long to fit inside the seventy-two characters
 1	random text without any prefix at all
+0	fix: update readme: Add screenshot
+1	fix(ci): Bump the runner image
 EOF
 )
 
@@ -33,7 +35,7 @@ while IFS=$'\t' read -r expected title; do
 done <<< "$CASES"
 
 if [ "$failures" -eq 0 ]; then
-  echo "Les 12 cas passent."
+  echo "Les 14 cas passent."
 else
   echo "$failures cas en échec."
 fi

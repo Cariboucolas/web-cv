@@ -34,8 +34,11 @@ if ! printf '%s' "$PR_TITLE" | grep -qE "^($TYPES)(\([a-z-]+\))?: .+"; then
 fi
 
 # 3. Le sujet ne commence pas par un mot capitalisé. On vise « Add something »,
-#    pas les acronymes : « feat: UI redesign » reste valide.
-if printf '%s' "$PR_TITLE" | grep -qE ': [A-Z][a-z]'; then
+#    pas les acronymes : « feat: UI redesign » reste valide. Le préfixe (avec
+#    son scope facultatif) est retiré avant le test, pour ancrer la règle sur
+#    le début du sujet et non sur n'importe quel deux-points du titre.
+sujet=$(printf '%s' "$PR_TITLE" | sed -E "s/^($TYPES)(\([a-z-]+\))?: //")
+if printf '%s' "$sujet" | grep -qE '^[A-Z][a-z]'; then
   refuser "Le sujet ne doit pas commencer par un mot capitalisé. Les acronymes (UI, API, CI) restent acceptés."
 fi
 
