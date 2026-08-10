@@ -38,7 +38,8 @@ La tâche 7 (protection de branche) n'est pas du code : elle s'exécute après l
 |---|---|---|
 | `package.json` | ajoute les scripts `lint` et `typecheck` | 2 |
 | `.github/workflows/ci.yml` | jobs `quality` et `pr-title` | 2, 3 |
-| `.github/scripts/check-pr-title.sh` | les 4 règles de titre, testable en local | 3 |
+| `.github/scripts/check-pr-title.sh` | les 4 règles de titre | 3 |
+| `.github/scripts/check-pr-title.test.sh` | les 12 cas qui valident les règles, lancé en CI | 3 |
 | `scripts/lib/cdp.mjs` | lancement de Chrome, client CDP, attentes de page | 4 |
 | `scripts/shot.mjs` | capture PNG à un viewport, depuis une URL | 4 |
 | `scripts/smoke.mjs` | serveur statique + invariants + code de sortie | 5 |
@@ -233,19 +234,25 @@ git commit -m "ci: add a quality workflow running Biome and vue-tsc"
 
 **Files:**
 - Create: `.github/scripts/check-pr-title.sh`
+- Create: `.github/scripts/check-pr-title.test.sh`
 - Modify: `.github/workflows/ci.yml` (ajout du job `pr-title`)
 
 **Interfaces:**
 - Consumes: `ci.yml` créé en tâche 2
-- Produces: le contexte de status check nommé **`pr-title`** — repris tel quel par la tâche 7. Le script lit le titre dans la variable d'environnement `PR_TITLE` et sort en `0` ou `1`.
+- Produces: le contexte de status check nommé **`pr-title`** — repris tel quel par la tâche 7. `check-pr-title.sh` lit le titre dans la variable d'environnement `PR_TITLE` et sort en `0` ou `1`. `check-pr-title.test.sh` exécute les 12 cas et sort en `0` si tous passent, en `N` s'il reste `N` cas en échec.
 
 - [ ] **Step 1: Écrire les cas de test qui doivent échouer**
 
-Le script n'existe pas encore. Créer `/tmp/test-pr-title.sh` (hors dépôt, jetable) :
+Le script de validation n'existe pas encore. Créer `.github/scripts/check-pr-title.test.sh` :
 
 ```bash
 #!/usr/bin/env bash
+# Vérifie check-pr-title.sh contre des titres réels du dépôt.
 # Chaque ligne : <code de sortie attendu> <TAB> <titre>
+set -uo pipefail
+
+VALIDATEUR="$(dirname "$0")/check-pr-title.sh"
+
 CASES=$(cat <<'EOF'
 0	feat: add the contact block
 0	fix: restore the English locale, broken by the Nuxt 4 migration
@@ -265,7 +272,7 @@ EOF
 failures=0
 while IFS=$'\t' read -r expected title; do
   [ -z "$expected" ] && continue
-  PR_TITLE="$title" .github/scripts/check-pr-title.sh >/dev/null 2>&1
+  PR_TITLE="$title" "$VALIDATEUR" >/dev/null 2>&1
   actual=$?
   if [ "$actual" != "$expected" ]; then
     echo "ECHEC (attendu $expected, obtenu $actual) : $title"
@@ -273,22 +280,27 @@ while IFS=$'\t' read -r expected title; do
   fi
 done <<< "$CASES"
 
-[ "$failures" -eq 0 ] && echo "Les 12 cas passent." || echo "$failures cas en échec."
+if [ "$failures" -eq 0 ]; then
+  echo "Les 12 cas passent."
+else
+  echo "$failures cas en échec."
+fi
 exit "$failures"
 ```
 
 Deux pièges à l'écriture de ce fichier :
 
-- **Les séparateurs sont des tabulations littérales**, exigées par `IFS=$'\t'`. Un éditeur qui les convertit en espaces fera lire le code attendu et le titre comme un seul champ. Vérifier avec `grep -cP '^\d\t' /tmp/test-pr-title.sh`, qui doit renvoyer `12`.
+- **Les séparateurs sont des tabulations littérales**, exigées par `IFS=$'\t'`. Un éditeur qui les convertit en espaces fera lire le code attendu et le titre comme un seul champ. Vérifier avec `grep -cP '^\d\t' .github/scripts/check-pr-title.test.sh`, qui doit renvoyer `12`.
 - **Le cas `feat: UI redesign phase 3` est attendu valide** : un acronyme en tête de sujet est légitime. La règle n'est donc pas « pas de majuscule » mais « pas de mot capitalisé ». C'est un vrai titre du dépôt (PR #30) : une règle plus stricte l'aurait rejeté.
 
 - [ ] **Step 2: Lancer les tests pour vérifier qu'ils échouent**
 
 ```bash
-chmod +x /tmp/test-pr-title.sh && /tmp/test-pr-title.sh
+chmod +x .github/scripts/check-pr-title.test.sh
+.github/scripts/check-pr-title.test.sh; echo "EXIT=$?"
 ```
 
-Expected: FAIL — tous les cas attendus à `0` échouent, parce que `.github/scripts/check-pr-title.sh` n'existe pas (code `127`).
+Expected: FAIL — les 6 cas attendus à `0` échouent, parce que `.github/scripts/check-pr-title.sh` n'existe pas encore (code `127`). `EXIT=6`.
 
 - [ ] **Step 3: Écrire le script de validation**
 
@@ -349,12 +361,12 @@ echo "Titre conforme : $PR_TITLE"
 
 ```bash
 chmod +x .github/scripts/check-pr-title.sh
-/tmp/test-pr-title.sh
+.github/scripts/check-pr-title.test.sh; echo "EXIT=$?"
 ```
 
-Expected: PASS, `Les 12 cas passent.`
+Expected: PASS, `Les 12 cas passent.`, `EXIT=0`.
 
-Si le cas `feat: refonte UI lot 2 — mouvement` passe alors qu'il devrait échouer, le terminal a probablement remplacé le cadratin. Vérifier avec `grep -c '—' /tmp/test-pr-title.sh`.
+Si le cas `feat: refonte UI lot 2 — mouvement` passe alors qu'il devrait échouer, le terminal a probablement remplacé le cadratin. Vérifier avec `grep -c '—' .github/scripts/check-pr-title.test.sh`, qui doit renvoyer `1`.
 
 - [ ] **Step 5: Ajouter le job au workflow**
 
@@ -372,6 +384,12 @@ Dans `.github/workflows/ci.yml`, après le job `quality` :
       - name: Checkout code
         uses: actions/checkout@v7
 
+      # Le validateur est vérifié avant de servir : changer un type accepté ou
+      # la limite de longueur casse alors un cas connu, plutôt que la CI d'une
+      # pull request sans rapport, trois semaines plus tard.
+      - name: Vérifier le validateur de titre
+        run: .github/scripts/check-pr-title.test.sh
+
       - name: Vérifier le titre de la pull request
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -383,8 +401,14 @@ Le titre passe par `env:` et non par interpolation dans `run:`. Interpolé direc
 - [ ] **Step 6: Commit**
 
 ```bash
-git add .github/scripts/check-pr-title.sh .github/workflows/ci.yml
+git add .github/scripts/check-pr-title.sh .github/scripts/check-pr-title.test.sh .github/workflows/ci.yml
 git commit -m "ci: check pull request titles against the repo convention"
+```
+
+Vérifier que les deux scripts partent bien exécutables :
+
+```bash
+git ls-files -s .github/scripts/   # Expected: mode 100755 sur les deux lignes
 ```
 
 ---
