@@ -8,7 +8,9 @@ node_modules/
 .nitro/
 .data/
 .cache/
-dist/
+# Sans slash : `dist/` ne couvrait que le répertoire, et laissait suivre le
+# symlink `dist` hérité du projet précédent, cassé et versionné par erreur.
+dist
 
 # Firebase
 .firebase/

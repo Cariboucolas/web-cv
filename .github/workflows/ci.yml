@@ -33,9 +33,9 @@ jobs:
           cache: 'pnpm'
 
       # Le postinstall lance `nuxt prepare`, qui génère le .nuxt/tsconfig.json
-      # dont tsconfig.json hérite. Le typecheck n'a donc pas besoin d'un build :
-      # c'est ce qui permet à ce workflow de tourner en parallèle du déploiement
-      # plutôt qu'après lui.
+      # dont `tsconfig.check.json` hérite. Le typecheck n'a donc pas besoin d'un
+      # build : c'est ce qui permet à ce workflow de tourner en parallèle du
+      # déploiement plutôt qu'après lui.
       - name: Install dependencies
         run: pnpm install
 
