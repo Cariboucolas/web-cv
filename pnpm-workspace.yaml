@@ -1,0 +1,12 @@
+# Depuis pnpm 10, les scripts d'installation des dépendances ne s'exécutent plus
+# par défaut : un `postinstall` malveillant est le vecteur classique d'un paquet
+# compromis. Chaque paquet doit donc être autorisé explicitement, et pnpm 11 fait
+# échouer toute commande tant qu'il en reste un non arbitré.
+#
+# Les trois ci-dessous installent un binaire natif dans ce script et ne
+# fonctionnent pas sans lui : Biome (le linter du job `quality`), esbuild (utilisé
+# par Vite pour la transpilation) et protobufjs (tiré par firebase-tools).
+allowBuilds:
+  '@biomejs/biome': true
+  esbuild: true
+  protobufjs: true
