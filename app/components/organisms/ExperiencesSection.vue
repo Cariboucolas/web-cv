@@ -1,8 +1,8 @@
 <template>
-  <section class="w-full">
+  <section class="section-full">
 
     <!-- Mobile: cards empilées -->
-    <div class="sm:hidden">
+    <div class="mobile-only">
       <div class="xp-mobile-list">
         <MoleculesExperienceCard
             v-for="(xp, index) in experiences"
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Desktop: timeline + cards -->
-    <div class="hidden sm:block">
+    <div class="desktop-only">
       <div class="xp-timeline">
         <div v-for="(xp, index) in experiences" :key="index" v-reveal="index" class="xp-row">
           <!-- Timeline -->

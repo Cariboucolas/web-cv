@@ -1,9 +1,3 @@
-/* Injectées ici depuis le retrait de `@nuxtjs/tailwindcss` : le module les
-   posait lui-même, aucune de ses versions n'accepte `@nuxt/kit` 4. */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   /* Le fond réel de la page est #0a0a0a (pages/index.vue) ; la variable
        annonçait #1a1a1a, qui n'était appliqué nulle part. */
@@ -66,6 +60,35 @@
   }
 }
 
+/* ── Reset ─────────────────────────────────────────────────────────────
+   Reprend la part du preflight de Tailwind dont la mise en page dependait
+   reellement, mesuree par comparaison de captures avant et apres son
+   retrait : sans ces `margin: 0`, les marges par defaut du navigateur
+   reviennent sur les titres et paragraphes, et les cartes de projets
+   gagnent 137px de hauteur cumulee a 1440px.
+   Le reste du preflight (normalisation des formulaires, des tableaux, des
+   listes) n'etait sollicite nulle part et n'est donc pas reproduit. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd,
+pre {
+  margin: 0;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -74,6 +97,38 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);
+}
+
+/* Remplace `w-full` : une section reste en pleine largeur meme si son
+   parent devient un conteneur flex ou grid. */
+.section-full {
+  width: 100%;
+}
+
+/* ── Bascule mobile / bureau ───────────────────────────────────────────
+   Remplacent `sm:hidden` et `hidden sm:block`, les seuls utilitaires
+   Tailwind que le projet utilisait encore. Le seuil de 640px est celui du
+   breakpoint `sm` de Tailwind, conserve tel quel pour ne rien deplacer.
+   Ces deux classes pilotent le carrousel mobile des projets et la bascule
+   liste/timeline des experiences : elles ne sont pas interchangeables avec
+   les media queries des composants, qui, elles, adaptent une mise en page
+   sans jamais masquer de contenu. */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
+  }
 }
 
 /* ── Apparition au défilement ──────────────────────────────────────────

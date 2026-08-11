@@ -50,16 +50,6 @@
           }
         }
       }
-    },
-    {
-      "includes": ["app/assets/css/main.css"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noUnknownAtRules": "off"
-          }
-        }
-      }
     }
   ]
 }

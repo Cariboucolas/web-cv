@@ -5,11 +5,6 @@ export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
   css: ['vuetify/styles', '~/assets/css/main.css'],
-  // `@nuxtjs/tailwindcss` a été retiré : aucune de ses versions, pas même la
-  // 7.0.0-beta, n'accepte `@nuxt/kit` 4. Tailwind reste en 3.4.17 et passe
-  // désormais par le seul bloc `postcss` ci-dessous, que le projet déclarait
-  // déjà. Les directives que le module injectait vivent maintenant en tête de
-  // `app/assets/css/main.css`.
   modules: ['@nuxt/icon', '@nuxtjs/i18n'],
 
   build: {
@@ -24,9 +19,11 @@ export default defineNuxtConfig({
 
   plugins: ['~/plugins/vuetify'],
 
+  // Tailwind a été retiré : le projet n'en utilisait plus que trois utilitaires,
+  // remplacés par des classes dans `app/assets/css/main.css`. Autoprefixer reste,
+  // seul, pour les préfixes vendeurs.
   postcss: {
     plugins: {
-      tailwindcss: {},
       autoprefixer: {},
     },
   },

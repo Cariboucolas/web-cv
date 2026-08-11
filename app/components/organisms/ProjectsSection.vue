@@ -1,8 +1,8 @@
 <template>
-  <section class="w-full">
+  <section class="section-full">
 
     <!-- Desktop: grille de cards -->
-    <div class="hidden sm:block">
+    <div class="desktop-only">
       <div class="projects-grid">
         <button
             v-for="(project, index) in projects"
@@ -65,7 +65,7 @@
     </div>
 
     <!-- Mobile: carousel horizontal -->
-    <div class="sm:hidden">
+    <div class="mobile-only">
       <div class="carousel-wrapper">
         <div class="carousel-track">
           <div
