@@ -1,7 +1,7 @@
 # Refonte UI — lot 2 : mouvement
 
 **Date :** 2026-08-03
-**Statut :** implémenté sur `feat/lot2-mouvement`
+**Statut :** implémenté et fusionné sur `main` le 2026-08-03 (`b8eadf4`)
 
 ## Objectif
 
