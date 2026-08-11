@@ -1,7 +1,7 @@
 # Refonte UI — lot 3 : en-tête et bloc profil
 
 **Date :** 2026-08-05
-**Statut :** validé, non implémenté
+**Statut :** implémenté et fusionné sur `main` le 2026-08-05 (de `8fa570a` à `5e1aca5`)
 
 ## Objectif
 
