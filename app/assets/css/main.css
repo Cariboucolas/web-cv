@@ -88,8 +88,9 @@ body {
 .js-reveal [data-reveal] {
   opacity: 0;
   transform: translateY(var(--reveal-shift));
-  transition: opacity var(--reveal-duration) ease, transform
-    var(--reveal-duration) ease;
+  transition:
+    opacity var(--reveal-duration) ease,
+    transform var(--reveal-duration) ease;
 }
 
 .js-reveal [data-reveal].reveal--in {
