@@ -205,7 +205,10 @@ const projects = ref<Project[]>([
     key: 'mechachain',
     logo: '/logos/logo_mechachain.png',
     logoBg: '#ffffff',
-    images: [],
+    images: [
+      '/images/projects/mechachain_dashboard',
+      '/images/projects/mechachain_login',
+    ],
     technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
     link: '#',
     orientation: 'landscape',
