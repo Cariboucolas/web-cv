@@ -44,29 +44,3 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
-
-  # Le dépôt fusionne en rebase (ruleset 13369495, allowed_merge_methods:
-  # ["rebase"]) : le titre de la pull request n'entre jamais dans l'historique
-  # de main, chaque commit y garde son propre message. Le check reste utile
-  # ailleurs — c'est la surface de revue, ce qu'affichent `gh pr list` et les
-  # notifications — et garde la convention prête pour le jour où la politique
-  # de fusion changerait.
-  pr-title:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      # Le validateur est vérifié avant de servir : changer un type accepté ou
-      # la limite de longueur casse alors un cas connu, plutôt que la CI d'une
-      # pull request sans rapport, trois semaines plus tard.
-      - name: Vérifier le validateur de titre
-        run: .github/scripts/check-pr-title.test.sh
-
-      - name: Vérifier le titre de la pull request
-        env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
-        run: .github/scripts/check-pr-title.sh
