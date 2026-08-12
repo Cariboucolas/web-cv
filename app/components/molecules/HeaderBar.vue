@@ -1,13 +1,16 @@
 <template>
   <header class="page-header">
     <div class="header-content">
-      <a href="#about" class="header-link">{{ $t('about.title') }}</a>
-      <span class="header-separator">•</span>
+      <!-- L'ordre des ancres suit celui des sections dans index.vue : une
+           navigation qui annonce un ordre que la page ne tient pas force le
+           lecteur à chercher. -->
       <a href="#experiences" class="header-link">{{ $t('experiences.title') }}</a>
+      <span class="header-separator">•</span>
+      <a href="#projects" class="header-link">{{ $t('projects.title') }}</a>
       <span class="header-separator">•</span>
       <a href="#skills" class="header-link">{{ $t('skills.title') }}</a>
       <span class="header-separator">•</span>
-      <a href="#projects" class="header-link">{{ $t('projects.title') }}</a>
+      <a href="#about" class="header-link">{{ $t('about.title') }}</a>
     </div>
     <div class="header-actions">
       <a

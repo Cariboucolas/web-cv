@@ -7,18 +7,22 @@
 
       <OrganismsProfileSection v-reveal/>
 
-      <section id="about" class="content-section" v-reveal>
-        <div class="section-header">
-          <div class="section-title">{{ $t('about.title') }}</div>
-        </div>
-        <MoleculesAboutSection/>
-      </section>
-
+      <!-- L'ordre suit celui d'un CV, parce que c'est dans cet ordre qu'un
+           recruteur le lit : qui es-tu, où as-tu travaillé, qu'as-tu produit.
+           « À propos » ferme la page — c'est le bloc le moins scannable du
+           site, et celui qui arrive jusque-là est déjà convaincu. -->
       <section id="experiences" class="content-section" v-reveal>
         <div class="section-header">
           <div class="section-title">{{ $t('experiences.title') }}</div>
         </div>
         <OrganismsExperiencesSection/>
+      </section>
+
+      <section id="projects" class="content-section" v-reveal>
+        <div class="section-header">
+          <div class="section-title">{{ $t('projects.title') }}</div>
+        </div>
+        <OrganismsProjectsSection/>
       </section>
 
       <section id="skills" class="content-section" v-reveal>
@@ -28,11 +32,11 @@
         <OrganismsSkillsSection/>
       </section>
 
-      <section id="projects" class="content-section" v-reveal>
+      <section id="about" class="content-section" v-reveal>
         <div class="section-header">
-          <div class="section-title">{{ $t('projects.title') }}</div>
+          <div class="section-title">{{ $t('about.title') }}</div>
         </div>
-        <OrganismsProjectsSection/>
+        <MoleculesAboutSection/>
       </section>
 
     </div>
