@@ -27,10 +27,8 @@
   "about": {
     "title": "About me",
     "paragraphs": {
-      "p1": "Passionate developer with over 15 years of experience in IT, I transitioned to development {years} years ago, driven by my passion for digital and discovering code and Software Craftsmanship best practices.",
-      "p2": "My unique journey, starting as a helpdesk technician and evolving into system and network administration, has given me a holistic view of information systems. This experience enriches my development practice, allowing me to approach projects as a whole, from infrastructure to code.",
-      "p3": "As a freelancer, I particularly focus on Clean Code principles and craft development practices. I firmly believe that code quality and long-term maintainability are as important as immediate functionality.",
-      "p4": "My dual technical expertise — infrastructure and development — allows me to bring unique added value to projects, combining technical robustness and code excellence."
+      "p1": "Helpdesk technician, then system and network administrator, and a developer for {years} years. That detour through infrastructure pays off daily: I understand what my code runs on, and I approach a project from the infrastructure up rather than from the application alone.",
+      "p2": "I work as a freelancer, and what decides me is the project rather than the contract: a long mission where I can embed in a team, or a role, depending on what there is to build. I care as much about code quality and long-term maintenance as about the feature delivered — Clean Code and craft practices are not an extra."
     }
   },
   "projects": {
@@ -136,19 +134,19 @@
         "periodStart": "2022",
         "periodEnd": "2022",
         "technologies": ["Nuxt", "TypeScript", "NodeJs", "Firebase", "KYC"],
-        "highlights": [
-          "Two ICO platforms for two clients in the same year, under tight deadlines"
-        ],
+        "highlights": ["Two ICO platforms for two clients in the same year"],
         "subProjects": [
           {
             "name": "Winkyverse — Mainbot",
             "highlights": [
-              "Sale platform and KYC flow for the educational metaverse ICO"
+              "Front-end of the sale platform for Mainbot's educational metaverse"
             ]
           },
           {
             "name": "Mechachain — EthernalHorizons",
-            "highlights": ["Sale platform and KYC flow for the mecha game ICO"]
+            "highlights": [
+              "Front-end of the sale platform for EthernalHorizons' mecha game"
+            ]
           }
         ]
       },

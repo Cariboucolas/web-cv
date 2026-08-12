@@ -27,10 +27,8 @@
   "about": {
     "title": "À propos de moi",
     "paragraphs": {
-      "p1": "Développeur passionné avec plus de 15 ans d'expérience dans l'IT, j'ai entrepris une reconversion vers le développement il y a {years} ans, guidé par ma passion du digital et la découverte du code et les bonnes pratiques du Software Craftsmanship.",
-      "p2": "Mon parcours unique, débutant comme technicien helpdesk et évoluant vers l'administration système et réseaux, m'a doté d'une vision globale des systèmes d'information. Cette expérience enrichit ma pratique du développement, me permettant d'appréhender les projets dans leur ensemble, de l'infrastructure au code.",
-      "p3": "En tant que freelance, je m'attache particulièrement aux principes du Clean Code et aux pratiques artisanales du développement. Je crois fermement que la qualité du code et la maintenance à long terme sont aussi importantes que la fonctionnalité immédiate.",
-      "p4": "Ma double expertise technique - infrastructure et développement - me permet d'apporter une valeur ajoutée unique aux projets, combinant robustesse technique et excellence du code."
+      "p1": "Technicien helpdesk, puis administrateur système et réseaux, et développeur depuis {years} ans. Ce détour par l'infrastructure me sert tous les jours : je comprends ce sur quoi mon code tourne, et j'aborde un projet de l'infrastructure au code plutôt que du seul côté applicatif.",
+      "p2": "Je travaille en freelance, et c'est le projet qui me décide avant le contrat : une mission longue où m'intégrer à une équipe, ou un poste, selon ce qu'il y a à construire. J'accorde autant d'importance à la qualité du code et à sa maintenance dans la durée qu'à la fonctionnalité livrée — le Clean Code et les pratiques artisanales ne sont pas un supplément."
     }
   },
   "projects": {
@@ -136,20 +134,18 @@
         "periodStart": "2022",
         "periodEnd": "2022",
         "technologies": ["Nuxt", "TypeScript", "NodeJs", "Firebase", "KYC"],
-        "highlights": [
-          "Deux plateformes ICO pour deux clients la même année, sous forte contrainte de délai"
-        ],
+        "highlights": ["Deux plateformes ICO pour deux clients la même année"],
         "subProjects": [
           {
             "name": "Winkyverse — Mainbot",
             "highlights": [
-              "Plateforme de vente et parcours KYC pour l'ICO du métavers éducatif"
+              "Front-end de la plateforme de vente du métavers éducatif de Mainbot"
             ]
           },
           {
             "name": "Mechachain — EthernalHorizons",
             "highlights": [
-              "Plateforme de vente et parcours KYC pour l'ICO du jeu de mechas"
+              "Front-end de la plateforme de vente du jeu de mechas d'EthernalHorizons"
             ]
           }
         ]
