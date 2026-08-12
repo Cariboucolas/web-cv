@@ -86,26 +86,18 @@
         "periodStart": "2021",
         "periodEnd": null,
         "technologies": [
+          "TypeScript",
           "Nuxt",
           "React",
-          "TypeScript",
           "NodeJs",
           "Python",
           "Java",
           "Firebase",
-          "NoSQL",
           "SQL",
           "GraphQL",
           "Vertex AI",
-          "Datadog",
-          "Sentry",
-          "SonarQube",
           "Docker",
-          "Cypress",
-          "Playwright",
-          "Storybook",
-          "Scandit",
-          "Tailwind"
+          "Playwright"
         ],
         "highlights": [
           "Même client depuis 2021, sur trois périmètres successifs"
@@ -143,14 +135,7 @@
         "position": "Développeur — Freelance",
         "periodStart": "2022",
         "periodEnd": "2022",
-        "technologies": [
-          "Nuxt",
-          "TypeScript",
-          "NodeJs",
-          "Firebase",
-          "NoSQL",
-          "KYC"
-        ],
+        "technologies": ["Nuxt", "TypeScript", "NodeJs", "Firebase", "KYC"],
         "highlights": [
           "Deux plateformes ICO pour deux clients la même année, sous forte contrainte de délai"
         ],
@@ -178,9 +163,7 @@
           "Linux",
           "Windows Server",
           "VMware",
-          "Active Directory",
-          "Nagios",
-          "ITIL"
+          "Active Directory"
         ],
         "highlights": [
           "Administration d'un parc de 500+ postes et serveurs",
