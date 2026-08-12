@@ -40,40 +40,40 @@
     "today": "Auj.",
     "projects": {
       "mgm": {
-        "title": "MGM — MyGameMobile",
+        "title": "MyGameMobile",
         "shortTitle": "MyGameMobile",
-        "shortDescription": "10K utilisateurs / mois — analyse de la performance et aide à la décision",
-        "description": "Application mobile d'analyse de la performance et d'aide à la décision pour les équipes Decathlon. J'en ai porté l'ownership et tenu une posture de lead fonctionnelle auprès des métiers, de la conception au run. 10 000 utilisateurs par mois, dans le monde."
+        "shortDescription": "10K utilisateurs / mois — le brief quotidien du magasin, réuni",
+        "description": "Les responsables de rayon ne pouvaient lire leurs performances que sur desktop, dans d'autres applications. MyGameMobile les leur a rendues lisibles sur mobile, puis a dépassé la lecture pour les aider à décider. Un second persona a suivi : le Capitaine, référent du jour dans le magasin, qui mène chaque matin le brief avec les responsables de rayon. Ce dont il avait besoin était éparpillé entre plusieurs applications et se recopiait à la main ; tout est désormais réuni, money time compris — les périodes décisives où les équipes doivent être en rayon. Le temps gagné s'est traduit en masse salariale : jusqu'à 100 000 € par jour à l'échelle de la Suisse. J'ai porté l'ownership du produit et fait le lien entre les parties prenantes. 10 000 utilisateurs par mois, dans le monde."
       },
       "fcs": {
-        "title": "FCS — Famille Client Satisfait",
+        "title": "Famille Client Satisfait",
         "shortTitle": "Famille Client Satisfait",
-        "shortDescription": "5K utilisateurs / mois — auto-évaluation des équipes en magasin",
-        "description": "Application mobile d'auto-évaluation pour les équipes Decathlon en magasin, menée pour la même direction que MyGameMobile. 5 000 utilisateurs par mois, dans le monde."
+        "shortDescription": "5K utilisateurs / mois — 20 questions qui pèsent sur le linéaire",
+        "description": "Auto-évaluation destinée aux responsables de rayon : une vingtaine de questions sur l'état des rayons, les assortiments et la justesse des stocks, tout ce qui finit par peser sur le linéaire. Chaque famille choisit sa fréquence, de la semaine au mois. Les réponses favorables et les actions qui en découlent font monter la note de satisfaction. 5 000 utilisateurs par mois, dans le monde."
       },
       "stic": {
-        "title": "STIC — Solution Transversale d'Identification des Cycles",
-        "shortTitle": "Solution Transversale d'Identification des Cycles",
-        "shortDescription": "2K utilisateurs / jour — immatriculation des cycles et scan de QR Code",
-        "description": "Application mobile d'appairage et d'immatriculation des cycles, avec un scanner de QR Code embarqué pour l'enrôlement en magasin. 2 000 utilisateurs par jour, en France."
+        "title": "Solution Transversale d'Identification des Cycles",
+        "shortTitle": "Identification des cycles",
+        "shortDescription": "1,4M de vélos par an, 38 € d'amende par oubli — livré en 3 mois",
+        "description": "La loi française impose le marquage des vélos vendus, sous peine de 38 € d'amende par vélo. Decathlon en vend 1,4 million par an, et l'application avait trois mois pour sortir sans droit à l'échec. L'enjeu tenait dans la fluidité de l'appairage : le temps d'un vendeur en magasin est compté, et le client en face n'a pas à en faire les frais. Scanner de QR Code embarqué. 2 000 utilisateurs par jour, en France."
       },
       "winky": {
         "title": "Winkyverse",
         "shortTitle": "Winkyverse",
-        "shortDescription": "24,5 M€ levés — la plus grosse ICO française de 2021",
-        "description": "Plateforme de vente et parcours KYC de l'ICO du Winkyverse, le métavers éducatif de la startup Mainbot. L'ouverture d'une vente concentre des milliers d'acheteurs en quelques secondes, sur des flux financiers extrêmes : la plateforme doit encaisser ce pic sans perdre une transaction ni relâcher la conformité. L'ICO a levé 24,5 M€, la plus grosse levée française de 2021. Mon périmètre couvrait la vente et le KYC, pas la tokenomics."
+        "shortDescription": "Front-end de la plus grosse ICO française de 2021 — 24,5 M€ levés",
+        "description": "Plateforme de vente de l'ICO du Winkyverse, le métavers éducatif de la startup Mainbot. Mon périmètre : l'intégration du front-end et le passage en responsive, du desktop au mobile. L'ICO a levé 24,5 M€, la plus grosse levée française de 2021."
       },
       "mechachain": {
         "title": "Mechachain",
         "shortTitle": "Mechachain",
-        "shortDescription": "10K acheteurs — vente et KYC d'un jeu play-to-earn",
-        "description": "Plateforme de vente et parcours KYC de l'ICO de Mechachain, le jeu de mechas play-to-earn d'EthernalHorizons. Même exercice que le Winkyverse la même année, et la même contrainte : un pic d'audience de quelques secondes à l'ouverture, sur des montants qui interdisent l'à-peu-près. 10 000 acheteurs."
+        "shortDescription": "Front-end d'une plateforme de vente ICO — jeu de mechas play-to-earn",
+        "description": "Plateforme de vente de l'ICO de Mechachain, le jeu de mechas play-to-earn d'EthernalHorizons. Même exercice que le Winkyverse la même année et le même périmètre : intégration du front-end et passage en responsive. 10 000 acheteurs."
       },
       "mc": {
         "title": "Managers Companion",
         "shortTitle": "Managers Companion",
-        "shortDescription": "Couche IA agentique — mobile et desktop pour les équipes en magasin",
-        "description": "Application mobile et desktop pour les collaborateurs Decathlon en magasin : analyse de la performance et auto-évaluation. J'y ai intégré une couche IA sous architecture agentique."
+        "shortDescription": "Couche IA agentique — l'app qui absorbe MyGameMobile et les autres",
+        "description": "Decathlon accumulait des applications répondant souvent au même domaine métier. Managers Companion les réunit, et MyGameMobile a été la première absorbée. Le périmètre s'étend au-delà : politique commerciale, auto-évaluation. L'IA y était une demande explicite, à la fois vitrine de ce que l'équipe sait livrer et moyen d'exploiter une puissance d'analyse nourrie par les données et les algorithmes que les applications en place avaient déjà éprouvés. J'y ai intégré une couche IA sous architecture agentique."
       }
     }
   },
