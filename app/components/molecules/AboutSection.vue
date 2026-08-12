@@ -1,9 +1,9 @@
 <template>
   <div class="about-content">
+    <!-- Deux paragraphes : la trajectoire, puis ce que je cherche. Les deux
+         précédents disaient la même chose que ceux-ci sous une autre forme. -->
     <p class="about-paragraph">{{ $t('about.paragraphs.p1', { years: devExperienceYears() }) }}</p>
     <p class="about-paragraph">{{ $t('about.paragraphs.p2') }}</p>
-    <p class="about-paragraph">{{ $t('about.paragraphs.p3') }}</p>
-    <p class="about-paragraph">{{ $t('about.paragraphs.p4') }}</p>
   </div>
 </template>
 
