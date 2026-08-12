@@ -1,0 +1,58 @@
+name: PR title
+
+# `edited` s'ajoute aux trois types par défaut (`opened`, `synchronize`,
+# `reopened`). Sans lui, corriger un titre mal formé laisse le check rouge
+# indéfiniment : le titre est lu dans la charge utile de l'événement, figée au
+# déclenchement, et `gh run rerun` rejoue cette même charge utile périmée. La
+# seule sortie était alors de refermer et rouvrir la pull request.
+#
+# Ce check vit dans son propre workflow plutôt que dans `ci.yml` précisément à
+# cause de ce `edited` : l'événement se déclenche aussi sur l'édition du corps
+# de la pull request et sur un changement de branche cible. Rattaché à `ci.yml`,
+# il ferait tourner `pnpm install`, le lint et le typecheck à chaque retouche de
+# description — et la `concurrency` en `cancel-in-progress` annulerait au
+# passage la vérification en cours pour la relancer à l'identique.
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+
+# Les corrections de titre arrivent souvent en rafale : seule la dernière
+# compte.
+concurrency:
+  group: pr-title-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Le dépôt fusionne en rebase (ruleset 13369495, allowed_merge_methods:
+  # ["rebase"]) : le titre de la pull request n'entre jamais dans l'historique
+  # de main, chaque commit y garde son propre message. Le check reste utile
+  # ailleurs — c'est la surface de revue, ce qu'affichent `gh pr list` et les
+  # notifications — et garde la convention prête pour le jour où la politique
+  # de fusion changerait.
+  #
+  # Le nom du job est le nom du check exigé par le ruleset : le déplacer d'un
+  # workflow à l'autre est sans effet tant qu'il reste `pr-title`.
+  pr-title:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # Le validateur est vérifié avant de servir : changer un type accepté ou
+      # la limite de longueur casse alors un cas connu, plutôt que la CI d'une
+      # pull request sans rapport, trois semaines plus tard.
+      - name: Vérifier le validateur de titre
+        run: .github/scripts/check-pr-title.test.sh
+
+      - name: Vérifier le titre de la pull request
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: .github/scripts/check-pr-title.sh
