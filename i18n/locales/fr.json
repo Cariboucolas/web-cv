@@ -81,67 +81,59 @@
     "title": "Expériences",
     "items": [
       {
-        "company": "Decathlon InStore",
-        "position": "Développeur & Fonctionnel — Freelance",
-        "periodStart": "2025",
+        "company": "Decathlon",
+        "position": "Développeur, puis ownership produit — Freelance",
+        "periodStart": "2021",
         "periodEnd": null,
         "technologies": [
+          "Nuxt",
           "React",
           "TypeScript",
+          "NodeJs",
           "Python",
           "Java",
-          "Vertex AI",
-          "SQL",
-          "Datadog",
-          "SonarQube",
-          "Playwright",
-          "Docker",
-          "Tailwind"
-        ],
-        "highlights": [],
-        "subProjects": [
-          {
-            "name": "MC",
-            "highlights": [
-              "Conception et développement d'une application mobile et desktop pour les collaborateurs en Magasin, pour l'analyse des performances, l'auto-évaluation (Managers Companion)",
-              "Intégration d'une couche IA sous architecture agentique"
-            ]
-          }
-        ]
-      },
-      {
-        "company": "Decathlon MayDay",
-        "position": "Ownership & Développeur — Freelance",
-        "periodStart": "2023",
-        "periodEnd": "2025",
-        "technologies": [
-          "Nuxt",
-          "TypeScript",
-          "NodeJs",
           "Firebase",
           "NoSQL",
+          "SQL",
+          "GraphQL",
+          "Vertex AI",
           "Datadog",
           "Sentry",
           "SonarQube",
-          "GraphQL",
+          "Docker",
+          "Cypress",
+          "Playwright",
           "Storybook",
-          "Cypress"
+          "Scandit",
+          "Tailwind"
         ],
-        "highlights": [],
+        "highlights": [
+          "Même client depuis 2021, sur trois périmètres successifs"
+        ],
         "subProjects": [
           {
-            "name": "MGM",
+            "name": "InStore — MC",
             "highlights": [
-              "Conception et développement de l'application mobile d'analyse des performances et d'aide à la prise de décision (MyGameMobile)",
-              "Ownership du projet, posture de lead fonctionnelle",
-              "10K utilisateurs / mois, monde"
+              "Application mobile et desktop pour les collaborateurs en magasin",
+              "Intégration d'une couche IA sous architecture agentique"
             ]
           },
           {
-            "name": "FCS",
+            "name": "MayDay — MGM",
             "highlights": [
-              "Conception et développement d'une application mobile d'auto-évaluation (Famille Client Satisfait)",
-              "5K utilisateurs / mois, monde"
+              "Application mobile d'analyse des performances et d'aide à la décision",
+              "Ownership du projet, posture de lead fonctionnelle"
+            ]
+          },
+          {
+            "name": "MayDay — FCS",
+            "highlights": ["Application mobile d'auto-évaluation"]
+          },
+          {
+            "name": "WeParis — STIC",
+            "highlights": [
+              "Application mobile d'appairage et d'immatriculation des cycles",
+              "Scanner de QR Code embarqué"
             ]
           }
         ]
@@ -159,102 +151,40 @@
           "NoSQL",
           "KYC"
         ],
-        "highlights": [],
+        "highlights": [
+          "Deux plateformes ICO pour deux clients la même année, sous forte contrainte de délai"
+        ],
         "subProjects": [
           {
-            "name": "Winkyverse",
+            "name": "Winkyverse — Mainbot",
             "highlights": [
-              "Conception et développement d'une plateforme ICO (Crypto)",
-              "Implémentation KYC",
-              "15K utilisateurs, monde"
+              "Plateforme de vente et parcours KYC pour l'ICO du métavers éducatif"
             ]
           },
           {
-            "name": "Mechachain",
+            "name": "Mechachain — EthernalHorizons",
             "highlights": [
-              "Conception et développement d'une plateforme ICO (Crypto)",
-              "Implémentation KYC",
-              "10K utilisateurs, monde"
+              "Plateforme de vente et parcours KYC pour l'ICO du jeu de mechas"
             ]
           }
         ]
       },
       {
-        "company": "Decathlon WeParis",
-        "position": "Développeur Stagiaire — Freelance",
-        "periodStart": "2021",
-        "periodEnd": "2023",
-        "technologies": [
-          "Nuxt",
-          "TypeScript",
-          "NodeJs",
-          "Firebase",
-          "NoSQL",
-          "Sentry",
-          "SonarQube",
-          "Scandit",
-          "Cypress"
-        ],
-        "highlights": [],
-        "subProjects": [
-          {
-            "name": "STIC",
-            "highlights": [
-              "Conception et développement d'une application mobile d'appairage et d'immatriculation des cycles (Solution Transversale d'Identification des Cycles)",
-              "Implémentation d'un scanner de QR Code",
-              "2K utilisateurs / jours, France"
-            ]
-          }
-        ]
-      },
-      {
-        "company": "Biscuiterie Poult",
-        "position": "Administrateur Système & Réseaux",
-        "periodStart": "2016",
+        "company": "Infodis · Intersport · Biscuiterie Poult",
+        "position": "Helpdesk, puis administration système & réseaux",
+        "periodStart": "2005",
         "periodEnd": "2020",
         "technologies": [
           "Linux",
           "Windows Server",
           "VMware",
-          "Cisco",
           "Active Directory",
-          "Nagios"
+          "Nagios",
+          "ITIL"
         ],
         "highlights": [
           "Administration d'un parc de 500+ postes et serveurs",
-          "Mise en place de la supervision et du monitoring",
-          "Migration d'infrastructure vers des solutions virtualisées",
-          "Gestion des incidents et support N2/N3"
-        ]
-      },
-      {
-        "company": "Intersport",
-        "position": "Technicien Helpdesk",
-        "periodStart": "2008",
-        "periodEnd": "2016",
-        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
-        "highlights": [
-          "Support utilisateurs N1/N2",
-          "Déploiement et configuration de postes de travail",
-          "Rédaction de procédures et documentation technique",
-          "Gestion du parc matériel et inventaire"
-        ]
-      },
-      {
-        "company": "Infodis",
-        "position": "Technicien Micro-Informatique — Alternance",
-        "periodStart": "2005",
-        "periodEnd": "2007",
-        "technologies": [
-          "Windows",
-          "Helpdesk",
-          "Masterisation",
-          "Maintenance matérielle"
-        ],
-        "highlights": [
-          "Réparation et maintenance de postes de travail",
-          "Support utilisateurs en helpdesk",
-          "Préparation et déploiement de postes en masse"
+          "Migration d'infrastructure vers des solutions virtualisées"
         ]
       }
     ]

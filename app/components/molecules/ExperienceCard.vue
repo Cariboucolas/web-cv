@@ -17,6 +17,15 @@
         {{ tech }}
       </span>
     </div>
+    <!-- Les highlights de l'expérience précèdent les sous-projets au lieu de
+         les exclure : depuis le regroupement des périmètres sous un même
+         client, c'est cette ligne qui porte ce que les sous-projets ont en
+         commun. Sans elle, quatre sous-projets se relisent comme quatre
+         missions distinctes, ce que le regroupement cherche justement à
+         défaire. -->
+    <ul v-if="experience.highlights.length" class="xp-mobile-highlights">
+      <li v-for="(highlight, hi) in experience.highlights" :key="hi">{{ highlight }}</li>
+    </ul>
     <!-- Sub-projects in columns -->
     <div v-if="experience.subProjects?.length" class="xp-mobile-subprojects">
       <div v-for="sub in experience.subProjects" :key="sub.name" class="xp-mobile-subproject">
@@ -26,10 +35,6 @@
         </ul>
       </div>
     </div>
-    <!-- Regular highlights -->
-    <ul v-else class="xp-mobile-highlights">
-      <li v-for="(highlight, hi) in experience.highlights" :key="hi">{{ highlight }}</li>
-    </ul>
   </div>
 
   <!-- Desktop variant -->
@@ -52,6 +57,11 @@
         {{ tech }}
       </span>
     </div>
+    <!-- Voir la variante mobile : la ligne partagée précède les sous-projets
+         plutôt que de leur céder la place. -->
+    <ul v-if="experience.highlights.length" class="xp-highlights">
+      <li v-for="(highlight, hi) in experience.highlights" :key="hi">{{ highlight }}</li>
+    </ul>
     <!-- Sub-projects in 2 columns -->
     <div v-if="experience.subProjects?.length" class="xp-subprojects">
       <div v-for="sub in experience.subProjects" :key="sub.name" class="xp-subproject">
@@ -61,10 +71,6 @@
         </ul>
       </div>
     </div>
-    <!-- Regular highlights -->
-    <ul v-else class="xp-highlights">
-      <li v-for="(highlight, hi) in experience.highlights" :key="hi">{{ highlight }}</li>
-    </ul>
   </div>
 </template>
 
@@ -91,22 +97,26 @@ const props = defineProps<{
   compact?: boolean
 }>()
 
+/**
+ * Indexé sur le nom d'entreprise tel qu'il sort des traductions. Les noms
+ * étant des noms propres, ils sont identiques en français et en anglais : une
+ * seule table suffit pour les deux locales.
+ *
+ * Les entités MayDay, WeParis et InStore ont disparu de cette table avec le
+ * regroupement sous un même client : elles vivent désormais comme titres de
+ * sous-projets, où aucun logo n'est affiché. Le bloc qui condense la carrière
+ * pré-développement n'y figure pas non plus, et tombe volontairement sur
+ * l'icône générique — l'absence de logo signale un résumé plutôt qu'une
+ * mission.
+ */
 const companyLogos: Record<string, string> = {
-  'Decathlon MayDay': '/logos/logo_mayday.png',
-  'Decathlon WeParis': '/logos/logo_weparis.png',
-  'Decathlon InStore': '/logos/logo_decathlon.jpg',
+  Decathlon: '/logos/logo_decathlon.jpg',
   Brocorp: '/logos/logo_brocorp.png',
-  'Biscuiterie Poult': '/logos/logo_poult.jpg',
-  Intersport: '/logos/logo_intersport.jpg',
-  Infodis: '/logos/logo_infodis.jpeg',
 }
 
 const companyBgColors: Record<string, string> = {
-  'Decathlon InStore': '#0363d0',
-  'Decathlon MayDay': '#ffffff',
+  Decathlon: '#0363d0',
   Brocorp: '#ffffff',
-  'Biscuiterie Poult': '#ffffff',
-  Intersport: '#ffffff',
 }
 
 const companyLogo = computed(
@@ -115,9 +125,7 @@ const companyLogo = computed(
 const companyBg = computed(
   () => companyBgColors[props.experience.company] ?? null,
 )
-const isOversized = computed(
-  () => props.experience.company === 'Decathlon InStore',
-)
+const isOversized = computed(() => props.experience.company === 'Decathlon')
 
 const period = computed(() => {
   const xp = props.experience
