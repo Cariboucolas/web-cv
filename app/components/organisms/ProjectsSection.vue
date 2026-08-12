@@ -103,23 +103,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Project } from '~/types/project'
 
 const { t } = useI18n()
-
-interface Project {
-  key: string
-  /** Logo de marque, prioritaire sur `icon`. */
-  logo?: string
-  /** Fond du carré, quand le logo ne tient pas sur le fond sombre par défaut. */
-  logoBg?: string
-  /** Icône material-symbols, affichée à défaut de logo. */
-  icon?: string
-  /** Chemins sans suffixe ni extension : ProjectShowcase construit le srcset. */
-  images: string[]
-  technologies: string[]
-  link: string
-  orientation: 'portrait' | 'landscape'
-}
 
 const projects = ref<Project[]>([
   {
