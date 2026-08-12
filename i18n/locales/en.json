@@ -104,25 +104,25 @@
         ],
         "subProjects": [
           {
-            "name": "InStore — MC",
+            "name": "InStore — Managers Companion",
             "highlights": [
               "Mobile and desktop app for in-store staff",
               "Integration of an AI layer under an agentic architecture"
             ]
           },
           {
-            "name": "MayDay — MGM",
+            "name": "MayDay — MyGameMobile",
             "highlights": [
               "Mobile app for performance analysis and decision support",
               "Project ownership, functional lead role"
             ]
           },
           {
-            "name": "MayDay — FCS",
+            "name": "MayDay — Customer Satisfaction Family",
             "highlights": ["Mobile self-assessment app"]
           },
           {
-            "name": "WeParis — STIC",
+            "name": "WeParis — Transverse Cycle Identification Solution",
             "highlights": [
               "Mobile app for pairing and registering bicycles",
               "Embedded QR code scanner"
