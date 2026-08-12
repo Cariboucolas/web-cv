@@ -9,22 +9,19 @@
     "title": "Développeur web",
     "subtitle": "fullstack",
     "description": {
-      "line1": "Développeur fullstack freelance spécialisé TypeScript / Nuxt.js / Firebase. Augmenté par l'IA.",
-      "line2": "{years} ans d'expérience en équipes agiles sur des produits à forte audience.",
+      "line1": "Développeur fullstack spécialisé TypeScript / Nuxt.js / Firebase. Augmenté par l'IA.",
+      "line2": "{years} ans de développement en équipes agiles sur des produits à forte audience, adossés à 15 ans en IT.",
       "line3": "Adepte du Software Craftsmanship : TDD, DDD, pair programming."
     },
     "contact": {
       "location": "Toulouse",
-      "hireMe": "Embauchez-moi",
+      "cta": "Parlons de votre projet",
       "phoneCopied": "Copié",
       "phoneCopyFailed": "Copie impossible"
     },
     "availability": {
       "available": "Disponible",
       "unavailable": "Indisponible"
-    },
-    "rate": {
-      "perDay": "/jour"
     }
   },
   "about": {

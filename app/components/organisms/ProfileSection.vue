@@ -65,14 +65,8 @@
           {{ isAvailable ? t('profile.availability.available') : t('profile.availability.unavailable') }}
         </span>
 
-        <!-- Le montant porte l'accent par le seul contraste de taille : pas de
-             cadre, la ligne compte déjà une puce et un bouton. -->
-        <p class="rate">
-          <span class="rate-amount">{{ DAILY_RATE }}</span><span class="rate-unit">{{ t('profile.rate.perDay') }}</span>
-        </p>
-
         <a :href="`mailto:${EMAIL}`" class="hire-button">
-          {{ t('profile.contact.hireMe') }}
+          {{ t('profile.contact.cta') }}
           <Icon name="material-symbols:arrow-outward" class="hire-button-icon" aria-hidden="true"/>
         </a>
       </div>
@@ -97,10 +91,6 @@ const PHONE_DISPLAY = '06 68 51 07 78'
 const PHONE_E164 = '+33668510778'
 
 const EMAIL = 'cdurcy@gmail.com'
-
-/** Espace insécable avant le symbole : la typographie française l'impose,
- et il empêche le montant de se couper en fin de ligne. */
-const DAILY_RATE = '500 €'
 
 /** Bascule manuelle de la disponibilité affichée dans la chip. */
 const isAvailable = true
@@ -362,31 +352,6 @@ const socialLinks = [
   font-size: 13px;
   font-weight: 500;
   border: 1px solid transparent;
-}
-
-/* ── Tarif journalier ── */
-.rate {
-  /* Alignement sur la ligne de base : le suffixe s'assoit sur le montant
-     plutôt que de flotter à mi-hauteur. */
-  display: inline-flex;
-  align-items: baseline;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.rate-amount {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
-}
-
-.rate-unit {
-  /* 2 px pour desserrer la barre oblique du symbole : à 22 px contre 13, les
-     deux glyphes se télescopent sans ce dégagement. */
-  margin-left: 2px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
 }
 
 .availability-chip--on {
