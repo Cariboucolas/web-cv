@@ -40,40 +40,40 @@
     "today": "Now",
     "projects": {
       "mgm": {
-        "title": "MGM — MyGameMobile",
+        "title": "MyGameMobile",
         "shortTitle": "MyGameMobile",
-        "shortDescription": "10K monthly users — performance analysis and decision support",
-        "description": "Mobile app for performance analysis and decision support, built for Decathlon teams. I owned the product and held a functional lead role with the business, from design through to run. 10,000 users a month, worldwide."
+        "shortDescription": "10K monthly users — the store's daily brief, in one place",
+        "description": "Department managers could only read their performance on desktop, inside other applications. MyGameMobile made it readable on mobile, then went past reading to help them decide. A second persona followed: the Captain, the store's referent for the day, who runs the morning brief with the department managers. What that brief needed was scattered across several applications and copied out by hand; it is now gathered in one place, money time included, the decisive stretches of the day when teams have to be on the floor. The time saved turned into payroll: up to €100,000 a day across Switzerland. I owned the product and acted as the link between stakeholders. 10,000 users a month, worldwide."
       },
       "fcs": {
-        "title": "FCS — Customer Satisfaction Family",
-        "shortTitle": "Customer Satisfaction Family",
-        "shortDescription": "5K monthly users — in-store team self-assessment",
-        "description": "Mobile self-assessment app for Decathlon in-store teams, run for the same division as MyGameMobile. 5,000 users a month, worldwide."
+        "title": "Famille Client Satisfait",
+        "shortTitle": "Famille Client Satisfait",
+        "shortDescription": "5K monthly users — 20 questions that shape the shelf",
+        "description": "Self-assessment for department managers: around twenty questions on the state of the aisles, the assortments and stock accuracy, everything that ends up showing on the shelf. Each family sets its own cadence, from weekly to monthly. Favourable answers and the actions that follow raise the satisfaction score. 5,000 users a month, worldwide."
       },
       "stic": {
-        "title": "STIC — Transverse Cycle Identification Solution",
-        "shortTitle": "Transverse Cycle Identification Solution",
-        "shortDescription": "2K daily users — bicycle registration and QR code scanning",
-        "description": "Mobile app for pairing and registering bicycles, with an embedded QR code scanner for in-store enrolment. 2,000 users a day, in France."
+        "title": "Transverse Cycle Identification Solution",
+        "shortTitle": "Cycle identification",
+        "shortDescription": "1.4M bikes a year, €38 fine per miss — shipped in 3 months",
+        "description": "French law requires every bicycle sold to be marked, under a €38 fine per bike. Decathlon sells 1.4 million a year, and the app had three months to ship with no right to fail. Everything hinged on how smooth the pairing was: a shop assistant's time is short, and the customer in front of them should not pay for it. Embedded QR code scanner. 2,000 users a day, in France."
       },
       "winky": {
         "title": "Winkyverse",
         "shortTitle": "Winkyverse",
-        "shortDescription": "€24.5M raised — the largest French ICO of 2021",
-        "description": "Sale platform and KYC flow for the Winkyverse ICO, the educational metaverse built by the startup Mainbot. Opening a sale draws thousands of buyers within seconds, on extreme financial flows: the platform has to absorb that spike without losing a transaction or loosening compliance. The ICO raised €24.5M, the largest French raise of 2021. My scope covered the sale and KYC, not the tokenomics."
+        "shortDescription": "Front-end of the largest French ICO of 2021 — €24.5M raised",
+        "description": "Sale platform for the Winkyverse ICO, the educational metaverse built by the startup Mainbot. My scope: front-end integration and the move to responsive, from desktop to mobile. The ICO raised €24.5M, the largest French raise of 2021."
       },
       "mechachain": {
         "title": "Mechachain",
         "shortTitle": "Mechachain",
-        "shortDescription": "10K buyers — sale and KYC for a play-to-earn game",
-        "description": "Sale platform and KYC flow for the Mechachain ICO, the play-to-earn mecha game by EthernalHorizons. The same exercise as the Winkyverse in the same year, under the same constraint: an audience spike lasting seconds at opening, on amounts that leave no room for approximation. 10,000 buyers."
+        "shortDescription": "Front-end of an ICO sale platform — play-to-earn mecha game",
+        "description": "Sale platform for the Mechachain ICO, the play-to-earn mecha game by EthernalHorizons. The same exercise as the Winkyverse in the same year, and the same scope: front-end integration and the move to responsive. 10,000 buyers."
       },
       "mc": {
         "title": "Managers Companion",
         "shortTitle": "Managers Companion",
-        "shortDescription": "Agentic AI layer — mobile and desktop for in-store teams",
-        "description": "Mobile and desktop app for Decathlon in-store staff: performance analysis and self-assessment. I integrated an AI layer under an agentic architecture."
+        "shortDescription": "Agentic AI layer — the app absorbing MyGameMobile and the rest",
+        "description": "Decathlon had accumulated applications that often answered the same business domain. Managers Companion brings them together, and MyGameMobile was the first one absorbed. The scope reaches further: commercial policy, self-assessment. AI was an explicit requirement, both a showcase of what the team can deliver and a way to exploit analytical power fed by the data and the algorithms the existing applications had already proven. I integrated an AI layer under an agentic architecture."
       }
     }
   },
