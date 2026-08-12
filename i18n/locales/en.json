@@ -9,22 +9,19 @@
     "title": "Fullstack",
     "subtitle": "web developer",
     "description": {
-      "line1": "Freelance fullstack developer specialised in TypeScript / Nuxt.js / Firebase. AI-augmented.",
-      "line2": "{years} years of experience in agile teams on high-audience products.",
+      "line1": "Fullstack developer specialised in TypeScript / Nuxt.js / Firebase. AI-augmented.",
+      "line2": "{years} years of development in agile teams on high-audience products, backed by 15 years in IT.",
       "line3": "Software Craftsmanship advocate: TDD, DDD, pair programming."
     },
     "contact": {
       "location": "Toulouse",
-      "hireMe": "Hire me",
+      "cta": "Let's talk about your project",
       "phoneCopied": "Copied",
       "phoneCopyFailed": "Copy failed"
     },
     "availability": {
       "available": "Available",
       "unavailable": "Unavailable"
-    },
-    "rate": {
-      "perDay": "/day"
     }
   },
   "about": {
