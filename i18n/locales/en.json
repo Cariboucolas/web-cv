@@ -81,67 +81,59 @@
     "title": "Experience",
     "items": [
       {
-        "company": "Decathlon InStore",
-        "position": "Developer & Functional — Freelance",
-        "periodStart": "2025",
+        "company": "Decathlon",
+        "position": "Developer, then product ownership — Freelance",
+        "periodStart": "2021",
         "periodEnd": null,
         "technologies": [
+          "Nuxt",
           "React",
           "TypeScript",
+          "NodeJs",
           "Python",
           "Java",
-          "Vertex AI",
-          "SQL",
-          "Datadog",
-          "SonarQube",
-          "Playwright",
-          "Docker",
-          "Tailwind"
-        ],
-        "highlights": [],
-        "subProjects": [
-          {
-            "name": "MC",
-            "highlights": [
-              "Design and development of a mobile and desktop application for store staff, for performance analysis, self-assessment (Managers Companion)",
-              "Integration of an AI layer with agentic architecture"
-            ]
-          }
-        ]
-      },
-      {
-        "company": "Decathlon MayDay",
-        "position": "Ownership & Developer — Freelance",
-        "periodStart": "2023",
-        "periodEnd": "2025",
-        "technologies": [
-          "Nuxt",
-          "TypeScript",
-          "NodeJs",
           "Firebase",
           "NoSQL",
+          "SQL",
+          "GraphQL",
+          "Vertex AI",
           "Datadog",
           "Sentry",
           "SonarQube",
-          "GraphQL",
+          "Docker",
+          "Cypress",
+          "Playwright",
           "Storybook",
-          "Cypress"
+          "Scandit",
+          "Tailwind"
         ],
-        "highlights": [],
+        "highlights": [
+          "Same client since 2021, across three successive scopes"
+        ],
         "subProjects": [
           {
-            "name": "MGM",
+            "name": "InStore — MC",
             "highlights": [
-              "Design and development of the mobile performance analysis and decision-making app (MyGameMobile)",
-              "Project ownership, functional lead position",
-              "10K users/month, worldwide"
+              "Mobile and desktop app for in-store staff",
+              "Integration of an AI layer under an agentic architecture"
             ]
           },
           {
-            "name": "FCS",
+            "name": "MayDay — MGM",
             "highlights": [
-              "Design and development of a mobile self-assessment app (Customer Satisfaction Family)",
-              "5K users/month, worldwide"
+              "Mobile app for performance analysis and decision support",
+              "Project ownership, functional lead role"
+            ]
+          },
+          {
+            "name": "MayDay — FCS",
+            "highlights": ["Mobile self-assessment app"]
+          },
+          {
+            "name": "WeParis — STIC",
+            "highlights": [
+              "Mobile app for pairing and registering bicycles",
+              "Embedded QR code scanner"
             ]
           }
         ]
@@ -159,102 +151,38 @@
           "NoSQL",
           "KYC"
         ],
-        "highlights": [],
+        "highlights": [
+          "Two ICO platforms for two clients in the same year, under tight deadlines"
+        ],
         "subProjects": [
           {
-            "name": "Winkyverse",
+            "name": "Winkyverse — Mainbot",
             "highlights": [
-              "Design and development of an ICO platform (Crypto)",
-              "KYC implementation",
-              "15K users, worldwide"
+              "Sale platform and KYC flow for the educational metaverse ICO"
             ]
           },
           {
-            "name": "Mechachain",
-            "highlights": [
-              "Design and development of an ICO platform (Crypto)",
-              "KYC implementation",
-              "10K users, worldwide"
-            ]
+            "name": "Mechachain — EthernalHorizons",
+            "highlights": ["Sale platform and KYC flow for the mecha game ICO"]
           }
         ]
       },
       {
-        "company": "Decathlon WeParis",
-        "position": "Junior Developer — Freelance",
-        "periodStart": "2021",
-        "periodEnd": "2023",
-        "technologies": [
-          "Nuxt",
-          "TypeScript",
-          "NodeJs",
-          "Firebase",
-          "NoSQL",
-          "Sentry",
-          "SonarQube",
-          "Scandit",
-          "Cypress"
-        ],
-        "highlights": [],
-        "subProjects": [
-          {
-            "name": "STIC",
-            "highlights": [
-              "Design and development of a mobile cycle pairing and registration app (Transverse Cycle Identification Solution)",
-              "QR Code scanner implementation",
-              "2K users/day, France"
-            ]
-          }
-        ]
-      },
-      {
-        "company": "Biscuiterie Poult",
-        "position": "System & Network Administrator",
-        "periodStart": "2016",
+        "company": "Infodis · Intersport · Biscuiterie Poult",
+        "position": "Helpdesk, then system & network administration",
+        "periodStart": "2005",
         "periodEnd": "2020",
         "technologies": [
           "Linux",
           "Windows Server",
           "VMware",
-          "Cisco",
           "Active Directory",
-          "Nagios"
+          "Nagios",
+          "ITIL"
         ],
         "highlights": [
           "Administration of 500+ workstations and servers",
-          "Implementation of supervision and monitoring",
-          "Infrastructure migration to virtualised solutions",
-          "Incident management and N2/N3 support"
-        ]
-      },
-      {
-        "company": "Intersport",
-        "position": "Helpdesk Technician",
-        "periodStart": "2008",
-        "periodEnd": "2016",
-        "technologies": ["Active Directory", "GLPI", "ITIL", "Windows"],
-        "highlights": [
-          "N1/N2 user support",
-          "Workstation deployment and configuration",
-          "Procedures and technical documentation writing",
-          "Hardware fleet management and inventory"
-        ]
-      },
-      {
-        "company": "Infodis",
-        "position": "Desktop Support Technician — Apprenticeship",
-        "periodStart": "2005",
-        "periodEnd": "2007",
-        "technologies": [
-          "Windows",
-          "Helpdesk",
-          "Imaging",
-          "Hardware Maintenance"
-        ],
-        "highlights": [
-          "Workstation repair and maintenance",
-          "Helpdesk user support",
-          "Mass workstation preparation and rollout"
+          "Infrastructure migration to virtualised solutions"
         ]
       }
     ]
