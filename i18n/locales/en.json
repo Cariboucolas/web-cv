@@ -41,39 +41,39 @@
     "projects": {
       "mgm": {
         "title": "MGM — MyGameMobile",
-        "shortTitle": "MGM",
-        "shortDescription": "Mobile performance analysis app",
-        "description": "Design and development of a mobile performance analysis and decision-making app. Project ownership, functional lead position. 10k users/month, worldwide."
+        "shortTitle": "MyGameMobile",
+        "shortDescription": "10K monthly users — performance analysis and decision support",
+        "description": "Mobile app for performance analysis and decision support, built for Decathlon teams. I owned the product and held a functional lead role with the business, from design through to run. 10,000 users a month, worldwide."
       },
       "fcs": {
         "title": "FCS — Customer Satisfaction Family",
-        "shortTitle": "FCS",
-        "shortDescription": "Mobile self-assessment app",
-        "description": "Design and development of a mobile self-assessment application. 5K users/month, worldwide."
+        "shortTitle": "Customer Satisfaction Family",
+        "shortDescription": "5K monthly users — in-store team self-assessment",
+        "description": "Mobile self-assessment app for Decathlon in-store teams, run for the same division as MyGameMobile. 5,000 users a month, worldwide."
       },
       "stic": {
         "title": "STIC — Transverse Cycle Identification Solution",
-        "shortTitle": "STIC",
-        "shortDescription": "Cycle pairing and registration mobile app",
-        "description": "Design and development of a mobile cycle pairing and registration app. QR Code scanner implementation. 2K users/day, France."
+        "shortTitle": "Transverse Cycle Identification Solution",
+        "shortDescription": "2K daily users — bicycle registration and QR code scanning",
+        "description": "Mobile app for pairing and registering bicycles, with an embedded QR code scanner for in-store enrolment. 2,000 users a day, in France."
       },
       "winky": {
         "title": "Winkyverse",
         "shortTitle": "Winkyverse",
-        "shortDescription": "ICO Platform (Crypto)",
-        "description": "Design and development of an ICO platform. 15K users, worldwide. Fundraising 10M+ euros."
+        "shortDescription": "€24.5M raised — the largest French ICO of 2021",
+        "description": "Sale platform and KYC flow for the Winkyverse ICO, the educational metaverse built by the startup Mainbot. Opening a sale draws thousands of buyers within seconds, on extreme financial flows: the platform has to absorb that spike without losing a transaction or loosening compliance. The ICO raised €24.5M, the largest French raise of 2021. My scope covered the sale and KYC, not the tokenomics."
       },
       "mechachain": {
         "title": "Mechachain",
         "shortTitle": "Mechachain",
-        "shortDescription": "ICO Platform (Crypto)",
-        "description": "Design and development of an ICO platform. KYC implementation. 10K users, worldwide."
+        "shortDescription": "10K buyers — sale and KYC for a play-to-earn game",
+        "description": "Sale platform and KYC flow for the Mechachain ICO, the play-to-earn mecha game by EthernalHorizons. The same exercise as the Winkyverse in the same year, under the same constraint: an audience spike lasting seconds at opening, on amounts that leave no room for approximation. 10,000 buyers."
       },
       "mc": {
         "title": "Managers Companion",
-        "shortTitle": "MC",
-        "shortDescription": "Mobile and desktop app for store staff",
-        "description": "Design and development of a mobile and desktop application for store staff, for performance analysis and self-assessment. Integration of an AI layer with agentic architecture."
+        "shortTitle": "Managers Companion",
+        "shortDescription": "Agentic AI layer — mobile and desktop for in-store teams",
+        "description": "Mobile and desktop app for Decathlon in-store staff: performance analysis and self-assessment. I integrated an AI layer under an agentic architecture."
       }
     }
   },
