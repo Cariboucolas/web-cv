@@ -15,6 +15,11 @@ dist
 # Firebase
 .firebase/
 
+# Apps Script — `.clasp.json` porte l'ID du projet Google. Ce dépôt est public :
+# ni l'ID du script ni ceux des Doc CV n'y entrent. Le nom du bucket, lui, y est
+# déjà (firebase.json, HeaderBar.vue) et ses règles interdisent l'écriture.
+.clasp.json
+
 # Environnement — ATTENTION : ne jamais committer
 .env
 .env.*
