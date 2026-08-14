@@ -33,21 +33,27 @@ L'identifiant du script se lit dans l'éditeur Apps Script, sous **Paramètres d
 script**. `clone` écrit un `.clasp.json` qui le contient : ce fichier est **ignoré par git**, comme
 tout identifiant, puisque ce dépôt est public.
 
-> **Commencer par récupérer, jamais par pousser.** Le `appsscript.json` de ce répertoire a été écrit
-> à partir de ce que le script utilise réellement — `DocumentApp`, `DriveApp`, `UrlFetchApp` et
-> l'écriture sur Cloud Storage — mais sans avoir vu le manifeste du projet en ligne. Un `clasp pull`
-> le remplace par le vrai. Compare le diff avant de committer : si les scopes ou le fuseau horaire
-> diffèrent, **c'est la version en ligne qui a raison**, puisque c'est elle qui tourne.
+En clasp 3, la commande s'appelle en réalité `clone-script`, `clone` n'en étant qu'un alias. Les
+tutoriels écrits pour la v2 continuent donc de fonctionner.
+
+> Le `appsscript.json` de ce répertoire **vient du projet en ligne**, rapatrié par `clasp pull`. Il
+> n'est pas une reconstruction : ses scopes sont ceux qui autorisent réellement le script.
 
 ### Ensuite
 
 ```bash
-volta run npx @google/clasp pull   # récupérer ce qui a changé en ligne
-volta run npx @google/clasp push   # publier ce que contient ce répertoire
+volta run npx @google/clasp status   # ce qu'un push enverrait, avant de l'envoyer
+volta run npx @google/clasp push     # publier ce que contient ce répertoire
+volta run npx @google/clasp pull     # récupérer ce qui a changé en ligne
 ```
 
-Un `push` remplace le contenu du projet en ligne. Faire un `pull` d'abord, et vérifier qu'il ne
-ramène rien d'inattendu, évite d'écraser une correction faite dans l'éditeur.
+**`pull` sert à vérifier, pas à faire autorité.** Il écrase les fichiers locaux par ceux du projet en
+ligne — y compris la mise en forme et les commentaires, que l'éditeur Google ne connaît pas. Utilise-le
+pour constater un écart, puis rétablis la version du dépôt et pousse-la : c'est le dépôt qui fait foi.
+Traiter `pull` comme le régime normal revient à faire de Google la source, ce que l'ADR écarte.
+
+`push` ne touche pas au manifeste distant sans `--force`. En revanche il remplace le code, donc un
+`status` préalable dit exactement ce qui partira.
 
 ## Contenu
 
