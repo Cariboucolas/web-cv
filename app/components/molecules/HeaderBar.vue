@@ -13,12 +13,15 @@
       <a href="#about" class="header-link">{{ $t('about.title') }}</a>
     </div>
     <div class="header-actions">
+      <!-- Pas de `target="_blank"` : ces actions rapportent un fichier, et un
+           téléchargement ouvert dans un onglet y laisse une page vide que le
+           visiteur doit refermer. C'est l'objet publié qui porte
+           `content-disposition: attachment` — l'attribut HTML `download`
+           serait ignoré, le fichier venant d'une autre origine. -->
       <a
           v-for="link in headerActions"
           :key="link.key"
           :href="link.url"
-          target="_blank"
-          rel="noopener noreferrer"
           class="header-social"
       >
         <Icon :name="link.icon" size="16"/>
@@ -45,7 +48,12 @@ const headerActions = [
   {
     key: 'download',
     icon: 'material-symbols:download',
-    url: `https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/${encodeURIComponent('cv/cv-colas-durcy.pdf')}?alt=media`,
+    // Adresse de lecture du CV PDF. Le script de publication
+    // (scripts/apps-script/Export_to_cloud_storage.js) porte l'adresse
+    // d'écriture correspondante : les deux désignent le même objet, et rien
+    // ne peut le vérifier automatiquement d'un runtime à l'autre. Déplacer
+    // l'un sans l'autre laisse ce bouton sur un 404.
+    url: `https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/${encodeURIComponent('cv/cv-colas-durcy-fr.pdf')}?alt=media`,
   },
 ]
 </script>

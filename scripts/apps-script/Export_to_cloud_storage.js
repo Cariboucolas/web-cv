@@ -41,14 +41,54 @@ function exportToFirebase() {
     // automatiquement puisqu'elles vivent dans deux runtimes distincts. Toute
     // modification de ce chemin doit être répercutée là-bas dans le même
     // changement.
+    //
+    // Le suffixe de langue est déjà là alors qu'une seule langue est publiée :
+    // il évite que l'ajout de l'anglais ait à renommer un objet dont l'URL
+    // sera, elle, diffusée d'ici là.
     const bucketName = 'cv-portfolio-b023a.appspot.com'
-    const objectPath = 'cv/cv-colas-durcy.pdf'
-    const uploadUrl = `https://storage.googleapis.com/upload/storage/v1/b/${bucketName}/o?uploadType=media&name=${encodeURIComponent(objectPath)}`
+    const objectPath = 'cv/cv-colas-durcy-fr.pdf'
+
+    // Nom que le fichier portera dans les téléchargements du visiteur, et non
+    // dans le bucket. Il reste en ASCII : un en-tête HTTP transporte mal autre
+    // chose, et le `filename*` qui le permettrait n'apporte rien ici.
+    const downloadFileName = 'CV Colas Durcy (FR).pdf'
+
+    // `uploadType=multipart` plutôt que `media` : c'est le seul mode qui pose
+    // des métadonnées en même temps que le contenu, et `contentDisposition`
+    // est le seul levier qui transforme le clic en téléchargement — l'attribut
+    // HTML `download` étant ignoré d'une origine à l'autre. En multipart, le
+    // chemin de l'objet se déclare dans les métadonnées et non plus dans
+    // l'URL.
+    const objectMetadata = {
+      name: objectPath,
+      contentType: 'application/pdf',
+      contentDisposition: `attachment; filename="${downloadFileName}"`,
+    }
+
+    // Un UUID écarte le seul vrai risque du multipart : une frontière qui se
+    // retrouverait telle quelle dans les octets du PDF couperait le corps au
+    // mauvais endroit.
+    const partBoundary = `cv-export-${Utilities.getUuid()}`
+    const uploadUrl = `https://storage.googleapis.com/upload/storage/v1/b/${bucketName}/o?uploadType=multipart`
+
+    // Le corps se construit en octets, jamais en chaîne : un PDF traversé par
+    // une conversion en texte revient corrompu. `getBytes()` rend un tableau
+    // de nombres sous V8, d'où la concaténation.
+    const requestBody = Utilities.newBlob(
+      `--${partBoundary}\r\n` +
+        'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+        `${JSON.stringify(objectMetadata)}\r\n` +
+        `--${partBoundary}\r\n` +
+        'Content-Type: application/pdf\r\n\r\n',
+    )
+      .getBytes()
+      .concat(pdfBlob.getBytes())
+      .concat(Utilities.newBlob(`\r\n--${partBoundary}--`).getBytes())
 
     const response = UrlFetchApp.fetch(uploadUrl, {
       method: 'POST',
-      contentType: 'application/pdf',
-      payload: pdfBlob.getBytes(),
+      contentType: `multipart/related; boundary=${partBoundary}`,
+      payload: requestBody,
       headers: {
         Authorization: `Bearer ${ScriptApp.getOAuthToken()}`,
       },
@@ -56,9 +96,10 @@ function exportToFirebase() {
 
     // Cette branche `else` n'est presque jamais atteinte : sans
     // `muteHttpExceptions: true`, UrlFetchApp lève sur tout code non-2xx et
-    // l'erreur part dans le `catch`, qui n'a pas le corps de la réponse. Le
-    // défaut est conservé tel quel ici — ce ticket ne change pas le
-    // comportement — et sera traité avec la relecture après envoi.
+    // l'erreur part dans le `catch`, qui n'en reçoit qu'un extrait tronqué —
+    // de quoi reconnaître un rejet de Cloud Storage, pas de quoi le lire en
+    // entier. Le défaut est conservé : c'est la relecture après envoi qui
+    // reprendra ce filet, et elle seule.
     if (response.getResponseCode() === 200) {
       userInterface.alert('CV exporté avec succès sur Firebase Storage !')
     } else {
