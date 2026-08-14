@@ -93,21 +93,63 @@ Le manifeste porte deux choses dont dépend le fonctionnement :
 
 Changer les scopes force une nouvelle autorisation au prochain lancement du script.
 
+## Les identifiants des deux Doc CV
+
+Le script vise les deux Doc CV **par identifiant**, et non le document actif : le menu publie les
+deux langues quel que soit le document depuis lequel il est déclenché.
+
+Ces identifiants ne sont pas dans le code, ce dépôt étant public. Ils vivent dans les **Script
+Properties** du projet, sous ces deux noms exacts :
+
+| Propriété | Contenu |
+|---|---|
+| `CV_DOC_ID_FR` | Identifiant du Doc CV français |
+| `CV_DOC_ID_EN` | Identifiant du Doc CV anglais |
+
+**Les renseigner : Extensions → Apps Script → Paramètres du projet → Propriétés du script.**
+L'identifiant d'un Doc se lit dans son URL, entre `/d/` et `/edit`.
+
+Une propriété absente arrête l'export **avant tout envoi**, avec un message qui nomme la langue et la
+propriété manquante. C'est voulu : un script qui publierait la seule langue qu'il sait trouver
+laisserait l'autre décrocher sans bruit.
+
 ## Ce que le script publie
 
 L'objet part en `uploadType=multipart` : c'est le seul mode qui pose des métadonnées en même temps
 que le contenu, `uploadType=media` ne transmettant que des octets nus. Le chemin de l'objet s'y
 déclare dans les métadonnées, et non plus en paramètre d'URL.
 
-| Métadonnée | Valeur | Pourquoi |
-|---|---|---|
-| `name` | `cv/cv-colas-durcy-fr.pdf` | Le suffixe de langue précède l'anglais, pour n'avoir pas à renommer un objet dont l'URL sera diffusée d'ici là. |
-| `contentType` | `application/pdf` | |
-| `contentDisposition` | `attachment; filename="CV Colas Durcy (FR).pdf"` | Le seul levier qui fasse d'un clic un téléchargement : l'attribut HTML `download` est ignoré d'une origine à l'autre. |
+Un export publie **deux objets**, un par langue :
 
-Ce chemin est **lu par le Site CV**, dans `app/components/molecules/HeaderBar.vue`. Les deux vivent
-dans des runtimes distincts et rien ne peut vérifier automatiquement qu'ils concordent : déplacer
-l'objet sans toucher au composant laisse le bouton de téléchargement sur un 404.
+| Langue | `name` | `contentDisposition` |
+|---|---|---|
+| Français | `cv/cv-colas-durcy-fr.pdf` | `attachment; filename="CV Colas Durcy (FR).pdf"` |
+| Anglais | `cv/cv-colas-durcy-en.pdf` | `attachment; filename="CV Colas Durcy (EN).pdf"` |
+
+Les deux portent `contentType: application/pdf`. `contentDisposition` est le seul levier qui fasse
+d'un clic un téléchargement : l'attribut HTML `download` est ignoré d'une origine à l'autre.
+
+**Le suffixe de langue est ce qui permet aux deux CV PDF de coexister.** Un chemin unique ferait
+viser le même objet aux deux Doc CV, et le dernier envoi écraserait l'autre sans que rien ne le
+signale. Ne jamais réintroduire de chemin unique ici.
+
+Ces chemins sont **lus par le Site CV**, dans `app/components/molecules/HeaderBar.vue`. Les deux
+vivent dans des runtimes distincts et rien ne peut vérifier automatiquement qu'ils concordent :
+déplacer un objet sans toucher au composant laisse le bouton de téléchargement sur un 404.
+
+## Publication atomique
+
+Les deux langues partent ensemble ou pas du tout. Le script lit les **deux** Doc CV et produit les
+**deux** PDF avant d'envoyer le premier octet : identifiant manquant, Doc CV introuvable ou vide,
+tout cela est constaté alors que rien n'a encore été publié.
+
+Cloud Storage n'offrant aucun commit à deux phases, un cas reste irréductible : un second envoi
+refusé après un premier accepté laisse une langue en ligne. Il n'est pas masqué — aucun succès n'est
+annoncé et le message nomme la langue fautive. Relancer l'export republie les deux, l'envoi étant
+idempotent.
+
+Le vide se constate sur le **Doc CV**, pas sur son export : un document vide s'exporte en une page
+blanche, soit un PDF de plusieurs kilo-octets qu'un contrôle de taille laisserait passer.
 
 ### Déplacer l'objet, dans cet ordre
 
@@ -116,17 +158,26 @@ indifférent : publier d'abord ne coûte rien, déployer d'abord ouvre une fenê
 bouton de téléchargement renvoie un 404.
 
 1. Pousser le script — `volta run npx @google/clasp push`.
-2. Ouvrir le Doc CV, menu **CV Export → Exporter vers Firebase Storage**. C'est ce geste, et lui
-   seul, qui crée l'objet au nouveau chemin.
-3. Vérifier que l'objet répond et porte bien ses en-têtes. Le contrôle **se prononce toujours** :
-   un `grep` seul reste muet quand l'en-tête manque, et un silence se lit trop facilement comme un
-   succès.
+2. Ouvrir le Doc CV, menu **CV Export → Exporter les deux CV PDF vers Firebase Storage**. C'est ce
+   geste, et lui seul, qui crée les objets au nouveau chemin.
+3. Vérifier que **les deux** objets répondent et portent bien leurs en-têtes. Le contrôle **se
+   prononce toujours** : un `grep` seul reste muet quand l'en-tête manque, et un silence se lit trop
+   facilement comme un succès.
    ```bash
-   curl -sI "https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/cv%2Fcv-colas-durcy-fr.pdf?alt=media" \
-     | grep -qi '^content-disposition: attachment' \
-     && echo 'OK — le clic déposera un fichier' \
-     || echo 'ÉCHEC — objet absent, ou publié sans ses métadonnées'
+   verifier_cv() {
+     curl -sI "https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/cv%2Fcv-colas-durcy-$1.pdf?alt=media" \
+       | tr -d '\r' \
+       | grep -qiF "content-disposition: attachment; filename=\"$2\"" \
+       && echo "OK    $1 — le clic déposera « $2 »" \
+       || echo "ÉCHEC $1 — objet absent, sans métadonnées, ou écrasé par l'autre langue"
+   }
+   verifier_cv fr 'CV Colas Durcy (FR).pdf'
+   verifier_cv en 'CV Colas Durcy (EN).pdf'
    ```
+   Le nom de fichier attendu est vérifié, et pas seulement la présence de l'en-tête : c'est ce qui
+   distingue deux objets distincts d'un même objet servi sous deux chemins. Si l'anglais avait
+   écrasé le français, le chemin `-fr` répondrait avec le nom de fichier anglais.
+
    Un échec juste après un `push` signale le plus souvent un export lancé **avant** que le push ne
    prenne effet : le Doc a alors rejoué l'ancien code. Relancer l'export suffit.
 4. Déployer le Site CV.
@@ -140,11 +191,17 @@ bouton de téléchargement renvoie un 404.
 
 ## Ce que ce script ne fait pas encore
 
-L'issue [#64](https://github.com/Cariboucolas/web-cv/issues/64) et ses tickets portent la suite :
-**publication atomique** des deux langues, relecture après envoi. En l'état, le script publie **un
-seul fichier**, en français, et annonce son succès sur la foi d'un code retour.
+L'issue [#64](https://github.com/Cariboucolas/web-cv/issues/64) porte encore la **relecture après
+envoi** ([#70](https://github.com/Cariboucolas/web-cv/issues/70)). En l'état, le script annonce son
+succès sur la foi d'un code retour, sans jamais relire ce qu'il vient de publier — la confiance
+exacte qui a laissé passer la panne d'origine.
 
 Ce code retour est d'ailleurs le seul filet actuel, et il est troué : faute de
 `muteHttpExceptions: true`, une réponse non-2xx lève avant d'atteindre la branche d'erreur, qui ne
-peut donc pas rapporter le corps de la réponse. Le défaut est conservé ici — versionner ne doit rien
-changer au comportement — et relève de la relecture après envoi.
+peut donc pas rapporter le corps de la réponse. Le défaut est conservé — il relève de la relecture
+après envoi, et d'elle seule.
+
+Côté Site CV, le bouton de téléchargement vise toujours le français quelle que soit la langue
+affichée : c'est [#69](https://github.com/Cariboucolas/web-cv/issues/69). Le CV PDF anglais est donc
+publié avant d'être atteignable, ce qui est l'ordre voulu — un lien qui pointerait vers un objet
+absent renverrait un 404.
