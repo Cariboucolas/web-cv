@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Test de fumée du site construit. Sert `.output/public` puis vérifie, à deux
- * breakpoints, quatre invariants qui ne demandent aucune image de référence.
+ * breakpoints, cinq invariants qui ne demandent aucune image de référence.
  *
  *   node scripts/smoke.mjs [racine]
  */
@@ -14,6 +14,25 @@ import { openPage } from './lib/cdp.mjs'
 const root = resolve(process.argv[2] ?? '.output/public')
 const BREAKPOINTS = [390, 1440]
 const SECTIONS = ['about', 'experiences', 'skills', 'projects']
+
+/**
+ * Le fragment de chemin que l'adresse de téléchargement doit porter, par
+ * langue. Volontairement partiel : ce test décrit ce qu'un visiteur obtient —
+ * le CV de la langue qu'il lit — et non la forme exacte de l'URL, qui
+ * appartient au composant. Le nom du bucket ou l'encodage peuvent changer sans
+ * que l'invariant devienne faux.
+ */
+const CV_DOWNLOAD_TARGETS = {
+  fr: 'cv-colas-durcy-fr.pdf',
+  en: 'cv-colas-durcy-en.pdf',
+}
+
+/** Les deux actions de l'en-tête : le lien qui rapporte le CV, et la bascule. */
+const DOWNLOAD_LINK = '.header-actions a'
+const LANGUAGE_TOGGLE = '.header-actions .icon-button'
+
+const wait = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds))
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -81,6 +100,78 @@ const startServer = () =>
     )
   })
 
+/**
+ * Le lien de téléchargement de l'en-tête doit viser le CV PDF de la langue
+ * affichée, et suivre la bascule sans que la page soit rechargée.
+ *
+ * Le CV PDF est servi par un autre domaine que le site : le test ne peut rien
+ * observer de plus que l'adresse visée, et surtout pas le fichier lui-même. Un
+ * CV périmé ou absent en production n'est donc pas de son ressort — c'est une
+ * exclusion assumée, un CI qui rougit pour du contenu finit ignoré.
+ *
+ * Renvoie la liste des violations relevées.
+ */
+const checkDownloadFollowsLocale = async (page) => {
+  const violations = []
+
+  const readTarget = () =>
+    page.evaluate(`document.querySelector('${DOWNLOAD_LINK}')?.href ?? null`)
+
+  const frenchTarget = await readTarget()
+  if (frenchTarget === null) {
+    violations.push('lien de téléchargement absent de l’en-tête')
+    return violations
+  }
+  if (!frenchTarget.includes(CV_DOWNLOAD_TARGETS.fr)) {
+    violations.push(
+      `lien de téléchargement en français : ${CV_DOWNLOAD_TARGETS.fr} attendu, vu ${frenchTarget}`,
+    )
+  }
+
+  // Ce témoin distingue les deux façons de rater la bascule. Sans lui, une page
+  // rechargée reviendrait au français et produirait le même message qu'une
+  // cible restée figée, alors que la cause et le correctif diffèrent.
+  await page.evaluate('window.__smokeSameDocument = true')
+
+  const hasToggle = await page.evaluate(
+    `Boolean(document.querySelector('${LANGUAGE_TOGGLE}'))`,
+  )
+  if (!hasToggle) {
+    violations.push('bascule de langue absente de l’en-tête')
+    return violations
+  }
+  await page.evaluate(`document.querySelector('${LANGUAGE_TOGGLE}').click()`)
+
+  // La bascule charge le fichier de locale à la demande — i18n v10 impose le
+  // chargement différé — donc l'adresse ne change pas dans le tick du clic. On
+  // attend qu'elle change plutôt que de dormir une durée choisie au jugé.
+  let englishTarget = frenchTarget
+  for (
+    let attempt = 0;
+    attempt < 40 && englishTarget === frenchTarget;
+    attempt++
+  ) {
+    await wait(100)
+    englishTarget = await readTarget()
+  }
+
+  const sameDocument = await page.evaluate(
+    'window.__smokeSameDocument === true',
+  )
+  if (!sameDocument) {
+    violations.push('la bascule de langue a rechargé la page')
+    return violations
+  }
+
+  if (!englishTarget?.includes(CV_DOWNLOAD_TARGETS.en)) {
+    violations.push(
+      `lien de téléchargement après bascule en anglais : ${CV_DOWNLOAD_TARGETS.en} attendu, vu ${englishTarget}`,
+    )
+  }
+
+  return violations
+}
+
 /** Renvoie la liste des violations relevées à ce breakpoint. */
 const checkBreakpoint = async (baseUrl, width) => {
   const violations = []
@@ -111,6 +202,11 @@ const checkBreakpoint = async (baseUrl, width) => {
     for (const source of JSON.parse(undecodable)) {
       violations.push(`image non décodable : ${source}`)
     }
+
+    // En dernier : cet invariant est le seul qui agisse sur la page, et il la
+    // laisse en anglais. Le passer avant les autres leur ferait vérifier un
+    // état que le visiteur n'obtient pas au chargement.
+    violations.push(...(await checkDownloadFollowsLocale(page)))
 
     for (const consoleError of page.consoleErrors) {
       violations.push(consoleError)

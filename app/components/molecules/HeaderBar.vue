@@ -13,18 +13,20 @@
       <a href="#about" class="header-link">{{ $t('about.title') }}</a>
     </div>
     <div class="header-actions">
-      <!-- Pas de `target="_blank"` : ces actions rapportent un fichier, et un
+      <!-- Deux actions seulement, et cette contrainte tient : un lien de
+           téléchargement par langue dupliquerait ce que la bascule dit déjà,
+           et laisserait le visiteur choisir une langue de document distincte
+           de celle qu'il lit. La cible suit la locale ; elle ne s'ajoute pas
+           à côté. Les liens vers les profils, eux, vivent dans ProfileSection :
+           ces actions-ci portent sur le document, pas sur la personne.
+
+           Pas de `target="_blank"` : cette action rapporte un fichier, et un
            téléchargement ouvert dans un onglet y laisse une page vide que le
            visiteur doit refermer. C'est l'objet publié qui porte
            `content-disposition: attachment` — l'attribut HTML `download`
            serait ignoré, le fichier venant d'une autre origine. -->
-      <a
-          v-for="link in headerActions"
-          :key="link.key"
-          :href="link.url"
-          class="header-social"
-      >
-        <Icon :name="link.icon" size="16"/>
+      <a :href="cvDownloadUrl" class="header-social">
+        <Icon name="material-symbols:download" size="16"/>
       </a>
       <AtomsLanguageIndicator :lang="currentLang" @click="toggleLanguage"/>
     </div>
@@ -42,20 +44,31 @@ const toggleLanguage = () => {
   locale.value = locale.value === 'fr' ? 'en' : 'fr'
 }
 
-/** Deux actions seulement, portant sur le document et non sur la personne :
-    les liens vers les profils vivent dans ProfileSection. */
-const headerActions = [
-  {
-    key: 'download',
-    icon: 'material-symbols:download',
-    // Adresse de lecture du CV PDF. Le script de publication
-    // (scripts/apps-script/Export_to_cloud_storage.js) porte l'adresse
-    // d'écriture correspondante : les deux désignent le même objet, et rien
-    // ne peut le vérifier automatiquement d'un runtime à l'autre. Déplacer
-    // l'un sans l'autre laisse ce bouton sur un 404.
-    url: `https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/${encodeURIComponent('cv/cv-colas-durcy-fr.pdf')}?alt=media`,
-  },
-]
+/** Bucket du Site CV. Publiquement lisible, d'où des URL stables sans jeton. */
+const CV_BUCKET = 'cv-portfolio-b023a.appspot.com'
+
+/**
+ * Adresses de lecture des deux CV PDF. Le script de publication
+ * (scripts/apps-script/Export_to_cloud_storage.js) porte les adresses
+ * d'écriture correspondantes : les deux jeux désignent les mêmes objets, et
+ * rien ne peut le vérifier automatiquement puisqu'ils vivent dans deux
+ * runtimes distincts. Déplacer l'un sans l'autre laisse ce bouton sur un 404.
+ */
+const CV_OBJECT_PATHS: Record<'fr' | 'en', string> = {
+  fr: 'cv/cv-colas-durcy-fr.pdf',
+  en: 'cv/cv-colas-durcy-en.pdf',
+}
+
+/**
+ * La cible est dérivée de la locale, et non fixée au chargement : le visiteur
+ * qui bascule en anglais doit repartir avec le CV anglais, sans rechargement.
+ * C'est un `computed` pour cette raison — une constante calculée une fois
+ * laisserait le lien sur la langue d'arrivée.
+ */
+const cvDownloadUrl = computed(
+  () =>
+    `https://firebasestorage.googleapis.com/v0/b/${CV_BUCKET}/o/${encodeURIComponent(CV_OBJECT_PATHS[currentLang.value])}?alt=media`,
+)
 </script>
 
 <style scoped>
