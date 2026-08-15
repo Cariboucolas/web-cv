@@ -36,9 +36,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+/** Les deux langues du site. Nommée pour que la bascule, l'indicateur et le
+    lien de téléchargement s'accordent sur le même jeu plutôt que de le
+    réécrire chacun de leur côté. */
+type Locale = 'fr' | 'en'
+
 const { locale } = useI18n()
 
-const currentLang = computed(() => locale.value as 'fr' | 'en')
+const currentLang = computed(() => locale.value as Locale)
 
 const toggleLanguage = () => {
   locale.value = locale.value === 'fr' ? 'en' : 'fr'
@@ -54,7 +59,7 @@ const CV_BUCKET = 'cv-portfolio-b023a.appspot.com'
  * rien ne peut le vérifier automatiquement puisqu'ils vivent dans deux
  * runtimes distincts. Déplacer l'un sans l'autre laisse ce bouton sur un 404.
  */
-const CV_OBJECT_PATHS: Record<'fr' | 'en', string> = {
+const CV_OBJECT_PATHS: Record<Locale, string> = {
   fr: 'cv/cv-colas-durcy-fr.pdf',
   en: 'cv/cv-colas-durcy-en.pdf',
 }
