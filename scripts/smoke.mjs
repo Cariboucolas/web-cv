@@ -31,6 +31,15 @@ const CV_DOWNLOAD_TARGETS = {
 const DOWNLOAD_LINK = '.header-actions a'
 const LANGUAGE_TOGGLE = '.header-actions .icon-button'
 
+/**
+ * Patience accordée à la bascule : 40 tentatives de 100 ms, soit 4 s. Le plafond
+ * n'est pas un temps de réponse attendu — l'adresse change en pratique en
+ * quelques dizaines de millisecondes — mais la limite au-delà de laquelle on
+ * déclare la bascule cassée plutôt que lente.
+ */
+const TOGGLE_POLL_ATTEMPTS = 40
+const TOGGLE_POLL_INTERVAL_MS = 100
+
 const wait = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds))
 
@@ -148,10 +157,10 @@ const checkDownloadFollowsLocale = async (page) => {
   let englishTarget = frenchTarget
   for (
     let attempt = 0;
-    attempt < 40 && englishTarget === frenchTarget;
+    attempt < TOGGLE_POLL_ATTEMPTS && englishTarget === frenchTarget;
     attempt++
   ) {
-    await wait(100)
+    await wait(TOGGLE_POLL_INTERVAL_MS)
     englishTarget = await readTarget()
   }
 
