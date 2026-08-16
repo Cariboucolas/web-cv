@@ -15,6 +15,37 @@
 const BUCKET_NAME = 'cv-portfolio-b023a.appspot.com'
 
 /**
+ * Poids au-delà duquel un CV PDF est signalé — sans que rien ne s'arrête.
+ *
+ * Un seuil qui bloque doit protéger d'une faute, pas d'un choix : un CV PDF
+ * lourd reste parfaitement valide, et refuser de le publier interdirait la mise
+ * à jour d'un soir de presse pour une raison esthétique.
+ *
+ * 500 Ko passe juste sous le poids du CV PDF actuel — 516 Ko pour deux pages,
+ * l'export Google Docs embarquant les polices. L'avertissement se déclenchera
+ * donc à chaque publication tant que ce fichier n'aura pas été allégé, ce qui
+ * est voulu : l'allègement est un travail éditorial séparé, et ce rappel est ce
+ * qui l'empêche de se faire oublier. Remonter le seuil au-dessus de 516 Ko
+ * ferait taire l'avertissement sans rien alléger.
+ */
+const HEAVY_CV_PDF_THRESHOLD_BYTES = 500 * 1024
+
+/** Annonce de succès, affichée seulement après relecture des deux objets. */
+const SUCCESS_HEADLINE =
+  'Les CV PDF français et anglais ont été publiés sur Firebase Storage, puis relus à leur adresse.'
+
+/**
+ * Rappel affiché après chaque succès.
+ *
+ * Le Site CV est le reflet du Doc CV, et aucun contrôle automatisé ne peut
+ * constater une divergence de faits entre les deux. Le seul moment où ce
+ * rappel a une chance d'être suivi est celui-ci : le nouveau CV PDF vient
+ * d'être publié, et son Doc CV est encore sous les yeux de son auteur.
+ */
+const SITE_CV_REMINDER =
+  'Rappel : repasser le Site CV au regard du nouveau Doc CV. Les deux doivent énoncer les mêmes faits — dates, intitulés, expériences — et rien ne peut le vérifier à ta place.'
+
+/**
  * Les deux langues publiées, dans l'ordre où elles partent.
  *
  * `objectPath` est l'adresse d'écriture du CV PDF. Le Site CV porte les
@@ -81,6 +112,11 @@ function onOpen() {
  *
  * Le script ne travaille pas sur le document actif : les deux Doc CV sont visés
  * par identifiant, quel que soit celui depuis lequel le menu a été déclenché.
+ *
+ * Le succès n'est annoncé qu'après relecture des deux objets publiés. Un code
+ * retour 200 ne dit que « la requête a été acceptée », et c'est sur cette
+ * confiance que la panne d'origine est passée inaperçue six mois durant : ce
+ * qu'il faut constater, c'est ce qui est en ligne.
  */
 // biome-ignore lint/correctness/noUnusedVariables: référencée par la chaîne passée à addItem ci-dessus
 function exportToFirebase() {
@@ -89,10 +125,9 @@ function exportToFirebase() {
   try {
     const publications = CV_LANGUAGES.map(readCvPdf)
     publications.forEach(uploadCvPdf)
+    const publishedCvPdfs = CV_LANGUAGES.map(verifyPublishedCvPdf)
 
-    userInterface.alert(
-      'Les CV PDF français et anglais ont été exportés sur Firebase Storage !',
-    )
+    userInterface.alert(buildSuccessMessage(publishedCvPdfs))
   } catch (error) {
     userInterface.alert(`Erreur: ${error.message}`)
   }
@@ -141,6 +176,17 @@ function readCvPdf(language) {
   return { language, pdfBlob }
 }
 
+/**
+ * L'en-tête qui fait d'un clic un téléchargement, pour une langue donnée.
+ *
+ * Une seule définition, parce que l'envoi la pose et la relecture l'attend :
+ * deux littéraux tenus de concorder finiraient par diverger, et la relecture
+ * cesserait alors de constater quoi que ce soit.
+ */
+function buildContentDisposition(language) {
+  return `attachment; filename="${language.downloadFileName}"`
+}
+
 /** Envoie un CV PDF déjà produit à son adresse, et lève si Storage refuse. */
 function uploadCvPdf(publication) {
   const { language, pdfBlob } = publication
@@ -154,7 +200,7 @@ function uploadCvPdf(publication) {
   const objectMetadata = {
     name: language.objectPath,
     contentType: 'application/pdf',
-    contentDisposition: `attachment; filename="${language.downloadFileName}"`,
+    contentDisposition: buildContentDisposition(language),
   }
 
   // Un UUID écarte le seul vrai risque du multipart : une frontière qui se
@@ -177,6 +223,11 @@ function uploadCvPdf(publication) {
     .concat(pdfBlob.getBytes())
     .concat(Utilities.newBlob(`\r\n--${partBoundary}--`).getBytes())
 
+  // `muteHttpExceptions: true` rend la main sur les codes non-2xx au lieu de
+  // lever. Sans lui, UrlFetchApp jette une erreur dont le message ne porte
+  // qu'un extrait tronqué de la réponse : de quoi reconnaître un rejet de
+  // Cloud Storage, pas de quoi le lire. La branche ci-dessous devient donc
+  // réellement atteignable, et rapporte le motif en entier.
   const response = UrlFetchApp.fetch(uploadUrl, {
     method: 'POST',
     contentType: `multipart/related; boundary=${partBoundary}`,
@@ -184,17 +235,138 @@ function uploadCvPdf(publication) {
     headers: {
       Authorization: `Bearer ${ScriptApp.getOAuthToken()}`,
     },
+    muteHttpExceptions: true,
   })
 
-  // Cette branche n'est presque jamais atteinte : sans
-  // `muteHttpExceptions: true`, UrlFetchApp lève sur tout code non-2xx et
-  // l'erreur remonte au `catch` de l'appelant, qui n'en reçoit qu'un extrait
-  // tronqué — de quoi reconnaître un rejet de Cloud Storage, pas de quoi le
-  // lire en entier. Le défaut est conservé : c'est la relecture après envoi
-  // qui reprendra ce filet, et elle seule.
   if (response.getResponseCode() !== 200) {
     throw new Error(
-      `envoi du CV PDF ${language.label} refusé : ${response.getContentText()}`,
+      `envoi du CV PDF ${language.label} refusé (${response.getResponseCode()}) : ${response.getContentText()}`,
     )
   }
+}
+
+/**
+ * Relit un CV PDF à son adresse et lève si ce qui s'y trouve n'est pas ce qui
+ * devait y être publié. Rend le poids constaté, dont le message de succès tire
+ * son éventuel avertissement.
+ *
+ * Prend la langue, et non la publication que l'envoi a produite : le contrôle
+ * ne doit rien devoir à ce que l'étape contrôlée tenait en mémoire. Tout ce
+ * qu'il affirme vient de ce que Cloud Storage renvoie, comparé à ce que
+ * `CV_LANGUAGES` dit qu'on voulait.
+ *
+ * La relecture interroge l'API JSON de Cloud Storage plutôt que l'URL de
+ * téléchargement du Site CV : celle-ci passe par un autre service, qui remappe
+ * les en-têtes au passage, alors que l'API rend les métadonnées **telles
+ * qu'elles sont stockées**. C'est bien l'objet écrit qu'on veut constater, pas
+ * la façon dont un intermédiaire le sert. Ces lectures sont fortement
+ * cohérentes après écriture : rien à attendre entre l'envoi et le contrôle.
+ *
+ * Chaque échec nomme la langue, comme à la lecture : les deux langues suivent
+ * le même chemin de code, et c'est le seul indice dont dispose le
+ * propriétaire.
+ */
+function verifyPublishedCvPdf(language) {
+  // Le chemin de l'objet est un segment d'URL, pas une arborescence : ses
+  // barres obliques doivent partir encodées, sans quoi l'API lit un objet
+  // nommé « cv » dans un dossier qui n'existe pas.
+  const metadataUrl = `https://storage.googleapis.com/storage/v1/b/${BUCKET_NAME}/o/${encodeURIComponent(language.objectPath)}`
+
+  const response = UrlFetchApp.fetch(metadataUrl, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${ScriptApp.getOAuthToken()}`,
+    },
+    muteHttpExceptions: true,
+  })
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error(
+      `relecture du CV PDF ${language.label} impossible (${response.getResponseCode()}) : ${response.getContentText()}`,
+    )
+  }
+
+  let publishedObject
+
+  try {
+    publishedObject = JSON.parse(response.getContentText())
+  } catch (error) {
+    throw new Error(
+      `relecture du CV PDF ${language.label} illisible : ${error.message}`,
+    )
+  }
+
+  if (publishedObject.contentType !== 'application/pdf') {
+    throw new Error(
+      `CV PDF ${language.label} publié avec le type « ${publishedObject.contentType} » au lieu de application/pdf`,
+    )
+  }
+
+  // Deux branches plutôt qu'une, parce que l'absence et la divergence n'ont ni
+  // la même cause ni le même remède : un en-tête absent est une publication
+  // passée à côté de ses métadonnées, un en-tête qui diffère est une langue qui
+  // en a écrasé une autre.
+  //
+  // La seconde branche compare la valeur exacte, et pas seulement la présence
+  // de l'en-tête : c'est ce qui distingue deux objets distincts d'un même objet
+  // servi sous deux chemins. Si l'anglais avait écrasé le français, le chemin
+  // français répondrait ici avec le nom de fichier anglais.
+  const expectedContentDisposition = buildContentDisposition(language)
+
+  if (!publishedObject.contentDisposition) {
+    throw new Error(
+      `CV PDF ${language.label} publié sans contentDisposition : un clic sur le Site CV l'ouvrirait dans un onglet au lieu de le télécharger`,
+    )
+  }
+
+  if (publishedObject.contentDisposition !== expectedContentDisposition) {
+    throw new Error(
+      `CV PDF ${language.label} publié avec « ${publishedObject.contentDisposition} » au lieu de « ${expectedContentDisposition} » : un clic sur le Site CV n'y déposerait pas le bon fichier`,
+    )
+  }
+
+  // `size` arrive en chaîne : l'API JSON de Cloud Storage sérialise les
+  // entiers 64 bits en texte pour ne pas les tronquer. `Number.isFinite`
+  // écarte du même geste la propriété absente, que la comparaison seule
+  // laisserait passer pour un objet valide.
+  const sizeInBytes = Number(publishedObject.size)
+
+  if (!Number.isFinite(sizeInBytes) || sizeInBytes <= 0) {
+    throw new Error(
+      `CV PDF ${language.label} publié vide (taille annoncée : ${publishedObject.size})`,
+    )
+  }
+
+  return { language, sizeInBytes }
+}
+
+/**
+ * Compose le message de succès : l'annonce, les éventuels avertissements de
+ * poids, puis le rappel de repasser le Site CV.
+ *
+ * Le rappel ferme le message plutôt que de l'ouvrir : il porte l'action qui
+ * reste à faire, et c'est la dernière ligne qu'on relit avant de fermer une
+ * boîte de dialogue.
+ */
+function buildSuccessMessage(publishedCvPdfs) {
+  const heavyCvPdfWarnings = publishedCvPdfs
+    .filter(
+      (publishedCvPdf) =>
+        publishedCvPdf.sizeInBytes > HEAVY_CV_PDF_THRESHOLD_BYTES,
+    )
+    .map(describeHeavyCvPdf)
+
+  return [SUCCESS_HEADLINE, ...heavyCvPdfWarnings, SITE_CV_REMINDER].join(
+    '\n\n',
+  )
+}
+
+/** Formule l'avertissement de poids, en disant que rien n'a été suspendu. */
+function describeHeavyCvPdf(publishedCvPdf) {
+  return `⚠ Le CV PDF ${publishedCvPdf.language.label} pèse ${formatKilobytes(publishedCvPdf.sizeInBytes)}, au-delà du seuil de ${formatKilobytes(HEAVY_CV_PDF_THRESHOLD_BYTES)}. Il est publié quand même : c'est un signalement, pas un refus.`
+}
+
+/** Un poids en octets, rendu lisible dans un message destiné à un humain. */
+function formatKilobytes(sizeInBytes) {
+  return `${Math.round(sizeInBytes / 1024)} Ko`
 }
