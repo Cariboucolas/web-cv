@@ -2,67 +2,92 @@
   <div class="skills-grid">
     <div
         v-for="(category, index) in skillCategories"
-        :key="category.label"
+        :key="category.key"
         v-reveal="index"
         class="skills-row"
     >
-      <span class="skills-label">{{ category.label }}</span>
+      <span class="skills-label">{{ t(`skills.categories.${category.key}`) }}</span>
       <span class="skills-list">
-        <template v-for="(skill, i) in category.skills" :key="skill.name">{{ skill.name }}<template
+        <template v-for="(skill, i) in category.skills" :key="skill">{{ skill }}<template
             v-if="i < category.skills.length - 1"> · </template></template>
       </span>
     </div>
+
+    <p v-reveal="skillCategories.length" class="skills-learning">{{ t('skills.learning') }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-interface Skill {
-  name: string
-}
+const { t } = useI18n()
 
-const skillCategories: { label: string; skills: Skill[] }[] = [
+/**
+ * Miroir de la section COMPÉTENCES du CV PDF — même découpage, même contenu.
+ * Le CV est la source, pas ce fichier : une compétence ajoutée ici sans y
+ * figurer là-bas rouvre l'écart que ce miroir existe pour fermer.
+ *
+ * L'ordre, lui, diffère du CV. `methods` remonte en troisième position parce
+ * qu'à l'écran la lecture est verticale et s'arrête tôt : les deux premières
+ * lignes qualifient (ce sont les mots-clés qu'on cherche), la troisième
+ * distingue. Dans un PDF dense, où l'œil balaie le bloc entier, la question
+ * ne se pose pas.
+ *
+ * Les noms de technologies ne se traduisent pas ; seuls les libellés de
+ * catégorie passent par l'i18n.
+ */
+const skillCategories: { key: string; skills: string[] }[] = [
   {
-    label: 'Frontend',
+    key: 'languages',
+    skills: ['TypeScript', 'JavaScript', 'Kotlin'],
+  },
+  {
+    key: 'frameworks',
     skills: [
-      { name: 'Vue' },
-      { name: 'Nuxt' },
-      { name: 'React' },
-      { name: 'Next' },
-      { name: 'JavaScript' },
-      { name: 'TypeScript' },
-      { name: 'Tailwind' },
+      'Vue.js / Nuxt',
+      'Vuex / Pinia',
+      'React',
+      'Node.js',
+      'Tailwind',
+      'Vuetify',
+      'Storybook',
     ],
   },
   {
-    label: 'Backend & Data',
+    key: 'methods',
     skills: [
-      { name: 'Firebase' },
-      { name: 'Node.js' },
-      { name: 'SQL' },
-      { name: 'NoSQL' },
-      { name: 'REST APIs' },
+      'DDD',
+      'Architecture hexagonale',
+      'CQRS',
+      'BDD',
+      'Clean Code',
+      'Pair Programming',
     ],
   },
   {
-    label: 'DevOps',
-    skills: [{ name: 'Git' }, { name: 'CI/CD' }, { name: 'Docker' }],
-  },
-  {
-    label: 'Architecture',
-    skills: [{ name: 'TDD' }, { name: 'DDD' }, { name: 'Hexagonal' }],
-  },
-  {
-    label: 'Tests',
+    key: 'cloud',
     skills: [
-      { name: 'Cypress' },
-      { name: 'Playwright' },
-      { name: 'Jest' },
-      { name: 'Mocha' },
+      'Firebase / Firestore',
+      'Vertex AI',
+      'SQL / NoSQL',
+      'GraphQL',
+      'REST API',
     ],
   },
   {
-    label: 'Langages',
-    skills: [{ name: 'Python' }, { name: 'Java' }],
+    key: 'devops',
+    skills: [
+      'SonarQube',
+      'Docker',
+      'GitLab CI / GitHub Actions',
+      'CI/CD',
+      'Cypress',
+      'Playwright',
+      'Jest / Mocha',
+      'TDD',
+    ],
+  },
+  {
+    key: 'tools',
+    skills: ['Git', 'GitLab', 'GitHub', 'Datadog (RUM - Log)', 'Sentry'],
   },
 ]
 </script>
@@ -96,6 +121,20 @@ const skillCategories: { label: string; skills: Skill[] }[] = [
   line-height: 1.7;
 }
 
+/* La seule phrase en prose de la section, et c'est le but : Rust tourne dans
+   Pixl64 sans être une compétence acquise, et aucune étiquette posée entre
+   `TypeScript` et `Vue.js` ne saurait dire ça. Une ligne de texte le peut.
+   Elle s'aligne sur la colonne des listes — largeur du libellé plus la
+   gouttière — pour prolonger la lecture au lieu d'ouvrir un nouveau bloc. */
+.skills-learning {
+  margin-top: var(--space-entry);
+  margin-left: calc(140px + var(--space-grid));
+  max-width: 62ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #8a8a8a;
+}
+
 @media (max-width: 640px) {
   .skills-row {
     flex-direction: column;
@@ -107,6 +146,12 @@ const skillCategories: { label: string; skills: Skill[] }[] = [
   }
 
   .skills-list {
+    font-size: 13px;
+  }
+
+  /* Les libellés ne tiennent plus leur colonne : la phrase repart du bord. */
+  .skills-learning {
+    margin-left: 0;
     font-size: 13px;
   }
 }

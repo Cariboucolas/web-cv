@@ -71,7 +71,13 @@
         "title": "Managers Companion",
         "shortTitle": "Managers Companion",
         "shortDescription": "Couche IA agentique — l'app qui absorbe MyGameMobile et les autres",
-        "description": "Decathlon accumulait des applications répondant souvent au même domaine métier. Managers Companion les réunit, et MyGameMobile a été la première absorbée. Le périmètre s'étend au-delà : politique commerciale, auto-évaluation. L'IA y était une demande explicite, à la fois vitrine de ce que l'équipe sait livrer et moyen d'exploiter une puissance d'analyse nourrie par les données et les algorithmes que les applications en place avaient déjà éprouvés. J'y ai intégré une couche IA sous architecture agentique."
+        "description": "Decathlon accumulait des applications répondant souvent au même domaine métier. Managers Companion les réunit, et MyGameMobile a été la première absorbée. Le périmètre s'étend au-delà : politique commerciale, auto-évaluation. L'IA y était une demande explicite, à la fois vitrine de ce que l'équipe sait livrer et moyen d'exploiter une puissance d'analyse nourrie par les données et les algorithmes que les applications en place avaient déjà éprouvés. J'y ai intégré une couche IA agentique — Vertex AI et RAG — pour un chatbot dédié à la formation. Le back-end est en Kotlin et Spring Boot, découpé en modules applicatifs avec Spring Modulith, derrière un BFF dont les endpoints sont dessinés pour les écrans mobile et qui parallélise ses appels par coroutines."
+      },
+      "pixl64": {
+        "title": "Pixl64 Mngr",
+        "shortTitle": "Pixl64 Mngr",
+        "shortDescription": "Divoom ne livre qu'une app mobile — voici celle du poste de travail",
+        "description": "Le panneau LED Pixoo-64 de Divoom ne se pilote officiellement que depuis un téléphone. Pixl64 Mngr est l'application de bureau qui manquait : découverte automatique des appareils sur le réseau local, réglages de luminosité et de canal, envoi d'images avec recadrage, et une bibliothèque de favoris qui reste sur la machine plutôt que dans le cloud. Native sur macOS, Linux et Windows, construite avec Tauri 2 et Vue 3. L'import d'images par URL traverse trois couches de défense indépendantes — filtrage côté interface, revalidation en Rust avec délai et limite de taille, puis liste blanche au niveau du système : une évasion SSRF devrait les vaincre toutes les trois. Projet personnel, open source sous licence MIT."
       }
     }
   },
@@ -87,11 +93,11 @@
           "TypeScript",
           "Nuxt",
           "React",
-          "NodeJs",
-          "Python",
-          "Java",
+          "Kotlin",
+          "Spring Boot",
+          "Node.js",
           "Firebase",
-          "SQL",
+          "PostgreSQL",
           "GraphQL",
           "Vertex AI",
           "Docker",
@@ -133,7 +139,7 @@
         "position": "Développeur — Freelance",
         "periodStart": "2022",
         "periodEnd": "2022",
-        "technologies": ["Nuxt", "TypeScript", "NodeJs", "Firebase", "KYC"],
+        "technologies": ["Nuxt", "TypeScript", "Node.js", "Firebase", "KYC"],
         "highlights": ["Deux plateformes ICO pour deux clients la même année"],
         "subProjects": [
           {
@@ -169,6 +175,15 @@
     ]
   },
   "skills": {
-    "title": "Compétences"
+    "title": "Compétences",
+    "categories": {
+      "languages": "Langages",
+      "frameworks": "Frameworks",
+      "methods": "Méthodologies & concepts",
+      "cloud": "Cloud & données",
+      "devops": "DevOps & qualité",
+      "tools": "Outils"
+    },
+    "learning": "Sur Pixl64 j'ai eu besoin de Rust pour la validation défensive des URL. Je continue à l'apprendre."
   }
 }

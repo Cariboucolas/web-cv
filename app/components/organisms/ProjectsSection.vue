@@ -107,23 +107,35 @@ import type { Project } from '~/types/project'
 
 const { t } = useI18n()
 
+/**
+ * Les stacks recopient celles du CV PDF, projet par projet — c'est lui qui
+ * fait foi, ici comme dans `SkillsSection`.
+ *
+ * L'ordre à l'intérieur de chaque liste n'est pas cosmétique : la carte
+ * n'affiche que les trois premières et compte le reste. Ce sont donc les
+ * trois technologies qui caractérisent le projet, pas celles qui ouvraient
+ * le package.json. Les décisions d'architecture (BFF, Spring Modulith)
+ * restent dans la description : réduites à une étiquette verte, elles
+ * ressemblent à des bibliothèques.
+ */
 const projects = ref<Project[]>([
   {
     key: 'mc',
     icon: 'material-symbols:supervisor-account',
     images: [],
     technologies: [
+      'Vertex AI',
+      'Kotlin',
+      'Spring Boot',
       'React',
       'TypeScript',
-      'Python',
-      'Java',
-      'Vertex AI',
-      'SQL',
+      'PostgreSQL',
+      'Docker',
+      'GitHub Actions',
+      'Playwright',
+      'Tailwind',
       'Datadog',
       'SonarQube',
-      'Playwright',
-      'Docker',
-      'Tailwind',
     ],
     link: '#',
     orientation: 'landscape',
@@ -140,15 +152,18 @@ const projects = ref<Project[]>([
     technologies: [
       'Nuxt',
       'TypeScript',
-      'NodeJs',
+      'GraphQL',
+      'Vuex → Pinia',
+      'Node.js',
       'Firebase',
-      'NoSQL',
+      'Firestore',
+      'Vuetify',
+      'Cypress',
+      'Storybook',
       'Datadog',
       'Sentry',
       'SonarQube',
-      'GraphQL',
-      'Storybook',
-      'Cypress',
+      'REST API',
     ],
     link: '#',
     orientation: 'portrait',
@@ -160,15 +175,18 @@ const projects = ref<Project[]>([
     technologies: [
       'Nuxt',
       'TypeScript',
-      'NodeJs',
+      'GraphQL',
+      'Pinia',
+      'Node.js',
       'Firebase',
-      'NoSQL',
+      'Firestore',
+      'Vuetify',
+      'Cypress',
+      'Storybook',
       'Datadog',
       'Sentry',
       'SonarQube',
-      'GraphQL',
-      'Storybook',
-      'Cypress',
+      'REST API',
     ],
     link: '#',
     orientation: 'portrait',
@@ -183,7 +201,16 @@ const projects = ref<Project[]>([
       '/images/projects/winky_paiment',
       '/images/projects/winky_login',
     ],
-    technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
+    technologies: [
+      'Nuxt',
+      'TypeScript',
+      'KYC',
+      'Node.js',
+      'Firebase',
+      'Firestore',
+      'Vuetify',
+      'Cypress',
+    ],
     link: '#',
     orientation: 'landscape',
   },
@@ -195,7 +222,16 @@ const projects = ref<Project[]>([
       '/images/projects/mechachain_dashboard',
       '/images/projects/mechachain_login',
     ],
-    technologies: ['Nuxt', 'TypeScript', 'NodeJs', 'Firebase', 'NoSQL', 'KYC'],
+    technologies: [
+      'Nuxt',
+      'TypeScript',
+      'KYC',
+      'Node.js',
+      'Firebase',
+      'Firestore',
+      'Vuetify',
+      'Cypress',
+    ],
     link: '#',
     orientation: 'landscape',
   },
@@ -204,18 +240,49 @@ const projects = ref<Project[]>([
     icon: 'material-symbols:pedal-bike',
     images: ['/images/projects/stic_dashboard', '/images/projects/stic_immat'],
     technologies: [
-      'Nuxt',
+      'Vue.js',
+      'Scandit',
       'TypeScript',
-      'NodeJs',
+      'Vuex',
+      'Node.js',
       'Firebase',
-      'NoSQL',
+      'Firestore',
+      'Cypress',
+      'Docker',
+      'GitLab CI',
       'Sentry',
       'SonarQube',
-      'Scandit',
-      'Cypress',
+      'REST API',
     ],
     link: '#',
     orientation: 'portrait',
+  },
+  // Seul projet personnel de la vitrine, et seul dont le lien mène quelque
+  // part : les six autres sont des applications internes. `ProjectModal`
+  // masque le bouton quand `link` vaut '#', donc rien à traiter à part
+  // donner ici la vraie adresse.
+  {
+    key: 'pixl64',
+    icon: 'material-symbols:grid-on',
+    images: [
+      '/images/projects/pixl64_dashboard',
+      '/images/projects/pixl64_control',
+      '/images/projects/pixl64_send_image',
+      '/images/projects/pixl64_cropper',
+      '/images/projects/pixl64_favorites',
+    ],
+    technologies: [
+      'Tauri 2',
+      'Rust',
+      'Vue 3',
+      'TypeScript',
+      'Pinia',
+      'Vite',
+      'Vitest',
+      'Biome',
+    ],
+    link: 'https://github.com/Cariboucolas/pixl64-mngr',
+    orientation: 'landscape',
   },
 ])
 
