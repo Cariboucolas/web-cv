@@ -184,6 +184,9 @@
       "devops": "DevOps & quality",
       "tools": "Tools"
     },
-    "learning": "Pixl64 needed Rust for defensive URL validation. I am still learning it."
+    "exploring": {
+      "label": "Exploring",
+      "text": "Pixl64 needed Rust for defensive URL validation. I am still learning it."
+    }
   }
 }

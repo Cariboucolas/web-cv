@@ -165,9 +165,10 @@ on screen because vertical reading stops early, whereas a dense PDF is scanned w
 experience the CV omits: **Infodis · Intersport · Biscuiterie Poult, 2005-2020**. The CV fights for two pages and sells
 the developer; the site has room to say where he came from.
 
-A skill that is genuinely not acquired does not get a row. Rust ships inside Pixl64 and is *not* claimed as a
-competence — it lives in one line of prose under the grid (`skills.learning`), which is the only prose in the section
-and the only place able to say "used, still learning".
+A skill that is genuinely not acquired does not get an entry among the others. Rust ships inside Pixl64 and is *not*
+claimed as a competence, so it sits in its own row under the `En exploration` label (`skills.exploring`), holding a
+sentence rather than a list. The label carries the nuance, which is why the sentence needs no visual signal of its own
+— an entry sitting between `TypeScript` and `Vue.js` could never say "used, still learning".
 
 See `docs/superpowers/specs/2026-08-12-refonte-contenu-recruteurs-design.md` for the full rationale.
 

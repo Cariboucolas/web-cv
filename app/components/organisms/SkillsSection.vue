@@ -13,7 +13,20 @@
       </span>
     </div>
 
-    <p v-reveal="skillCategories.length" class="skills-learning">{{ t('skills.learning') }}</p>
+    <!-- Rust tourne dans Pixl64 sans être une compétence acquise, et aucune
+         entrée posée entre `TypeScript` et `Vue.js` ne saurait dire ça.
+         D'où une phrase — mais dans une ligne du tableau, sous son propre
+         intitulé : hors de la grille, elle se lisait comme une note de bas
+         de page détachée du reste.
+         Aucune classe ne la distingue, et c'est voulu deux fois. C'est
+         l'intitulé qui porte la nuance, donc le texte n'a pas à la répéter ;
+         et une largeur de lecture confortable la repliait bien avant la
+         ligne DevOps, qui compte pourtant autant de caractères — la
+         contrainte se voyait plus qu'elle ne servait. -->
+    <div v-reveal="skillCategories.length" class="skills-row">
+      <span class="skills-label">{{ t('skills.exploring.label') }}</span>
+      <span class="skills-list">{{ t('skills.exploring.text') }}</span>
+    </div>
   </div>
 </template>
 
@@ -121,20 +134,6 @@ const skillCategories: { key: string; skills: string[] }[] = [
   line-height: 1.7;
 }
 
-/* La seule phrase en prose de la section, et c'est le but : Rust tourne dans
-   Pixl64 sans être une compétence acquise, et aucune étiquette posée entre
-   `TypeScript` et `Vue.js` ne saurait dire ça. Une ligne de texte le peut.
-   Elle s'aligne sur la colonne des listes — largeur du libellé plus la
-   gouttière — pour prolonger la lecture au lieu d'ouvrir un nouveau bloc. */
-.skills-learning {
-  margin-top: var(--space-entry);
-  margin-left: calc(140px + var(--space-grid));
-  max-width: 62ch;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #8a8a8a;
-}
-
 @media (max-width: 640px) {
   .skills-row {
     flex-direction: column;
@@ -146,12 +145,6 @@ const skillCategories: { key: string; skills: string[] }[] = [
   }
 
   .skills-list {
-    font-size: 13px;
-  }
-
-  /* Les libellés ne tiennent plus leur colonne : la phrase repart du bord. */
-  .skills-learning {
-    margin-left: 0;
     font-size: 13px;
   }
 }
