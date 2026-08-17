@@ -60,6 +60,37 @@ il doit être celui qu'ouvre le Doc.
 > Doc** : ses scopes sont bien ceux qui autorisent le script qui s'exécute. Un manifeste ne vaut
 > jamais plus que l'identifiant visé au moment du pull, d'où la comparaison.
 
+### Un seul Doc CV porte le script
+
+**Le script vit sur le Doc CV français, et sur lui seul.** Il n'en a pas besoin d'un second : il vise
+les deux Doc CV par identifiant et publie les deux langues depuis n'importe lequel.
+
+Ce n'est pas une préférence, c'est une correction. **Dupliquer un Google Doc duplique le projet Apps
+Script qui y est attaché**, dans l'état où il se trouvait ce jour-là. Le Doc CV anglais, créé à
+partir du français, a donc hérité d'une copie du script d'origine — celle d'avant la séparation des
+chemins par langue. Son menu a survécu à tous les `clasp push`, qui ne visent que le projet français.
+
+Ce que produisait un clic sur ce menu hérité mérite d'être connu, parce que rien ne le distinguait
+d'un succès :
+
+- il publiait le **document actif**, donc le CV anglais ;
+- au **chemin unique** `cv/cv-colas-durcy.pdf`, celui d'avant la séparation par langue ;
+- en `uploadType=media`, donc **sans aucune métadonnée** — ni type, ni `contentDisposition` ;
+- et affichait « CV exporté avec succès sur Firebase Storage ! » sans rien relire.
+
+Un CV anglais servi à l'ancienne adresse française, sans en-têtes, annoncé comme un succès. C'est la
+panne d'origine de ce chantier, reproduite à l'identique par un simple copier-coller de document.
+
+**La règle qui en découle : un Doc CV autre que le français ne doit porter aucun script.** Si l'on en
+crée un nouveau par duplication, vider son projet Apps Script fait partie de sa création — le menu
+n'apparaît plus au rechargement du Doc. Vider plutôt que supprimer laisse une trace lisible à qui
+rouvrira l'éditeur ; le code d'origine, lui, reste consultable dans l'historique git de ce
+répertoire.
+
+Un clic déjà passé sur un menu hérité laisse un objet à l'ancienne adresse : le supprimer, comme le
+prescrit [l'étape 5 ci-dessous](#déplacer-lobjet-dans-cet-ordre). Laissé en place, il continue d'être
+servi à quiconque possède son URL.
+
 ### Ensuite
 
 ```bash
@@ -242,11 +273,17 @@ Un CV PDF dépassant **500 Ko** est signalé dans le message de succès, et publ
 qui bloque doit protéger d'une faute, pas d'un choix : un CV PDF lourd reste parfaitement valide, et
 refuser de le publier interdirait la mise à jour d'un soir de presse pour une raison esthétique.
 
-Le seuil passe **juste sous** le poids du CV PDF actuel — 516 Ko pour deux pages, l'export Google
-Docs embarquant les polices. L'avertissement se déclenchera donc à chaque publication tant que ce
-fichier n'aura pas été allégé, et c'est voulu : l'allègement est un travail éditorial séparé, ce
-rappel est ce qui l'empêche de se faire oublier. Remonter le seuil au-dessus de 516 Ko ferait taire
-l'avertissement sans rien alléger.
+750 Ko laisse passer les deux CV PDF actuels, qui pèsent environ 505 Ko pour deux pages, l'export
+Google Docs embarquant les polices.
+
+Un seuil placé **juste sous** eux a d'abord été essayé, pour que l'avertissement rappelle qu'ils
+gagneraient à être allégés. Constat en production : il se déclenchait **deux fois à chaque
+publication**, juste au-dessus du rappel de repasser le Site CV. Un avertissement qui s'affiche
+toujours cesse d'être lu, et emporte avec lui la ligne qui devait l'être. Le signal doit rester rare
+pour rester un signal : à 750 Ko il désigne un accident — une image collée en pleine page, une police
+doublée — et non l'état normal du fichier.
+
+L'allègement des 505 Ko actuels reste un travail éditorial séparé ; il ne relève pas de ce seuil.
 
 ### Rappel de repasser le Site CV
 
