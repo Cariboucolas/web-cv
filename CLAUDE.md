@@ -165,10 +165,18 @@ on screen because vertical reading stops early, whereas a dense PDF is scanned w
 experience the CV omits: **Infodis · Intersport · Biscuiterie Poult, 2005-2020**. The CV fights for two pages and sells
 the developer; the site has room to say where he came from.
 
-A skill that is genuinely not acquired does not get an entry among the others. Rust ships inside Pixl64 and is *not*
-claimed as a competence, so it sits in its own row under the `En exploration` label (`skills.exploring`), holding a
-sentence rather than a list. The label carries the nuance, which is why the sentence needs no visual signal of its own
-— an entry sitting between `TypeScript` and `Vue.js` could never say "used, still learning".
+A skill that is genuinely not acquired does not join the others. `exploringSkills` is a **seventh row** under the
+`En exploration` label, declared apart from `skillCategories` precisely so the mirror stays exact: nothing in it appears
+among the CV's competences. It currently holds `Rust`, `IA agentique` and `RAG`. The label carries the nuance, so the
+entries need no styling of their own.
+
+Note what does *not* sit there: `Vertex AI` stays under Cloud & data, because it shipped to production on Managers
+Companion. The row is about the architecture still being explored, not about the tool.
+
+Almost every entry is a proper noun and is hardcoded, since `TypeScript` and `Rust` do not translate. The handful that
+are phrases rather than brands would otherwise render in French on the English page, which is what happened to
+`Architecture hexagonale` when this mirror was first written. Those are stored as `@key` and resolved through
+`skills.terms.*` by `skillLabel`.
 
 See `docs/superpowers/specs/2026-08-12-refonte-contenu-recruteurs-design.md` for the full rationale.
 

@@ -1,31 +1,16 @@
 <template>
   <div class="skills-grid">
     <div
-        v-for="(category, index) in skillCategories"
+        v-for="(category, index) in skillRows"
         :key="category.key"
         v-reveal="index"
         class="skills-row"
     >
       <span class="skills-label">{{ t(`skills.categories.${category.key}`) }}</span>
       <span class="skills-list">
-        <template v-for="(skill, i) in category.skills" :key="skill">{{ skill }}<template
+        <template v-for="(skill, i) in category.skills" :key="skill">{{ skillLabel(skill) }}<template
             v-if="i < category.skills.length - 1"> · </template></template>
       </span>
-    </div>
-
-    <!-- Rust tourne dans Pixl64 sans être une compétence acquise, et aucune
-         entrée posée entre `TypeScript` et `Vue.js` ne saurait dire ça.
-         D'où une phrase — mais dans une ligne du tableau, sous son propre
-         intitulé : hors de la grille, elle se lisait comme une note de bas
-         de page détachée du reste.
-         Aucune classe ne la distingue, et c'est voulu deux fois. C'est
-         l'intitulé qui porte la nuance, donc le texte n'a pas à la répéter ;
-         et une largeur de lecture confortable la repliait bien avant la
-         ligne DevOps, qui compte pourtant autant de caractères — la
-         contrainte se voyait plus qu'elle ne servait. -->
-    <div v-reveal="skillCategories.length" class="skills-row">
-      <span class="skills-label">{{ t('skills.exploring.label') }}</span>
-      <span class="skills-list">{{ t('skills.exploring.text') }}</span>
     </div>
   </div>
 </template>
@@ -44,8 +29,10 @@ const { t } = useI18n()
  * distingue. Dans un PDF dense, où l'œil balaie le bloc entier, la question
  * ne se pose pas.
  *
- * Les noms de technologies ne se traduisent pas ; seuls les libellés de
- * catégorie passent par l'i18n.
+ * Les noms de technologies ne se traduisent pas, d'où leur présence en dur
+ * ici. Deux entrées font exception parce que ce sont des expressions et non
+ * des marques : elles s'écrivent en clé i18n, préfixée par `@`. Voir
+ * `skillLabel`.
  */
 const skillCategories: { key: string; skills: string[] }[] = [
   {
@@ -68,7 +55,7 @@ const skillCategories: { key: string; skills: string[] }[] = [
     key: 'methods',
     skills: [
       'DDD',
-      'Architecture hexagonale',
+      '@hexagonal',
       'CQRS',
       'BDD',
       'Clean Code',
@@ -103,6 +90,39 @@ const skillCategories: { key: string; skills: string[] }[] = [
     skills: ['Git', 'GitLab', 'GitHub', 'Datadog (RUM - Log)', 'Sentry'],
   },
 ]
+
+/**
+ * Ce que je pratique sans le revendiquer — déclaré à part parce que rien
+ * ici ne figure parmi les compétences du CV, et que `skillCategories` doit
+ * rester un miroir exact.
+ *
+ * Rust tourne dans Pixl64, mais la couche sécurité a été écrite en
+ * apprenant le langage. L'agentique et le RAG ont été livrés sur Managers
+ * Companion, et le CV lui-même y est plus prudent qu'ailleurs : il écrit
+ * « participé à l'intégration » là où il écrit « conçu et développé »
+ * partout ailleurs.
+ *
+ * `Vertex AI` ne descend pas ici pour autant, et la distinction est le fond
+ * de cette ligne : l'outil a servi en production, c'est l'architecture
+ * agentique qui reste un terrain en cours. L'intitulé porte la nuance, donc
+ * les entrées n'ont rien à ajouter.
+ */
+const exploringSkills: string[] = ['Rust', '@agenticAi', 'RAG']
+
+/** Une seule liste au rendu, deux sources qui gardent chacune leur sens. */
+const skillRows = [
+  ...skillCategories,
+  { key: 'exploring', skills: exploringSkills },
+]
+
+/**
+ * `TypeScript`, `Rust`, `RAG` sont des noms propres et s'affichent tels
+ * quels. Une poignée d'entrées sont au contraire des expressions, qui
+ * s'écriraient en français sur la page anglaise si on les laissait en dur :
+ * le préfixe `@` les désigne comme clés de traduction.
+ */
+const skillLabel = (skill: string) =>
+  skill.startsWith('@') ? t(`skills.terms.${skill.slice(1)}`) : skill
 </script>
 
 <style scoped>
