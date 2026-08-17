@@ -182,11 +182,12 @@
       "methods": "Methods & concepts",
       "cloud": "Cloud & data",
       "devops": "DevOps & quality",
-      "tools": "Tools"
+      "tools": "Tools",
+      "exploring": "Exploring"
     },
-    "exploring": {
-      "label": "Exploring",
-      "text": "Pixl64 needed Rust for defensive URL validation. I am still learning it."
+    "terms": {
+      "hexagonal": "Hexagonal architecture",
+      "agenticAi": "Agentic AI"
     }
   }
 }
