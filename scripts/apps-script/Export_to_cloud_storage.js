@@ -125,7 +125,7 @@ function exportToFirebase() {
   try {
     const publications = CV_LANGUAGES.map(readCvPdf)
     publications.forEach(uploadCvPdf)
-    const publishedCvPdfs = CV_LANGUAGES.map(verifyPublishedCvPdf)
+    const publishedCvPdfs = publications.map(verifyPublishedCvPdf)
 
     userInterface.alert(buildSuccessMessage(publishedCvPdfs))
   } catch (error) {
@@ -168,12 +168,17 @@ function readCvPdf(language) {
   }
 
   const pdfBlob = DriveApp.getFileById(documentId).getAs('application/pdf')
+  const exportedSizeInBytes = pdfBlob.getBytes().length
 
-  if (pdfBlob.getBytes().length === 0) {
+  if (exportedSizeInBytes === 0) {
     throw new Error(`CV PDF ${language.label} vide après export`)
   }
 
-  return { language, pdfBlob }
+  // Le poids est retenu ici plutôt que recalculé à la relecture : `getBytes()`
+  // recopie le blob à chaque appel, et c'est un demi-mégaoctet. Il sert de
+  // référence au contrôle de taille, et c'est la lecture du Doc CV qui le
+  // produit — pas l'envoi, dont la relecture ne croit rien sur parole.
+  return { language, pdfBlob, exportedSizeInBytes }
 }
 
 /**
@@ -250,10 +255,10 @@ function uploadCvPdf(publication) {
  * devait y être publié. Rend le poids constaté, dont le message de succès tire
  * son éventuel avertissement.
  *
- * Prend la langue, et non la publication que l'envoi a produite : le contrôle
- * ne doit rien devoir à ce que l'étape contrôlée tenait en mémoire. Tout ce
- * qu'il affirme vient de ce que Cloud Storage renvoie, comparé à ce que
- * `CV_LANGUAGES` dit qu'on voulait.
+ * Tout ce que la fonction affirme vient de ce que Cloud Storage renvoie,
+ * confronté à deux références qui ne doivent rien à l'envoi : `CV_LANGUAGES`
+ * pour l'adresse et les en-têtes voulus, et le poids relevé à la lecture du
+ * Doc CV. La relecture ne croit sur parole aucune étape qu'elle contrôle.
  *
  * La relecture interroge l'API JSON de Cloud Storage plutôt que l'URL de
  * téléchargement du Site CV : celle-ci passe par un autre service, qui remappe
@@ -266,7 +271,9 @@ function uploadCvPdf(publication) {
  * le même chemin de code, et c'est le seul indice dont dispose le
  * propriétaire.
  */
-function verifyPublishedCvPdf(language) {
+function verifyPublishedCvPdf(publication) {
+  const { language, exportedSizeInBytes } = publication
+
   // Le chemin de l'objet est un segment d'URL, pas une arborescence : ses
   // barres obliques doivent partir encodées, sans quoi l'API lit un objet
   // nommé « cv » dans un dossier qui n'existe pas.
@@ -334,6 +341,18 @@ function verifyPublishedCvPdf(language) {
   if (!Number.isFinite(sizeInBytes) || sizeInBytes <= 0) {
     throw new Error(
       `CV PDF ${language.label} publié vide (taille annoncée : ${publishedObject.size})`,
+    )
+  }
+
+  // Le contrôle le plus fort du lot, et le seul qui regarde le contenu plutôt
+  // que son étiquette : un multipart dont la frontière couperait le corps au
+  // mauvais endroit publierait un PDF tronqué, de type et d'en-tête
+  // irréprochables. L'égalité est exacte, aucune tolérance n'ayant de sens —
+  // Cloud Storage stocke les octets reçus tels quels, l'objet ne portant pas
+  // de `contentEncoding` qui autoriserait une recompression au passage.
+  if (sizeInBytes !== exportedSizeInBytes) {
+    throw new Error(
+      `CV PDF ${language.label} publié tronqué ou altéré : ${sizeInBytes} octets en ligne pour ${exportedSizeInBytes} octets exportés`,
     )
   }
 

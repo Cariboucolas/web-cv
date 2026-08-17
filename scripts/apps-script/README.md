@@ -206,7 +206,7 @@ métadonnées telles qu'elles sont **stockées**. C'est l'objet écrit qu'on veu
 dont un intermédiaire le sert. Ces lectures sont fortement cohérentes après écriture : rien à
 attendre entre l'envoi et le contrôle.
 
-Cinq façons d'échouer, sur chacun des deux objets. Une seule suffit à ce qu'aucun succès ne soit
+Six façons d'échouer, sur chacun des deux objets. Une seule suffit à ce qu'aucun succès ne soit
 annoncé :
 
 | Contrôle | Ce qu'un échec signifie |
@@ -216,6 +216,17 @@ annoncé :
 | `contentType` vaut `application/pdf` | L'objet est parti en octets nus — le navigateur ne saura pas quoi en faire |
 | `contentDisposition` vaut exactement l'en-tête attendu | En-tête absent : le clic ouvre un onglet. En-tête d'une autre langue : une langue en a écrasé une autre |
 | `size` est non nulle | Un objet vide est en ligne à la place du CV PDF |
+| `size` égale le poids exporté du Doc CV | Le contenu a été amputé en route — le seul contrôle qui regarde les octets et non l'étiquette |
+
+Le dernier mérite un mot. Les cinq premiers inspectent des **étiquettes** : un PDF tronqué les porte
+toutes correctement et passerait. Le corps multipart est assemblé octet par octet autour d'une
+frontière, et une frontière qui se retrouverait dans les octets du PDF couperait le corps au mauvais
+endroit — c'est le risque que l'UUID de `uploadCvPdf` rend improbable, sans le supprimer.
+
+La référence de ce contrôle est le poids relevé **à la lecture du Doc CV**, pas ce que l'envoi
+rapporte : la relecture ne croit sur parole aucune étape qu'elle contrôle. L'égalité est exacte, sans
+tolérance — Cloud Storage stocke les octets reçus tels quels, l'objet ne portant aucun
+`contentEncoding` qui autoriserait une recompression au passage.
 
 **La valeur exacte du `contentDisposition` est vérifiée, pas seulement sa présence.** C'est ce qui
 distingue deux objets distincts d'un même objet servi sous deux chemins : si l'anglais avait écrasé
@@ -265,6 +276,11 @@ justement le mode de panne visé : un envoi accepté dont le résultat n'est pas
 
 L'essai **laisse deux objets dégradés en ligne** entre les étapes 3 et 4 : c'est précisément ce que
 la relecture sert à ne pas ignorer. Enchaîner l'étape 4 sans attendre.
+
+Pour éprouver le contrôle de taille — celui qui regarde le contenu — remplacer plutôt, dans
+`readCvPdf`, le poids retenu par un poids faux : `exportedSizeInBytes: 1` fait échouer la relecture
+sur `publié tronqué ou altéré`, alors même que l'objet en ligne est parfaitement sain. C'est l'essai
+inverse des autres, et il ne dégrade rien dans le bucket.
 
 Le même essai avec `contentDisposition` supprimé des métadonnées produit
 `CV PDF français publié sans contentDisposition…`, et avec le `downloadFileName` d'une langue recopié
