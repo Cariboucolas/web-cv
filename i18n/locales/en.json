@@ -71,7 +71,13 @@
         "title": "Managers Companion",
         "shortTitle": "Managers Companion",
         "shortDescription": "Agentic AI layer — the app absorbing MyGameMobile and the rest",
-        "description": "Decathlon had accumulated applications that often answered the same business domain. Managers Companion brings them together, and MyGameMobile was the first one absorbed. The scope reaches further: commercial policy, self-assessment. AI was an explicit requirement, both a showcase of what the team can deliver and a way to exploit analytical power fed by the data and the algorithms the existing applications had already proven. I integrated an AI layer under an agentic architecture."
+        "description": "Decathlon had accumulated applications that often answered the same business domain. Managers Companion brings them together, and MyGameMobile was the first one absorbed. The scope reaches further: commercial policy, self-assessment. AI was an explicit requirement, both a showcase of what the team can deliver and a way to exploit analytical power fed by the data and the algorithms the existing applications had already proven. I integrated an agentic AI layer — Vertex AI and RAG — powering a chatbot dedicated to training. The back end is Kotlin and Spring Boot, split into application modules with Spring Modulith, behind a BFF whose endpoints are drawn for the mobile screens and which parallelises its calls with coroutines."
+      },
+      "pixl64": {
+        "title": "Pixl64 Mngr",
+        "shortTitle": "Pixl64 Mngr",
+        "shortDescription": "Divoom only ships a mobile app — this is the desktop one",
+        "description": "Divoom's Pixoo-64 LED panel is officially driven from a phone and nothing else. Pixl64 Mngr is the desktop application that was missing: automatic discovery of devices on the local network, brightness and channel controls, image sending with cropping, and a favourites library that stays on the machine rather than in the cloud. Native on macOS, Linux and Windows, built with Tauri 2 and Vue 3. Importing an image by URL crosses three independent layers of defence — filtering in the interface, revalidation in Rust with a timeout and a size limit, then an allowlist at the system level: an SSRF escape would have to defeat all three. A personal project, open source under the MIT licence."
       }
     }
   },
@@ -87,11 +93,11 @@
           "TypeScript",
           "Nuxt",
           "React",
-          "NodeJs",
-          "Python",
-          "Java",
+          "Kotlin",
+          "Spring Boot",
+          "Node.js",
           "Firebase",
-          "SQL",
+          "PostgreSQL",
           "GraphQL",
           "Vertex AI",
           "Docker",
@@ -133,7 +139,7 @@
         "position": "Developer — Freelance",
         "periodStart": "2022",
         "periodEnd": "2022",
-        "technologies": ["Nuxt", "TypeScript", "NodeJs", "Firebase", "KYC"],
+        "technologies": ["Nuxt", "TypeScript", "Node.js", "Firebase", "KYC"],
         "highlights": ["Two ICO platforms for two clients in the same year"],
         "subProjects": [
           {
@@ -169,6 +175,15 @@
     ]
   },
   "skills": {
-    "title": "Skills"
+    "title": "Skills",
+    "categories": {
+      "languages": "Languages",
+      "frameworks": "Frameworks",
+      "methods": "Methods & concepts",
+      "cloud": "Cloud & data",
+      "devops": "DevOps & quality",
+      "tools": "Tools"
+    },
+    "learning": "Pixl64 needed Rust for defensive URL validation. I am still learning it."
   }
 }
