@@ -141,6 +141,34 @@ screenshot able to notice.
 
 When a fact changes, grep for it rather than trusting memory of where it was written.
 
+#### The PDF CV is the source, not this repo
+
+**`SkillsSection.vue` mirrors the COMPÉTENCES block of the PDF CV, and the six project stacks mirror its per-project
+stacks.** The CV is written in Google Docs and published to Firebase Storage (see `docs/adr/0001-…`), so it is the
+document that gets sent, defended in interviews, and corrected first. Read it before touching either — it downloads
+without credentials:
+
+```bash
+curl -o cv.pdf "https://firebasestorage.googleapis.com/v0/b/cv-portfolio-b023a.appspot.com/o/cv%2Fcv-colas-durcy-fr.pdf?alt=media"
+```
+
+It uses subset CID fonts, so text extraction needs the per-font `ToUnicode` tables — a global merge of the tables
+collides glyph IDs and returns confident nonsense rather than an error.
+
+The mirror was established on 2026-08-17, after an audit found the two documents had drifted in **both** directions:
+the site advertised `Next`, `Python` and `Java` that appear nowhere in the CV (Managers Companion is Kotlin and Spring
+Boot), while `Vertex AI`, `GraphQL`, `Storybook`, `Vuetify`, `CQRS` and `BDD` were claimed in the CV and missing from
+the site. Nothing automated could catch it: each document stayed coherent on its own.
+
+Two deliberate exceptions, neither of them drift. The **order** of the skill categories differs — `methods` sits third
+on screen because vertical reading stops early, whereas a dense PDF is scanned whole. And the site carries an
+experience the CV omits: **Infodis · Intersport · Biscuiterie Poult, 2005-2020**. The CV fights for two pages and sells
+the developer; the site has room to say where he came from.
+
+A skill that is genuinely not acquired does not get a row. Rust ships inside Pixl64 and is *not* claimed as a
+competence — it lives in one line of prose under the grid (`skills.learning`), which is the only prose in the section
+and the only place able to say "used, still learning".
+
 See `docs/superpowers/specs/2026-08-12-refonte-contenu-recruteurs-design.md` for the full rationale.
 
 ### Styling conventions
