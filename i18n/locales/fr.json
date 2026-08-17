@@ -184,6 +184,9 @@
       "devops": "DevOps & qualité",
       "tools": "Outils"
     },
-    "learning": "Sur Pixl64 j'ai eu besoin de Rust pour la validation défensive des URL. Je continue à l'apprendre."
+    "exploring": {
+      "label": "En exploration",
+      "text": "Sur Pixl64 j'ai eu besoin de Rust pour la validation défensive des URL. Je continue à l'apprendre."
+    }
   }
 }
