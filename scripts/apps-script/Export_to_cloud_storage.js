@@ -21,14 +21,18 @@ const BUCKET_NAME = 'cv-portfolio-b023a.appspot.com'
  * lourd reste parfaitement valide, et refuser de le publier interdirait la mise
  * à jour d'un soir de presse pour une raison esthétique.
  *
- * 500 Ko passe juste sous le poids du CV PDF actuel — 516 Ko pour deux pages,
- * l'export Google Docs embarquant les polices. L'avertissement se déclenchera
- * donc à chaque publication tant que ce fichier n'aura pas été allégé, ce qui
- * est voulu : l'allègement est un travail éditorial séparé, et ce rappel est ce
- * qui l'empêche de se faire oublier. Remonter le seuil au-dessus de 516 Ko
- * ferait taire l'avertissement sans rien alléger.
+ * 750 Ko laisse passer les deux CV PDF actuels, qui pèsent environ 505 Ko pour
+ * deux pages, l'export Google Docs embarquant les polices.
+ *
+ * Un seuil placé juste sous eux a d'abord été essayé, pour que l'avertissement
+ * rappelle qu'ils gagneraient à être allégés. Constat en production : il se
+ * déclenchait deux fois à chaque publication, juste au-dessus du rappel de
+ * repasser le Site CV. Un avertissement qui s'affiche toujours cesse d'être lu,
+ * et emporte avec lui la ligne qui devait l'être. Le signal doit rester rare
+ * pour rester un signal : à 750 Ko il désigne un accident — une image collée en
+ * pleine page, une police doublée — et non l'état normal du fichier.
  */
-const HEAVY_CV_PDF_THRESHOLD_BYTES = 500 * 1024
+const HEAVY_CV_PDF_THRESHOLD_BYTES = 750 * 1024
 
 /** Annonce de succès, affichée seulement après relecture des deux objets. */
 const SUCCESS_HEADLINE =
