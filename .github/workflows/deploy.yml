@@ -21,6 +21,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    # Le dépôt accorde par défaut un GITHUB_TOKEN en lecture seule, si bien que
+    # l'action déployait sans jamais pouvoir le dire. L'élévation vit ici, dans
+    # le seul job qui en a besoin, plutôt que dans le réglage du dépôt qui
+    # l'accorderait à tous les workflows.
+    permissions:
+      contents: read
+      pull-requests: write
+
     env:
       # GitHub n'expose pas les secrets du dépôt aux workflows déclenchés par
       # Dependabot : ses pull requests tournent dans un contexte restreint. Le
@@ -68,6 +76,11 @@ jobs:
         with:
           firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
           projectId: cv-portfolio-b023a
+          # Fournir le jeton suffit à déclencher le commentaire : l'action
+          # poste l'URL de preview sur la pull request et réécrit le même
+          # commentaire à chaque push, au lieu d'en empiler un par run. Sur un
+          # push sur main elle se tait, faute de pull request dans le contexte.
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
           # Seul un push sur main va en production. Une pull request part sur
           # un canal de preview jetable, nommé d'après son numéro.
           channelId: ${{ github.event_name == 'push' && 'live' || format('pr-{0}', github.event.number) }}
