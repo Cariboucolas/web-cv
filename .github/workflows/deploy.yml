@@ -25,9 +25,16 @@ jobs:
     # l'action déployait sans jamais pouvoir le dire. L'élévation vit ici, dans
     # le seul job qui en a besoin, plutôt que dans le réglage du dépôt qui
     # l'accorderait à tous les workflows.
+    #
+    # `checks` n'est pas un extra : recevoir un repoToken fait basculer
+    # l'action dans un mode où elle ouvre un check run *avant* de déployer.
+    # Sans cette ligne elle échoue en 403 sur /check-runs, donc avant même
+    # d'avoir contacté Firebase, et le message « Resource not accessible by
+    # integration » ne nomme jamais la permission qui manque.
     permissions:
       contents: read
       pull-requests: write
+      checks: write
 
     env:
       # GitHub n'expose pas les secrets du dépôt aux workflows déclenchés par
