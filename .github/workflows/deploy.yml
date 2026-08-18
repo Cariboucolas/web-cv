@@ -67,9 +67,21 @@ jobs:
       - name: Smoke test the built site
         run: node scripts/smoke.mjs .output/public
 
-      # Sans identifiants — cas d'une pull request de Dependabot — on s'arrête
-      # après le build. La compilation reste le vrai signal : c'est elle qui dit
-      # si une montée de version passe. Seule la preview déployée manque.
+      # Sans identifiants — cas d'une pull request de Dependabot — ce job ne
+      # peut pas déployer, alors il passe le relais. L'artefact est le seul
+      # lien entre les deux moitiés, et c'est là toute la garantie : le job
+      # privilégié qui publiera ces fichiers ne verra jamais le code monté par
+      # Dependabot, ni n'exécutera son postinstall. Voir preview-relay.yml.
+      - name: Hand the built site to the privileged workflow
+        if: env.HAS_FIREBASE_CREDENTIALS != 'true' && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: preview-site
+          path: .output/public
+          retention-days: 1
+
+      # Avec identifiants, le déploiement se fait ici même : le détour par le
+      # relais ne sert qu'à ceux qui n'ont pas la clé.
       - name: Deploy to Firebase
         if: env.HAS_FIREBASE_CREDENTIALS == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0
