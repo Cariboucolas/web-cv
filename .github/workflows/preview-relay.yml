@@ -1,0 +1,146 @@
+name: Preview relay
+
+# Le seul déclencheur qui donne accès aux secrets sans jamais exécuter le code
+# de la pull request. GitHub lance ce workflow depuis la branche par défaut,
+# une fois « Deploy » terminé, quel que soit l'auteur du run d'origine — et
+# c'est ce décalage qui permet de publier une preview pour Dependabot sans lui
+# confier la clé de service, qui se retrouverait sinon dans le même runner que
+# son `pnpm install`. Le relais ne fait que déplacer des fichiers statiques :
+# il ne construit rien, n'installe rien, n'exécute rien de la pull request.
+#
+# Conséquence à connaître avant d'y toucher : `workflow_run` ignore les
+# versions de ce fichier présentes sur une branche. Une modification ne se
+# teste pas en pull request, elle se vérifie sur la première PR *après* la
+# fusion.
+on:
+  workflow_run:
+    workflows: ["Deploy"]
+    types:
+      - completed
+
+concurrency:
+  group: preview-relay-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+jobs:
+  # Deux jobs plutôt qu'une condition répétée sur chaque étape : la question
+  # « y a-t-il quelque chose à publier ? » se pose une fois, et la réponse
+  # garde le job privilégié entièrement à l'écart quand elle est non.
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    # Un build raté n'a rien à publier, et un push sur main est déjà parti en
+    # production par la voie directe.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+
+    permissions:
+      actions: read
+      pull-requests: read
+
+    outputs:
+      pull-request: ${{ steps.lookup.outputs.pull-request }}
+      artifact-count: ${{ steps.lookup.outputs.artifact-count }}
+
+    steps:
+      # Le numéro de pull request se lit auprès de l'API à partir de la branche
+      # du run, jamais dans l'artefact. L'artefact sort d'un job qui a exécuté
+      # du code non vérifié : un numéro trafiqué y ferait publier ce build sur
+      # le canal de preview d'une autre pull request, sous l'URL que son auteur
+      # est en train de relire.
+      - name: Look up the pull request and the handed-over artifact
+        id: lookup
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+
+          pull_request=$(gh api "repos/${GITHUB_REPOSITORY}/pulls" \
+            --method GET \
+            --field "head=${GITHUB_REPOSITORY_OWNER}:${HEAD_BRANCH}" \
+            --field "state=open" \
+            --jq '.[0].number // empty')
+
+          # Aucun artefact est le cas nominal d'une pull request qui avait les
+          # identifiants : « Deploy » a publié lui-même, il n'a pas passé le
+          # relais. Ce job s'arrête alors sans rien dire.
+          artifact_count=$(gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/artifacts" \
+            --jq '[.artifacts[] | select(.name == "preview-site")] | length')
+
+          echo "pull-request=${pull_request}" >> "$GITHUB_OUTPUT"
+          echo "artifact-count=${artifact_count}" >> "$GITHUB_OUTPUT"
+
+          echo "Pull request : ${pull_request:-aucune} — artefacts : ${artifact_count}"
+
+  publish:
+    needs: resolve
+    if: needs.resolve.outputs.pull-request != '' && needs.resolve.outputs.artifact-count != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+
+    steps:
+      # Sans `ref`, le checkout prend la branche par défaut, ce qui est ici la
+      # propriété recherchée plutôt qu'un défaut subi : firebase.json décide de
+      # ce qui est publié et où, et n'a pas à venir de la pull request.
+      - name: Check out the deployment configuration from the default branch
+        uses: actions/checkout@v7
+
+      # Le chemin est imposé par le `public` de firebase.json.
+      - name: Restore the built site
+        uses: actions/download-artifact@v8
+        with:
+          name: preview-site
+          path: .output/public
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to the preview channel
+        id: preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
+          projectId: cv-portfolio-b023a
+          # Même nommage que la voie directe, pour qu'une pull request garde un
+          # seul canal quelle que soit la route empruntée.
+          channelId: pr-${{ needs.resolve.outputs.pull-request }}
+          # Pas de repoToken : hors d'un événement `pull_request`, l'action ne
+          # trouve aucune pull request dans son contexte et ne commenterait
+          # rien. Le commentaire est posté à la main juste en dessous.
+
+      - name: Comment the preview URL on the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Nommer le dépôt plutôt que de laisser gh le déduire du remote : le
+          # checkout n'est là que pour firebase.json, et le commentaire ne doit
+          # pas dépendre de sa présence.
+          GH_REPO: ${{ github.repository }}
+          PULL_REQUEST: ${{ needs.resolve.outputs.pull-request }}
+          PREVIEW_URL: ${{ steps.preview.outputs.details_url }}
+          EXPIRES: ${{ steps.preview.outputs.expire_time_formatted }}
+        run: |
+          set -euo pipefail
+
+          # Un printf plutôt qu'un heredoc : dans un bloc YAML, le délimiteur
+          # de fin d'un heredoc ne tombe en début de ligne que par la grâce
+          # d'une désindentation invisible à la relecture, et se casse au
+          # premier réalignement du fichier.
+          body=$(printf '%s\n%s\n%s\n' \
+            "**Preview deployed** — ${PREVIEW_URL}" \
+            "" \
+            "Built without repository credentials, then published from the default branch, so the service account never shared a runner with the updated dependencies. The channel expires on ${EXPIRES}.")
+
+          # --edit-last réécrit le commentaire précédent du bot plutôt que d'en
+          # empiler un par push. Le repli couvre un runner dont le gh serait
+          # trop ancien pour --create-if-none.
+          gh pr comment "$PULL_REQUEST" --body "$body" --edit-last --create-if-none \
+            || gh pr comment "$PULL_REQUEST" --body "$body"
