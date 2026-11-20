@@ -17,7 +17,20 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # Rien ne se publie, ni en production ni en preview, sans que lint et
+  # typecheck soient verts sur ce même commit. Le workflow « Quality » tourne
+  # aussi de son côté : c'est lui qui produit le check `quality` exigé par le
+  # ruleset, alors que cette copie appelée apparaît sous `ci / quality`. Le
+  # doublon coûte une minute de runner ; sans lui, le déploiement n'attendait
+  # rien et ne finissait après la qualité que parce que le build est plus long.
+  # Le relais de preview en hérite : il ne publie que si ce workflow a réussi.
+  ci:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
   deploy:
+    needs: ci
     runs-on: ubuntu-latest
     timeout-minutes: 15
 

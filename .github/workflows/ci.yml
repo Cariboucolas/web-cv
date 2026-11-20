@@ -7,7 +7,13 @@ on:
   pull_request:
     branches:
       - main
+  # Appelé par deploy.yml, qui ne publie qu'après ce job.
+  workflow_call:
 
+# Appelé par deploy.yml, `github.workflow` vaut « Deploy » : le groupe devient
+# alors `quality-Deploy-…`, distinct de celui de l'appelant, ce qui évite qu'ils
+# s'attendent l'un l'autre.
+#
 # Sur une pull request, un nouveau push annule la vérification en cours : seul
 # le dernier commit compte. Sur main, les runs restent en file d'attente.
 concurrency:
@@ -34,8 +40,8 @@ jobs:
 
       # Le postinstall lance `nuxt prepare`, qui génère le .nuxt/tsconfig.json
       # dont `tsconfig.check.json` hérite. Le typecheck n'a donc pas besoin d'un
-      # build : c'est ce qui permet à ce workflow de tourner en parallèle du
-      # déploiement plutôt qu'après lui.
+      # build : c'est ce qui permet à ce workflow de passer avant le
+      # déploiement, qui l'attend, sans construire le site deux fois.
       - name: Install dependencies
         run: pnpm install
 
