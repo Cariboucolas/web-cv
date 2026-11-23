@@ -21,8 +21,15 @@ if [ -z "${PR_TITLE:-}" ]; then
 fi
 
 # 1. Longueur — au-delà, GitHub tronque le titre par des points de suspension.
+#    Dependabot en est dispensé : il compose seul « bump the safe-updates group
+#    across 1 directory with 9 updates » (74 caractères) et ne sait pas
+#    raccourcir, si bien que chaque PR groupée sortait rouge et n'avançait
+#    qu'après une retouche manuelle du titre. Les autres règles s'appliquent
+#    toujours à lui. L'auteur vient de `pull_request.user.login`, que l'auteur
+#    d'une PR ne choisit pas : un humain ne peut pas se faire passer pour lui.
+AUTEUR_DISPENSE_DE_LONGUEUR='dependabot[bot]'
 longueur=${#PR_TITLE}
-if [ "$longueur" -gt "$LONGUEUR_MAX" ]; then
+if [ "${PR_AUTHOR:-}" != "$AUTEUR_DISPENSE_DE_LONGUEUR" ] && [ "$longueur" -gt "$LONGUEUR_MAX" ]; then
   refuser "Titre trop long : $longueur caractères pour $LONGUEUR_MAX au maximum."
 fi
 
