@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Vérifie check-pr-title.sh contre des titres réels du dépôt.
-# Chaque ligne : <code de sortie attendu> <TAB> <titre>
+# Chaque ligne : <code de sortie attendu> <TAB> <titre> [<TAB> <auteur>]
+# L'auteur est facultatif ; absent, le titre est celui d'un humain.
 set -uo pipefail
 
 VALIDATEUR="$(dirname "$0")/check-pr-title.sh"
@@ -21,15 +22,18 @@ CASES=$(cat <<'EOF'
 0	fix: update readme: Add screenshot
 1	fix(ci): Bump the runner image
 1	feat: refonte UI lot 2 – mouvement (champ de cubes)
+0	chore(deps): bump the safe-updates group across 1 directory with 9 updates	dependabot[bot]
+1	chore(deps): bump the safe-updates group across 1 directory with 9 updates
+1	bump the safe-updates group across 1 directory with 9 updates and more	dependabot[bot]
 EOF
 )
 
 total=0
 failures=0
-while IFS=$'\t' read -r expected title; do
+while IFS=$'\t' read -r expected title author; do
   [ -z "$expected" ] && continue
   total=$((total + 1))
-  PR_TITLE="$title" "$VALIDATEUR" >/dev/null 2>&1
+  PR_TITLE="$title" PR_AUTHOR="$author" "$VALIDATEUR" >/dev/null 2>&1
   actual=$?
   if [ "$actual" != "$expected" ]; then
     echo "ECHEC (attendu $expected, obtenu $actual) : $title"
